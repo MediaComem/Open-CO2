@@ -28,7 +28,9 @@ async function startApolloServer(typeDefs, resolvers) {
   );
   console.info(`\n🚀 Open CO2 server ready!`);
   console.info(
-    `GraphQL endpoint at http://localhost:${process.env.PORT}${server.graphqlPath}\n`
+    `GraphQL endpoint at http://localhost:${process.env.PORT || 4000}${
+      server.graphqlPath || "/graphql"
+    }\n`
   );
 }
 
