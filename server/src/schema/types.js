@@ -67,8 +67,9 @@ export const typeDefs = gql`
   Define a model from which (sub)domains herits
   """
   interface Scope {
-    "Domain UUID"
+    "Scope UUID"
     id: ID!
+    "Scope name"
     name: String!
   }
 
@@ -79,8 +80,11 @@ export const typeDefs = gql`
   type Domain implements Scope {
     "Domain UUID"
     id: ID!
+    "Domain name"
     name: String!
+    "Domain description"
     description: String
+    "Domain subdomains list"
     subdomains: [Subdomain]
   }
 
@@ -89,10 +93,13 @@ export const typeDefs = gql`
   A subdomain is group of categories with a common thematic
   """
   type Subdomain implements Scope {
-    "Domain UUID"
+    "Subdomain UUID"
     id: ID!
+    "Subdomain name"
     name: String!
+    "Subdomain description"
     description: String
+    "Domain categories list"
     categories: [Category]
   }
 
@@ -102,7 +109,7 @@ export const typeDefs = gql`
   scalar InternalID
 
   """
-  Define a date valid as a Date JS object
+  Define a date following ISO 8601 syntax with YYYY-MM-DD format
   """
   scalar Date
 
