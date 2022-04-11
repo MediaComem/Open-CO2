@@ -15,6 +15,14 @@ export const typeDefs = gql`
     subdomains: [Subdomain]
     "Get a list of all equivalent's domains"
     domains: [Domain]
+    "Get an equivalent based on ID"
+    equivalentById(id: ID!): Equivalent
+    "Get a category based on ID"
+    categoryById(id: ID!): Category
+    "Get an subdomain based on ID"
+    subdomainById(id: ID!): Subdomain
+    "Get a domain based on ID"
+    domainById(id: ID!): Domain
   }
 
   """
