@@ -6,6 +6,20 @@ import { equivalents } from "../data/equivalents.js";
 import { categories } from "../data/categories.js";
 import { subdomains } from "../data/subdomains.js";
 import { domains } from "../data/domains.js";
+
+// Custom GraphQL scalars
+// InternalID scalar
+// TODO:
+const internalIdDefinition = {
+  name: "InternalID",
+  decription: "A valid internal ID with XX.YYY format",
+  serialize: (value) => value,
+  parseValue: (value) => value,
+  parseLiteral: (ast) => ast.value,
+};
+
+const internalIdType = new GraphQLScalarType(internalIdDefinition);
+
 // Date scalar
 const dateDefinition = {
   name: "Date",
@@ -55,5 +69,6 @@ export const resolvers = {
       return domains.find((domain) => domain.id === Number(args.id));
     },
   },
+  InternalID: internalIdType,
   Date: dateType,
 };
