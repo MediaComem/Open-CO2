@@ -35,7 +35,9 @@ export const typeDefs = gql`
     "Is this equivalent equivalent value an average or not?"
     isAverage: Boolean
     "Equivalent date of establishment"
-    establishedDate: Date
+    dateOfEstablishment: Date
+    "Equivalent date of latest update"
+    dateOfLatestUpdate: Date
   }
 
   """
