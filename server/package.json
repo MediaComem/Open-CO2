@@ -1,0 +1,43 @@
+{
+  "name": "open-co2",
+  "version": "0.0.0",
+  "description": "Open Data Database and API for CO2 Equivalent Values",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "release": "standard-version",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MediaComem/open-co2"
+  },
+  "keywords": [
+    "CO2",
+    "Footprint",
+    "Express",
+    "GraphQL",
+    "API"
+  ],
+  "author": "MEI",
+  "license": "ISC",
+  "private": false,
+  "bugs": {
+    "url": "https://github.com/MediaComem/open-co2/issues"
+  },
+  "homepage": "https://github.com/MediaComem/open-co2#readme",
+  "devDependencies": {
+    "@faker-js/faker": "^6.1.1",
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15",
+    "standard-version": "^9.3.2"
+  },
+  "dependencies": {
+    "apollo-server-core": "^3.6.7",
+    "apollo-server-express": "^3.6.7",
+    "express": "^4.17.3",
+    "graphql": "^15.8.0"
+  }
+}
