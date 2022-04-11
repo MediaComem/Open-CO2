@@ -1,5 +1,3 @@
-// https://www.apollographql.com/docs/apollo-server/testing/mocking
-
 import { faker } from "@faker-js/faker";
 
 export const mocks = {

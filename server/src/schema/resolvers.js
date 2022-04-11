@@ -1,5 +1,3 @@
-// https://www.apollographql.com/docs/apollo-server/data/resolvers
-
 import { GraphQLScalarType } from "graphql";
 // Mock data
 import { equivalents } from "../data/equivalents.js";

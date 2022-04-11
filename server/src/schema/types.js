@@ -1,5 +1,3 @@
-//https://www.apollographql.com/docs/apollo-server/schema/schema
-
 import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`

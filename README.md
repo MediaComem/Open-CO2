@@ -38,3 +38,12 @@ Development mode (live reload enabled):
 
 Production mode:  
 `npm start`
+
+---
+
+## Documentation & References
+
+- [Apollo documentation](https://www.apollographql.com/docs/)
+  - [Schema](https://www.apollographql.com/docs/apollo-server/schema/schema)
+  - [Resolver](https://www.apollographql.com/docs/apollo-server/data/resolvers)
+  - [Mock](https://www.apollographql.com/docs/apollo-server/testing/mocking)
