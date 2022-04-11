@@ -69,6 +69,34 @@ export const resolvers = {
       return domains.find((domain) => domain.id === Number(args.id));
     },
   },
+  Category: {
+    equivalents: (parent) => {
+      return findObjectsFromIds(parent.equivalents, equivalents);
+    },
+  },
+  Subdomain: {
+    categories: (parent) => {
+      return findObjectsFromIds(parent.categories, categories);
+    },
+  },
+  Domain: {
+    subdomains: (parent) => {
+      return findObjectsFromIds(parent.subdomains, subdomains);
+    },
+  },
   InternalID: internalIdType,
   Date: dateType,
 };
+
+function findObjectByKey(array, key, val) {
+  return array.find((obj) => obj[key] == val);
+}
+
+function findObjectsFromIds(arrayOfIds, arrayOfObjects) {
+  let objects = [];
+  arrayOfIds.forEach((id) => {
+    let object = findObjectByKey(arrayOfObjects, "id", id);
+    objects.push(object);
+  });
+  return objects;
+}
