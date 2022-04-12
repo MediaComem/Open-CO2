@@ -36,7 +36,5 @@ export function isArrayEmpty(array) {
 
 export function getAverageFromArray(array, precision = 3) {
   const average = array.reduce((a, b) => a + b, 0) / array.length;
-  console.log(array);
-  console.log(average.toFixed(precision));
   return average.toFixed(precision);
 }

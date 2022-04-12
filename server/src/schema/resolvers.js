@@ -82,7 +82,7 @@ export const resolvers = {
     },
     co2values: (parent) => {
       if (parent.co2values === undefined) {
-        console.log(`Calculate average for ${parent.name} category`);
+        // console.log(`Calculate average for ${parent.name} category`);
         let childrenCo2Values = getChildrenCo2Values(parent.categories);
         return getCalculatedCo2Value(childrenCo2Values, parent.name);
       }
