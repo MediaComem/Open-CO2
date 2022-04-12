@@ -4,11 +4,11 @@ export const mocks = {
   ID: () => faker.datatype.uuid(),
   Int: () => faker.datatype.number({ min: 1, max: 100 }),
   Boolean: () => faker.datatype.boolean(),
-  Language: () => ({
-    name: () => faker.random.alphaNumeric(3),
+  CO2Value: () => ({
+    source: () => faker.lorem.words(6),
+    dateOfReference: () => faker.date.between("2022-04-01", "2022-04-30"),
   }),
-  Author: () => ({
-    firstName: () => faker.name.firstName(),
-    lastName: () => faker.name.lastName(),
+  Category: () => ({
+    description: () => faker.lorem.words(40),
   }),
 };
