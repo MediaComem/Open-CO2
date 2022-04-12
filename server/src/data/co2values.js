@@ -2,11 +2,10 @@ export const co2values = [
   // 42
   {
     id: 42017,
-    description:
-      "Chauffage à distance de l'incinération des ordures, moyenne réseaux CH",
+    description: "District heating from waste incineration, CH system average",
     value: 0.0668,
     unit: "KWH",
-    isAverage: false,
+    isAverage: true,
     dateOfReference: "2022-04-01",
     source: "https://heig-vd.ch/rad/instituts/igt",
   },
@@ -134,7 +133,7 @@ export const co2values = [
   // 45
   {
     id: 45020,
-    description: "Mix consommateur CH",
+    description: "CH consumer mix",
     value: 0.125,
     unit: "KWH",
     isAverage: true,
@@ -143,7 +142,7 @@ export const co2values = [
   },
   {
     id: 45001,
-    description: "Centrale nucléaire",
+    description: "Nuclear power plant",
     value: 0.0239,
     unit: "KWH",
     isAverage: false,
@@ -152,7 +151,7 @@ export const co2values = [
   },
   {
     id: 45016,
-    description: "Énergie hydraulique",
+    description: "Hydraulic energy",
     value: 0.0124,
     unit: "KWH",
     isAverage: false,
@@ -161,7 +160,7 @@ export const co2values = [
   },
   {
     id: 45015,
-    description: "Énergie éolienne",
+    description: "Wind energy",
     value: 0.0284,
     unit: "KWH",
     isAverage: false,
@@ -170,7 +169,7 @@ export const co2values = [
   },
   {
     id: 45011,
-    description: "Photovoltaïque (moyen)",
+    description: "Photovoltaic (average)",
     value: 0.0476,
     unit: "KWH",
     isAverage: true,
@@ -179,7 +178,7 @@ export const co2values = [
   },
   {
     id: 45012,
-    description: "Photovoltaïque toiture inclinée",
+    description: "Photovoltaic sloped roof",
     value: 0.055,
     unit: "KWH",
     isAverage: false,
@@ -188,7 +187,7 @@ export const co2values = [
   },
   {
     id: 45013,
-    description: "Photovoltaïque toiture plate",
+    description: "Photovoltaic flat roof",
     value: 0.0529,
     unit: "KWH",
     isAverage: false,
@@ -197,7 +196,7 @@ export const co2values = [
   },
   {
     id: 45014,
-    description: "Photovoltaïque façade",
+    description: "Photovoltaic facade",
     value: 0.072,
     unit: "KWH",
     isAverage: false,

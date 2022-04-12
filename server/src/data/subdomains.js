@@ -12,7 +12,7 @@ export const subdomains = [
   {
     id: 2100,
     name: "transports",
-    description: "Category of transport-related CO2 value equivalents.",
+    description: "Category of transport-related CO2 equivalent",
     categories: [2110, 2120],
   },
 ];
