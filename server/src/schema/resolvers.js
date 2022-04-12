@@ -1,4 +1,5 @@
-import { GraphQLScalarType } from "graphql";
+import { dateType } from "./scalars.js";
+import { findObjectsFromIds, formatString } from "../helpers/utils.js";
 // Mock data
 import { co2values } from "../data/co2values.js";
 import { units } from "../data/units.js";
@@ -19,34 +20,6 @@ let mergedCategories = [].concat(
   energySource,
   transportMode
 );
-
-// Custom GraphQL scalars
-
-// Date scalar
-const dateDefinition = {
-  name: "Date",
-  decription: "A valid date following ISO 8601 syntax with YYYY-MM-DD format",
-  serialize(value) {
-    console.log("serialize");
-    console.log(value);
-    return new Date(value).toISOString();
-  },
-  parseValue(value) {
-    console.log("parseValue");
-    console.log(value);
-    return new Date(value);
-  },
-  parseLiteral(ast) {
-    console.log("parseLiteral");
-    console.log(value);
-    if (ast.kind === Kind.INT) {
-      return new Date(parseInt(ast.value, 10));
-    }
-    return null;
-  },
-};
-
-const dateType = new GraphQLScalarType(dateDefinition);
 
 // Resolvers
 export const resolvers = {
@@ -100,26 +73,3 @@ export const resolvers = {
   },
   Date: dateType,
 };
-
-function findObjectByKey(array, key, val) {
-  return array.find((obj) => obj[key] == val);
-}
-
-function findObjectsFromIds(arrayOfIds, arrayToFilter) {
-  let objects = [];
-  if (arrayOfIds) {
-    arrayOfIds.forEach((id) => {
-      let matchingObject = findObjectByKey(arrayToFilter, "id", id);
-      objects.push(matchingObject);
-    });
-  }
-  return objects;
-}
-
-function formatString(string) {
-  return string
-    .normalize("NFD") // Normalization form canonical decomposition
-    .replace(/[\u0300-\u036f]/g, "") // Remove accents
-    .replace(/ /g, "_") // Replace spaces with underscore
-    .toLowerCase(); // Convert to lowercase
-}
