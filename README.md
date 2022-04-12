@@ -22,6 +22,14 @@ cd server
 npm ci
 ```
 
+## Run the server
+
+Development mode (live reload enabled):  
+`npm run dev`
+
+Production mode:  
+`npm start`
+
 ## Configuration
 
 Copy the `.env.example` file as `.env` in the root of the server.
@@ -30,14 +38,6 @@ The following environment variables can be used to customize the server:
 
 - `PORT` Server port (Default value to `4000`)
 - `ENDPOINT` GraphQL endpoint (Defautl to `/graphql`)
-
-## Run the server
-
-Development mode (live reload enabled):  
-`npm run dev`
-
-Production mode:  
-`npm start`
 
 ---
 

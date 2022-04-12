@@ -9,6 +9,9 @@ import { typeDefs } from "./schema/types.js";
 import { resolvers } from "./schema/resolvers.js";
 import { mocks } from "./schema/mocks.js";
 
+const DEFAULT_PORT = 4000;
+const DEFAULT_ENDPOINT = "/graphql";
+
 async function startApolloServer(typeDefs, resolvers) {
   const app = express();
   const httpServer = http.createServer(app);
@@ -21,15 +24,18 @@ async function startApolloServer(typeDefs, resolvers) {
   });
 
   await server.start();
-  server.applyMiddleware({ app, path: process.env.ENDPOINT });
+  server.applyMiddleware({
+    app,
+    path: process.env.ENDPOINT || DEFAULT_ENDPOINT,
+  });
 
   await new Promise((resolve) =>
-    httpServer.listen({ port: process.env.PORT }, resolve)
+    httpServer.listen({ port: process.env.PORT || DEFAULT_PORT }, resolve)
   );
   console.info(`\n🚀 Open CO2 server ready!`);
   console.info(
-    `GraphQL endpoint at http://localhost:${process.env.PORT || 4000}${
-      server.graphqlPath || "/graphql"
+    `GraphQL endpoint at http://localhost:${process.env.PORT || DEFAULT_PORT}${
+      server.graphqlPath || DEFAULT_ENDPOINT
     }\n`
   );
 }
