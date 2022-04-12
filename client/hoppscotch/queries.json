@@ -53,9 +53,9 @@
         "v": 2,
         "name": "categoryById",
         "url": "http://localhost:4000/graphql",
-        "query": "query categoryById {\n  categoryById(id: 1110) {\n    id\n  \tdescription\n  }\n}\n",
+        "query": "query categoryById($id: ID!) {\n  categoryById(id: $id) {\n    id\n  \tname\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
         "headers": [],
-        "variables": "{\n  \"id\": \"1\"\n}",
+        "variables": "{\n  \"id\": \"1100\"\n}",
         "auth": {
           "authType": "none",
           "authActive": true,
@@ -98,9 +98,9 @@
         "v": 2,
         "name": "categoryByName - Simple",
         "url": "http://localhost:4000/graphql",
-        "query": "query categoryByNameSimple {\n  categoryByName(name: \"energy\") {\n    id\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
+        "query": "query categoryByNameSimple($name: String!) {\n  categoryByName(name: $name) {\n    id\n  \tdescription\n  \tcategories {\n  \t\tid\n  \t\tname\n    }\n  \tco2values {\n  \t\tdescription\n  \t\tvalue\n    }\n  }\n}\n",
         "headers": [],
-        "variables": "{\n  \"id\": \"1\"\n}",
+        "variables": "{\n  \"name\": \"electricity_mix\"\n}",
         "auth": {
           "authType": "none",
           "authActive": true,
@@ -113,7 +113,7 @@
         "v": 2,
         "name": "categoryByName - Path",
         "url": "http://localhost:4000/graphql",
-        "query": "query categoryByNamePath {\n  categoryByName(name: \"energy/heat/district\") {\n    id\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
+        "query": "query categoryByNamePath {\n  #categoryByName(name: \"energy\") {\n  #categoryByName(name: \"energy/electricity\") {\n  categoryByName(name: \"energy/electricity/grid\") {\n    id\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  \tco2values {\n  \t\tdescription\n  \t\tvalue\n    }\n  }\n}\n",
         "headers": [],
         "variables": "{\n  \"id\": \"1\"\n}",
         "auth": {
