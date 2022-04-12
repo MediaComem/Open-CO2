@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  # Server
+  open-co2-server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: open-co2-server
+    ports:
+      - "4000:4000"
+    depends_on:
+      - open-co2-db
+    links:
+      - open-co2-db
+  # Database
+  open-co2-db:
+    image: dgraph/dgraph:v21.12.0
