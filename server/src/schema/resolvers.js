@@ -1,22 +1,26 @@
 import { GraphQLScalarType } from "graphql";
 // Mock data
-import { equivalents } from "../data/equivalents.js";
-import { categories } from "../data/categories.js";
-import { subdomains } from "../data/subdomains.js";
+import { co2values } from "../data/co2values.js";
+import { units } from "../data/units.js";
 import { domains } from "../data/domains.js";
+import { subdomains } from "../data/subdomains.js";
+import { categories } from "../data/categories.js";
+import {
+  energyRenewability,
+  energySource,
+  transportMode,
+} from "../data/groups.js";
+
+let mergedCategories = [].concat(
+  domains,
+  subdomains,
+  categories,
+  energyRenewability,
+  energySource,
+  transportMode
+);
 
 // Custom GraphQL scalars
-// InternalID scalar
-// TODO:
-const internalIdDefinition = {
-  name: "InternalID",
-  decription: "A valid internal ID with XX.YYY format",
-  serialize: (value) => value,
-  parseValue: (value) => value,
-  parseLiteral: (ast) => ast.value,
-};
-
-const internalIdType = new GraphQLScalarType(internalIdDefinition);
 
 // Date scalar
 const dateDefinition = {
@@ -26,7 +30,6 @@ const dateDefinition = {
     console.log("serialize");
     console.log(value);
     return new Date(value).toISOString();
-    // .toLocaleDateString();
   },
   parseValue(value) {
     console.log("parseValue");
@@ -48,41 +51,53 @@ const dateType = new GraphQLScalarType(dateDefinition);
 // Resolvers
 export const resolvers = {
   Query: {
-    equivalents: () => equivalents,
-    categories: () => categories,
-    subdomains: () => subdomains,
-    domains: () => domains,
-    equivalentById(parent, args, context, info) {
+    co2Values: () => co2values,
+    categories: () => mergedCategories,
+    units: () => units,
+    co2ValueById(parent, args) {
       return equivalents.find(
         (equivalent) => equivalent.id === Number(args.id)
       );
     },
-    categoryById(parent, args, context, info) {
-      return categories.find((category) => category.id === Number(args.id));
+    categoryById(parent, args) {
+      return mergedCategories.find(
+        (category) => category.id === Number(args.id)
+      );
     },
-    subdomainById(parent, args, context, info) {
-      return subdomains.find((subdomain) => subdomain.id === Number(args.id));
-    },
-    domainById(parent, args, context, info) {
-      return domains.find((domain) => domain.id === Number(args.id));
+    categoryByName(parent, args) {
+      console.log(parent, args);
+
+      // Path to category
+      if (args.name.includes("/")) {
+        // TODO: Review after implementation V0 via mock data
+        const path = args.name.split("/");
+
+        return mergedCategories.find(
+          // Only check latest path item
+          (category) =>
+            formatString(category.name) === formatString(path[path.length - 1])
+        );
+      }
+
+      // Direct name of category
+      return mergedCategories.find(
+        (category) => formatString(category.name) === formatString(args.name)
+      );
     },
   },
   Category: {
-    equivalents: (parent) => {
-      return findObjectsFromIds(parent.equivalents, equivalents);
+    name: (parent) => {
+      if (parent.name) return formatString(parent.name);
     },
-  },
-  Subdomain: {
     categories: (parent) => {
-      return findObjectsFromIds(parent.categories, categories);
+      if (parent.categories && parent.categories.length > 0)
+        return findObjectsFromIds(parent.categories, mergedCategories);
+      else return ["No subcategories"];
+    },
+    co2values: (parent) => {
+      return findObjectsFromIds(parent.co2values, co2values);
     },
   },
-  Domain: {
-    subdomains: (parent) => {
-      return findObjectsFromIds(parent.subdomains, subdomains);
-    },
-  },
-  InternalID: internalIdType,
   Date: dateType,
 };
 
@@ -90,11 +105,21 @@ function findObjectByKey(array, key, val) {
   return array.find((obj) => obj[key] == val);
 }
 
-function findObjectsFromIds(arrayOfIds, arrayOfObjects) {
+function findObjectsFromIds(arrayOfIds, arrayToFilter) {
   let objects = [];
-  arrayOfIds.forEach((id) => {
-    let object = findObjectByKey(arrayOfObjects, "id", id);
-    objects.push(object);
-  });
+  if (arrayOfIds) {
+    arrayOfIds.forEach((id) => {
+      let matchingObject = findObjectByKey(arrayToFilter, "id", id);
+      objects.push(matchingObject);
+    });
+  }
   return objects;
+}
+
+function formatString(string) {
+  return string
+    .normalize("NFD") // Normalization form canonical decomposition
+    .replace(/[\u0300-\u036f]/g, "") // Remove accents
+    .replace(/ /g, "_") // Replace spaces with underscore
+    .toLowerCase(); // Convert to lowercase
 }
