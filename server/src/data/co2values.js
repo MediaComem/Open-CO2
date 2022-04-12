@@ -250,6 +250,34 @@ export const co2values = [
     dateOfReference: "2022-04-01",
     source: "https://heig-vd.ch/rad/instituts/igt",
   },
+  // 47
+  {
+    id: 47001,
+    description: "SIG 100% Vitale bleu",
+    value: 12.4,
+    unit: "KWH",
+    isAverage: false,
+    dateOfReference: "2022-04-01",
+    source: "Données KBOB",
+  },
+  {
+    id: 47005,
+    description: "Romande énergie Terre Suisse",
+    value: 12.4,
+    unit: "KWH",
+    isAverage: false,
+    dateOfReference: "2022-04-01",
+    source: "Données KBOB",
+  },
+  {
+    id: 47007,
+    description: "Groupe-E STAR",
+    value: 25.6,
+    unit: "KWH",
+    isAverage: false,
+    dateOfReference: "2022-04-01",
+    source: "Données KBOB",
+  },
   // 62
   {
     id: 62002,

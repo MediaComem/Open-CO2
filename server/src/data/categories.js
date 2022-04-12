@@ -30,6 +30,12 @@ export const categories = [
     co2values: [46001],
   },
   {
+    id: 1230,
+    name: "electricity_mix",
+    description: "Electricity mix from main CH providers (g CO2/kWh))",
+    co2values: [47001, 47005, 47007],
+  },
+  {
     id: 2110,
     name: "goods",
     description: "Goods transport",
