@@ -1,0 +1,129 @@
+[
+  {
+    "v": 1,
+    "name": "Open CO2",
+    "folders": [],
+    "requests": [
+      {
+        "v": 2,
+        "name": "co2values",
+        "url": "http://localhost:4000/graphql",
+        "query": "query co2Values {\n  co2Values {\n    id\n    unit {\n  \t\tname\n    }\n  \tvalue\n  \tdescription\n  \tisAverage\n  \tsource\n  \t#dateOfReference\n  \t#dateOfLatestUpdate\n  }\n}\n",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "categories",
+        "url": "http://localhost:4000/graphql",
+        "query": "query categories {\n  categories {\n    id\n  \tname\n    description\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "unitTypes",
+        "url": "http://localhost:4000/graphql",
+        "query": "query unitTypes {\n  __type(name:\"Unit\"){\n    name\n    enumValues{\n      name\n    }\n  }\n}",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "categoryById",
+        "url": "http://localhost:4000/graphql",
+        "query": "query categoryById {\n  categoryById(id: 1110) {\n    id\n  \tdescription\n  }\n}\n",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "unitTypes",
+        "url": "http://localhost:4000/graphql",
+        "query": "query unitTypes {\n  __type(name:\"UnitEnum\"){\n    name\n    enumValues{\n      name\n    }\n  }\n}",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "units",
+        "url": "http://localhost:4000/graphql",
+        "query": "query units {\n  units {\n    name\n    description\n  }\n}\n",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "categoryByName - Simple",
+        "url": "http://localhost:4000/graphql",
+        "query": "query categoryByNameSimple {\n  categoryByName(name: \"energy\") {\n    id\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "categoryByName - Path",
+        "url": "http://localhost:4000/graphql",
+        "query": "query categoryByNamePath {\n  categoryByName(name: \"energy/heat/district\") {\n    id\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      }
+    ]
+  }
+]

@@ -8,5 +8,11 @@ TODO: Add examples to consume API
 ## API development tool examples
 
 - [ ] Postman
-- [ ] Hoppscotch
+- [x] Hoppscotch
 - [ ] Apollo Studio
+
+---
+
+## Hoppscotch
+
+Go to _Collections > Import/Export > Import from Hoppscotch_ and select `queries.json`
