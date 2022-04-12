@@ -137,7 +137,7 @@ export const co2values = [
     description: "Mix consommateur CH",
     value: 0.125,
     unit: "KWH",
-    isAverage: false,
+    isAverage: true,
     dateOfReference: "2022-04-01",
     source: "https://heig-vd.ch/rad/instituts/igt",
   },
