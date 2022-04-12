@@ -20,3 +20,23 @@ export function formatString(string) {
     .replace(/ /g, "_") // Replace spaces with underscore
     .toLowerCase(); // Convert to lowercase
 }
+
+export function isArrayEmpty(array) {
+  // Not an array
+  if (!Array.isArray(array)) {
+    return false;
+  }
+  // Empty array
+  if (array.length == 0) {
+    return true;
+  }
+  // Not an empty array
+  return false;
+}
+
+export function getAverageFromArray(array, precision = 3) {
+  const average = array.reduce((a, b) => a + b, 0) / array.length;
+  console.log(array);
+  console.log(average.toFixed(precision));
+  return average.toFixed(precision);
+}
