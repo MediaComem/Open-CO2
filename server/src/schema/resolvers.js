@@ -1,100 +1,150 @@
-import { GraphQLScalarType } from "graphql";
+import { UserInputError } from "apollo-server-express";
+import { dateType } from "./scalars.js";
+import {
+  findObjectsFromIds,
+  formatString,
+  isArrayEmpty,
+  getAverageFromArray,
+} from "../helpers/utils.js";
 // Mock data
-import { equivalents } from "../data/equivalents.js";
-import { categories } from "../data/categories.js";
-import { subdomains } from "../data/subdomains.js";
+import { co2values } from "../data/co2values.js";
+import { units } from "../data/units.js";
 import { domains } from "../data/domains.js";
+import { subdomains } from "../data/subdomains.js";
+import { categories } from "../data/categories.js";
+import {
+  energyRenewability,
+  energySource,
+  transportMode,
+} from "../data/groups.js";
 
-// Custom GraphQL scalars
-// InternalID scalar
-// TODO:
-const internalIdDefinition = {
-  name: "InternalID",
-  decription: "A valid internal ID with XX.YYY format",
-  serialize: (value) => value,
-  parseValue: (value) => value,
-  parseLiteral: (ast) => ast.value,
-};
-
-const internalIdType = new GraphQLScalarType(internalIdDefinition);
-
-// Date scalar
-const dateDefinition = {
-  name: "Date",
-  decription: "A valid date following ISO 8601 syntax with YYYY-MM-DD format",
-  serialize(value) {
-    console.log("serialize");
-    console.log(value);
-    return new Date(value).toISOString();
-    // .toLocaleDateString();
-  },
-  parseValue(value) {
-    console.log("parseValue");
-    console.log(value);
-    return new Date(value);
-  },
-  parseLiteral(ast) {
-    console.log("parseLiteral");
-    console.log(value);
-    if (ast.kind === Kind.INT) {
-      return new Date(parseInt(ast.value, 10));
-    }
-    return null;
-  },
-};
-
-const dateType = new GraphQLScalarType(dateDefinition);
+let mergedCategories = [].concat(
+  domains,
+  subdomains,
+  categories,
+  energyRenewability,
+  energySource,
+  transportMode
+);
 
 // Resolvers
 export const resolvers = {
   Query: {
-    equivalents: () => equivalents,
-    categories: () => categories,
-    subdomains: () => subdomains,
-    domains: () => domains,
-    equivalentById(parent, args, context, info) {
+    co2Values: () => co2values,
+    categories: () => mergedCategories,
+    units: () => units,
+    co2ValueById(parent, args) {
       return equivalents.find(
         (equivalent) => equivalent.id === Number(args.id)
       );
     },
-    categoryById(parent, args, context, info) {
-      return categories.find((category) => category.id === Number(args.id));
+    categoryById(parent, args) {
+      return mergedCategories.find(
+        (category) => category.id === Number(args.id)
+      );
     },
-    subdomainById(parent, args, context, info) {
-      return subdomains.find((subdomain) => subdomain.id === Number(args.id));
-    },
-    domainById(parent, args, context, info) {
-      return domains.find((domain) => domain.id === Number(args.id));
+    categoryByName(parent, args) {
+      // Path to category
+      if (args.name.includes("/")) {
+        // TODO: Review after implementation V0 via mock data
+        const path = args.name.split("/");
+
+        return mergedCategories.find(
+          // Only check latest path item
+          (category) =>
+            formatString(category.name) === formatString(path[path.length - 1])
+        );
+      } else {
+        // Direct name of category
+        const filteredCategories = mergedCategories.find(
+          (category) => formatString(category.name) === formatString(args.name)
+        );
+
+        if (filteredCategories === undefined) {
+          throw new UserInputError(`No category with name '${args.name}'`);
+        }
+
+        return filteredCategories;
+      }
     },
   },
   Category: {
-    equivalents: (parent) => {
-      return findObjectsFromIds(parent.equivalents, equivalents);
+    name: (parent) => {
+      if (parent.name) return formatString(parent.name);
     },
-  },
-  Subdomain: {
     categories: (parent) => {
-      return findObjectsFromIds(parent.categories, categories);
+      if (parent.categories === undefined) {
+        return [];
+      }
+      if (parent.categories && parent.categories.length > 0)
+        return findObjectsFromIds(parent.categories, mergedCategories);
+      else return ["No subcategories"];
+    },
+    co2values: (parent) => {
+      if (parent.co2values === undefined) {
+        // console.log(`Calculate average for ${parent.name} category`);
+        let childrenCo2Values = getChildrenCo2Values(parent.categories);
+        return getCalculatedCo2Value(childrenCo2Values, parent.name);
+      }
+
+      return findObjectsFromIds(parent.co2values, co2values);
     },
   },
-  Domain: {
-    subdomains: (parent) => {
-      return findObjectsFromIds(parent.subdomains, subdomains);
-    },
-  },
-  InternalID: internalIdType,
   Date: dateType,
 };
 
-function findObjectByKey(array, key, val) {
-  return array.find((obj) => obj[key] == val);
+// Functions
+function getCalculatedCo2Value(arrayOfCo2ValuesObjects, parentCategoryName) {
+  let values = [];
+  arrayOfCo2ValuesObjects.forEach((item) => {
+    values.push(item.value);
+  });
+  values = values.flat();
+  const average = getAverageFromArray(values);
+  const co2Object = {
+    id: 9999,
+    unit: "KWH",
+    value: average,
+    isAverage: true,
+    description: `Average CO2 equivalent for ${parentCategoryName} category`,
+  };
+  return new Array(co2Object);
 }
 
-function findObjectsFromIds(arrayOfIds, arrayOfObjects) {
-  let objects = [];
-  arrayOfIds.forEach((id) => {
-    let object = findObjectByKey(arrayOfObjects, "id", id);
-    objects.push(object);
+function getChildrenCo2Values(categoryIds) {
+  let childrenCategories = findObjectsFromIds(categoryIds, mergedCategories);
+
+  let childrenCategoryIds = [];
+  childrenCategories.forEach((item) => {
+    childrenCategoryIds.push(item.categories);
   });
-  return objects;
+  childrenCategoryIds = childrenCategoryIds.flat();
+
+  let depth = 0;
+
+  while (!hasCo2Values(childrenCategories) && depth < 4) {
+    depth++;
+    childrenCategories = findObjectsFromIds(
+      childrenCategoryIds,
+      mergedCategories
+    );
+    if (hasCo2Values(childrenCategories)) break;
+  }
+
+  let co2ValuesIds = [];
+  childrenCategories.forEach((item) => {
+    co2ValuesIds.push(item.co2values);
+  });
+  co2ValuesIds = co2ValuesIds.flat();
+
+  return findObjectsFromIds(co2ValuesIds, co2values);
+}
+
+function hasCo2Values(arrayOfReference) {
+  for (let i = 0; i < arrayOfReference.length; i++) {
+    const item = arrayOfReference[i];
+    if (item.co2values && !isArrayEmpty(item.co2values)) return true;
+  }
+
+  return false;
 }
