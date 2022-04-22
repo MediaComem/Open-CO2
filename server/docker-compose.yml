@@ -1,18 +1,39 @@
-version: "3"
+version: "3.9"
 
 services:
-  # Server
-  open-co2-server:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    image: open-co2-server
+  # Server service
+  # server:
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   image: open-co2-server
+  #   ports:
+  #     - "4000:4000"
+  #   depends_on:
+  #     - database
+  #   links:
+  #     - database
+  #   networks:
+  #     - open-co2
+  # Database service
+  database:
+    image: mongo:5.0
     ports:
-      - "4000:4000"
-    depends_on:
-      - open-co2-db
-    links:
-      - open-co2-db
-  # Database
-  open-co2-db:
-    image: dgraph/dgraph:v21.12.0
+      - 27017:27017
+    expose:
+      - 27017
+    volumes:
+      - mongodb:/data/db # $HOME/mongo:/data/db
+      - mongodb-config:/data/configdb
+    environment:
+      - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    networks:
+      - open-co2
+    command: mongod
+networks:
+  open-co2:
+
+volumes:
+  mongodb:
+  mongodb-config:
