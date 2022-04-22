@@ -32,12 +32,15 @@ Production mode:
 
 ## Configuration
 
-Copy the `.env.example` file as `.env` in the root of the server.
+Copy the `.env.example` file as `.env` in the root of the server directory.
 
 The following environment variables can be used to customize the server:
 
+- `COMPOSE_PROJECT_NAME` Name of the docker-compose stack (Useful for Docker desktop, Portainer, etc.)
 - `PORT` Server port (Default value to `4000`)
-- `ENDPOINT` GraphQL endpoint (Defautl to `/graphql`)
+- `ENDPOINT` GraphQL endpoint (Default to `/graphql`)
+
+See `server/src/config/default.js` for default values.
 
 ---
 
