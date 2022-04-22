@@ -1,50 +1,131 @@
 export const categories = [
   {
-    id: 1110,
-    name: "district",
-    description: "District heating",
-    co2values: [42017],
+    name: "Energy",
+    description: "Category of CO2 equivalents for the energy sector.",
+    categories: ["Electricity", "Heat"],
+    co2eqs: []
   },
   {
-    id: 1120,
-    name: "non-renewable_useful",
-    description: "Non-renewable useful heat",
-    co2values: [43001, 43002, 43006, 43007, 43008, 43009],
+    name: "Electricity",
+    description: "Energy field related to electricity",
+    categories: ["Grid", "On site"],
+    co2eqs: []
   },
   {
-    id: 1130,
-    name: "renewable_useful_on_site",
-    description: "Renewable useful heat produced on site",
-    co2values: [44001, 44002, 44003, 44004, 44005, 44006, 44007],
-  },
-  {
-    id: 1210,
-    name: "grid",
+    name: "Grid",
     description: "Grid electricity",
-    co2values: [45020],
+    categories: ["Renewable", "Non-renewable", "Electricity mix CH"],
+    co2eqs: []
   },
   {
-    id: 1220,
-    name: "on_site",
+    name: "On site",
     description: "Electricity produced on site",
-    co2values: [46001],
+    categories: [],
+    co2eqs: []
   },
   {
-    id: 1230,
-    name: "electricity_mix",
+    name: "Renewable",
+    description: "Renewable source of energy",
+    categories: ["Wind", "Hydraulic", "Solar"],
+    co2eqs: []
+  },
+  {
+    name: "Non-renewable",
+    description: "Non-renewable source of energy",
+    categories: ["Nuclear"],
+    co2eqs: []
+  },
+  {
+    name: "Electricity mix CH",
     description: "Electricity mix from main CH providers (g CO2/kWh))",
-    co2values: [47001, 47005, 47007],
+    categories: [],
+    co2eqs: []
   },
   {
-    id: 2110,
-    name: "goods",
+    name: "Wind",
+    description: "Wind energy source",
+    categories: [],
+    co2eqs: ["Wind energy"]
+  },
+  {
+    name: "Hydraulic",
+    description: "Hydraulic energy source",
+    categories: [],
+    co2eqs: ["Hydraulic energy"]
+  },
+  {
+    name: "Nuclear",
+    description: "",
+    categories: [],
+    co2eqs: ["Nuclear power plant"]
+  },
+  {
+    name: "Solar",
+    description: "Solar energy source",
+    categories: [],
+    co2eqs: [
+      "Photovoltaic (average)",
+      "Photovoltaic sloped roof",
+      "Photovoltaic flat roof",
+      "Photovoltaic facade"
+    ]
+  },
+  {
+    name: "Heat",
+    description: "Energy field related to heat",
+    categories: [
+      "District",
+      "Non-renewable useful",
+      "Renewable useful on site"
+    ],
+    co2eqs: []
+  },
+  {
+    name: "District",
+    description: "District heating",
+    categories: [],
+    co2eqs: []
+  },
+  {
+    name: "Non-renewable useful",
+    description: "Non-renewable useful heat",
+    categories: [],
+    co2eqs: []
+  },
+  {
+    name: "Renewable useful on site",
+    description: "Renewable useful heat produced on site",
+    categories: [],
+    co2eqs: []
+  },
+  {
+    name: "Transports",
+    description: "Category of transport-related CO2 equivalent",
+    categories: ["Goods", "People"],
+    co2eqs: []
+  },
+  {
+    name: "Goods",
     description: "Goods transport",
-    co2values: [62002],
+    categories: [],
+    co2eqs: []
   },
   {
-    id: 2120,
-    name: "people",
+    name: "People",
     description: "People transports",
-    co2values: [63003],
+    categories: ["Personal transportation", "Helicopter"],
+    co2eqs: []
   },
+  {
+    name: "Personal transportation",
+    description: "Personal transportation vehicles",
+    categories: [],
+    co2eqs: []
+  },
+  {
+    name: "Helicopter",
+    description: "Helicopter transportation (in H)",
+    categories: [],
+    co2eqs: []
+  }
 ];

@@ -1,1 +1,3 @@
-Hard coded data used to mock API
+# Open CO2 data
+
+Hard coded data used to populate DB / mock API
