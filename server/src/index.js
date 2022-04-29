@@ -37,6 +37,15 @@ async function startServer(typeDefs, resolvers) {
     path: process.env.ENDPOINT || DEFAULT_ENDPOINT
   });
 
+  app.use((req, res) => {
+    res.send(
+      `<h1>Welcome to Open CO₂!</h1><a href="${
+        process.env.ENDPOINT || DEFAULT_ENDPOINT
+      }">Explore GraphQL API</a></br>
+      <a href="https://github.com/MediaComem/open-co2">GitHub repository</a>`
+    );
+  });
+
   // Connect to DB
   await initDatabase();
 
