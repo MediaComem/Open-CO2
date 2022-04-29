@@ -5,14 +5,8 @@ TODO: Add examples to consume API
 - [ ] Vue
 - [ ] Python
 
-## API development tool examples
+## API development tool
 
 - [ ] Postman
-- [x] Hoppscotch
+- [ ] Hoppscotch
 - [ ] Apollo Studio
-
----
-
-## Hoppscotch
-
-Go to _Collections > Import/Export > Import from Hoppscotch_ and select `queries.json`
