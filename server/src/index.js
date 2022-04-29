@@ -1,5 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config();
+import {
+  DEFAULT_PORT,
+  DEFAULT_ENDPOINT,
+  DEFAULT_APOLLO_INTROSPECTION,
+  DEFAULT_APOLLO_PLAYGROUND
+} from "./config/default.js";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
@@ -9,8 +15,6 @@ import { typeDefs } from "./schema/types.js";
 import { resolvers } from "./schema/resolvers.js";
 import { mocks } from "./schema/mocks.js";
 
-const DEFAULT_PORT = 4000;
-const DEFAULT_ENDPOINT = "/graphql";
 
 async function startApolloServer(typeDefs, resolvers) {
   const app = express();
@@ -21,12 +25,17 @@ async function startApolloServer(typeDefs, resolvers) {
     mocks,
     mockEntireSchema: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    introspection:
+      process.env.APOLLO_INTROSPECTION || DEFAULT_APOLLO_INTROSPECTION,
+    playground: process.env.APOLLO_PLAYGROUND || DEFAULT_APOLLO_PLAYGROUND,
+    path: process.env.ENDPOINT || DEFAULT_ENDPOINT
   });
 
   await server.start();
+
   server.applyMiddleware({
     app,
-    path: process.env.ENDPOINT || DEFAULT_ENDPOINT,
+    path: process.env.ENDPOINT || DEFAULT_ENDPOINT
   });
 
   await new Promise((resolve) =>
