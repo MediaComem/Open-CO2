@@ -30,6 +30,7 @@
   "homepage": "https://github.com/MediaComem/open-co2#readme",
   "devDependencies": {
     "@faker-js/faker": "^6.1.1",
+    "jest": "^28.0.0",
     "nodemon": "^2.0.15",
     "standard-version": "^9.3.2"
   },
