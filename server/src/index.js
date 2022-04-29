@@ -17,8 +17,7 @@ import { initDatabase } from "./config/database.js";
 import { typeDefs } from "./graphql/types.js";
 import { resolvers } from "./graphql/resolvers.js";
 
-
-async function startApolloServer(typeDefs, resolvers) {
+async function startServer(typeDefs, resolvers) {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
@@ -38,10 +37,14 @@ async function startApolloServer(typeDefs, resolvers) {
     path: process.env.ENDPOINT || DEFAULT_ENDPOINT
   });
 
+  // Connect to DB
+  await initDatabase();
+
   await new Promise((resolve) =>
     httpServer.listen({ port: process.env.PORT || DEFAULT_PORT }, resolve)
   );
-  console.info(`\n🚀 Open CO2 server ready!`);
+
+  console.info(`🚀 Open CO2 server ready!`);
   console.info(
     `GraphQL endpoint at http://localhost:${process.env.PORT || DEFAULT_PORT}${
       server.graphqlPath || DEFAULT_ENDPOINT
@@ -50,4 +53,4 @@ async function startApolloServer(typeDefs, resolvers) {
 }
 
 // Start server
-startApolloServer(typeDefs, resolvers);
+startServer(typeDefs, resolvers);
