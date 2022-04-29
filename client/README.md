@@ -1,9 +1,9 @@
-TODO: Add examples to consume API
+# Examples to consume API
 
-## Client implementation examples
+## Client implementation
 
+- [x] Python
 - [ ] Vue
-- [ ] Python
 
 ## API development tool
 
