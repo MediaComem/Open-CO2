@@ -1,5 +1,6 @@
 {
   "name": "open-co2",
+  "title": "Open CO2",
   "version": "0.0.1",
   "description": "Open Data Database and API for CO2 Equivalent Values",
   "type": "module",
@@ -9,6 +10,8 @@
     "dev": "nodemon src/index.js",
     "release": "standard-version",
     "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config=jest.config.js",
+    "test-watch": "jest --config=jest.config.js --watchAll"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,7 @@
   },
   "homepage": "https://github.com/MediaComem/open-co2#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
     "@faker-js/faker": "^6.1.1",
     "jest": "^28.0.0",
     "nodemon": "^2.0.15",
