@@ -14,12 +14,14 @@ export function findObjectsFromIds(arrayOfIds, arrayToFilter) {
 }
 
 export function formatString(string) {
-  return string
-    .normalize("NFD") // Normalization form canonical decomposition
-    .replace(/[\u0300-\u036f]/g, "") // Remove accents
-    .replace(/,/g, "") // Remove comma
-    .replace(/ /g, "_") // Replace spaces with underscore
-    .toLowerCase(); // Convert to lowercase
+  if (string && (typeof string === "string" || string instanceof String)) {
+    return string
+      .normalize("NFD") // Normalization form canonical decomposition
+      .replace(/[\u0300-\u036f]/g, "") // Remove accents
+      .replace(/,/g, "") // Remove comma
+      .replace(/ /g, "_") // Replace spaces with underscore
+      .toLowerCase(); // Convert to lowercase
+  } else return "";
 }
 
 export function isArrayEmpty(array) {
