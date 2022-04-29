@@ -10,17 +10,20 @@
 
 **Open CO2** project enables companies to estimate their CO2 footprint through an open DB and API which can be used with their accounting tool.
 
+---
+
 ## First-time setup
 
 Clone this repository:
 `git clone git@github.com:MediaComem/open-co2.git`
 
-Install dependencies:
+Move to server
 
-```
-cd server
-npm ci
-```
+`cd open-co2/server`
+
+And install dependencies:
+
+`npm ci`
 
 ## Run the server
 
