@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const UnitSchema = {
-  name: {
+  type: {
     type: String,
     required: [true, "please add a name"]
   },
@@ -11,3 +11,4 @@ const UnitSchema = {
 const Unit = mongoose.model("Unit", UnitSchema);
 
 export { Unit };
+
