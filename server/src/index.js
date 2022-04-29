@@ -10,10 +10,12 @@ import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
 import http from "http";
-// GraphQL schema
-import { typeDefs } from "./schema/types.js";
-import { resolvers } from "./schema/resolvers.js";
-import { mocks } from "./schema/mocks.js";
+// import logger from "./config/logger.js";
+// Database
+import { initDatabase } from "./config/database.js";
+// GraphQL
+import { typeDefs } from "./graphql/types.js";
+import { resolvers } from "./graphql/resolvers.js";
 
 
 async function startApolloServer(typeDefs, resolvers) {
@@ -22,8 +24,6 @@ async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    mocks,
-    mockEntireSchema: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     introspection:
       process.env.APOLLO_INTROSPECTION || DEFAULT_APOLLO_INTROSPECTION,
