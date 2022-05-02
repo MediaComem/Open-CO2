@@ -15,4 +15,10 @@ export default class FileReaderConsumer {
   getHeatSheet() {
     return this.fileReader.getSheetContent("Heat");
   }
+  getTransportsSheet() {
+    return this.fileReader.getSheetContent("Transports");
+  }
+  getUnitsSheet() {
+    return this.fileReader.getSheetContent("Units");
+  }
 }

@@ -12,7 +12,7 @@ export default class FileExporter {
         return console.log(err);
       }
 
-      console.log(`${fileName}.json file has been saved`);
+      console.log(`${fileName} file has been saved`);
     });
   }
 }
