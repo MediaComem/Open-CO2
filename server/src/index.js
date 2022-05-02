@@ -10,7 +10,12 @@ import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
 import http from "http";
-// import logger from "./config/logger.js";
+import path from "path";
+const __dirname = path.resolve();
+import { readFile } from "fs/promises";
+const pkg = JSON.parse(
+  await readFile(new URL("../package.json", import.meta.url))
+);
 // Database
 import { initDatabase } from "./config/database.js";
 // GraphQL
@@ -32,18 +37,32 @@ async function startServer(typeDefs, resolvers) {
 
   await server.start();
 
+  // View engine setup
+  app.set("views", path.join(__dirname, "src/views"));
+  app.set("view engine", "pug");
+  app.use(express.static(path.join(__dirname, "src/public")));
+
+  function creditYears() {
+    const currentYear = new Date().getFullYear();
+    if (currentYear > 2022) return `2022-${currentYear}`;
+    else return currentYear;
+  }
+
+  const environment = process.env.NODE_ENV;
+
+  // Homepage route
+  app.get("/", (req, res) => {
+    res.render("index", {
+      version: pkg.version,
+      environment: environment.charAt(0).toUpperCase() + environment.slice(1),
+      creditYears: creditYears()
+    });
+  });
+
+  // Use Express in Apollo server
   server.applyMiddleware({
     app,
     path: process.env.ENDPOINT || DEFAULT_ENDPOINT
-  });
-
-  app.use((req, res) => {
-    res.send(
-      `<h1>Welcome to Open CO₂!</h1><a href="${
-        process.env.ENDPOINT || DEFAULT_ENDPOINT
-      }">Explore GraphQL API</a></br>
-      <a href="https://github.com/MediaComem/open-co2">GitHub repository</a>`
-    );
   });
 
   // Connect to DB
@@ -55,9 +74,7 @@ async function startServer(typeDefs, resolvers) {
 
   console.info(`🚀 Open CO2 server ready!`);
   console.info(
-    `GraphQL endpoint at http://localhost:${process.env.PORT || DEFAULT_PORT}${
-      server.graphqlPath || DEFAULT_ENDPOINT
-    }\n`
+    `Homepage at http://localhost:${process.env.PORT || DEFAULT_PORT}\n`
   );
 }
 
