@@ -30,24 +30,39 @@ export const resolvers = {
     },
     async getAllUnits() {
       try {
-        const result = await Unit.find();
-        return result;
+        return await Unit.find();
       } catch (error) {
         logger.error(error);
       }
     },
     async getAllCategories() {
       try {
-        const result = await Category.find();
-        return result;
+        return await Category.find();
       } catch (error) {
         logger.error(error);
       }
     },
     async getCategoryByName(parent, args) {
       try {
-        const result = await Category.findOne({ name: args.name });
-        return result;
+        return await Category.findOne({ name: args.name });
+      } catch (error) {
+        logger.error(error);
+      }
+    }
+  },
+  Category: {
+    categories(parent) {
+      try {
+        if (parent.childrenIds) {
+          const results = [];
+          parent.childrenIds.forEach((id) => {
+            const category = Category.findOne({ categoryId: id });
+            results.push(category);
+          });
+          return results;
+        } else {
+          return null;
+        }
       } catch (error) {
         logger.error(error);
       }
