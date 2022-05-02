@@ -72,7 +72,7 @@ export const typeDefs = gql`
     childrenIds: [Int]
     # "Category CO2 values"
     # co2eqs: [Co2eq]!
-    co2eq: Co2eq
+    co2eqs: [Co2eq]!
   }
 
   """
