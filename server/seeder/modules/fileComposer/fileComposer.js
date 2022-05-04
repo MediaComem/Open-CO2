@@ -3,7 +3,7 @@ import {
   hashString,
   getMeanFromArray,
   getDeviationFromArray
-} from "../../../src/helpers/utils.js";
+} from "../../helpers/utils.js";
 // import util from "util";
 
 /**
