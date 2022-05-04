@@ -1,4 +1,6 @@
-# Open CO2 – Method and informations
+![](../cover.png)
+
+# Method and informations
 
 !TODO: Doc method
 

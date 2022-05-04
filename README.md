@@ -1,6 +1,6 @@
-# Open CO2
+![](./cover.png)
 
-> Open Data Database and API for CO₂ Equivalent Values
+> An open Data Database and API for CO₂ Equivalent Values
 
 [Project reference on Aramis DB](https://www.aramis-a.admin.ch/Texte/?ProjectID=49723)
 
