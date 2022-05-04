@@ -1,0 +1,45 @@
+{
+  "name": "open-co2-seeder",
+  "title": "Open CO2",
+  "version": "0.0.1",
+  "description": "Open Data Database and API for CO2 Equivalent Values",
+  "type": "module",
+  "main": "seed.js",
+  "scripts": {
+    "start": "node seed.js",
+    "dev": "nodemon seed.js",
+    "release": "standard-version",
+    "lint": "npx eslint 'src/**'",
+    "test": "jest --config=jest.config.js",
+    "test-watch": "jest --config=jest.config.js --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MediaComem/open-co2"
+  },
+  "keywords": [
+    "CO2",
+    "Footprint",
+    "Open data",
+    "Express",
+    "Apollo",
+    "GraphQL",
+    "MongoDB",
+    "API"
+  ],
+  "author": "MEI",
+  "license": "ISC",
+  "private": false,
+  "bugs": {
+    "url": "https://github.com/MediaComem/open-co2/issues"
+  },
+  "homepage": "https://github.com/MediaComem/open-co2#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1",
+    "xlsx": "^0.18.5"
+  }
+}
