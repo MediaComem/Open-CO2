@@ -1,18 +1,26 @@
 import fs from "fs";
+import logger from "../../config/logger.js";
 
+/**
+ * Class to export processed data as JSON file
+ */
 export default class FileExporter {
   constructor() {}
 
+  /**
+   * Save JS object as JSON file
+   * @param {Object} sheet Sheet content as JS object
+   * @param {String} fileName Filename (with path) of the exported JSON
+   */
   saveAsJsonFile(sheet, fileName) {
     const jsonContent = JSON.stringify(sheet);
-
-    fs.writeFile(`./data/${fileName}`, jsonContent, "utf8", function (err) {
-      if (err) {
-        console.log("An error occured while writing JSON Object to File");
-        return console.log(err);
+    // Save JSON file
+    fs.writeFile(fileName, jsonContent, "utf8", function (error) {
+      if (error) {
+        logger.error("An error occured while writing JSON file…");
+        return logger.error(error);
       }
-
-      console.log(`${fileName} file has been saved`);
+      logger.info(`${fileName} file has been successfully saved!`);
     });
   }
 }
