@@ -12,15 +12,20 @@ export default class FileExporter {
    * @param {Object} sheet Sheet content as JS object
    * @param {String} fileName Filename (with path) of the exported JSON
    */
-  saveAsJsonFile(sheet, fileName) {
+  saveAsJsonFile(sheet, fileName, varName) {
     const jsonContent = JSON.stringify(sheet);
     // Save JSON file
-    fs.writeFile(fileName, jsonContent, "utf8", function (error) {
-      if (error) {
-        logger.error("An error occured while writing JSON file…");
-        return logger.error(error);
+    fs.writeFile(
+      fileName,
+      `var ${varName} = ${jsonContent}`,
+      "utf8",
+      function (error) {
+        if (error) {
+          logger.error("An error occured while writing JSON file…");
+          return logger.error(error);
+        }
+        logger.info(`${fileName} file has been successfully saved!`);
       }
-      logger.info(`${fileName} file has been successfully saved!`);
-    });
+    );
   }
 }

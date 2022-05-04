@@ -36,7 +36,8 @@ const fileExporter = new FileExporter();
 // fileExporter.saveAsJsonFile(consolidatedCategories, "populate/categories.json");
 fileExporter.saveAsJsonFile(
   consolidatedCategories,
-  "data/output/categories.json"
+  "data/output/categories.js",
+  "categoriesData"
 );
 
 // !TODO: Add generic method to generate JSON from X sheets
