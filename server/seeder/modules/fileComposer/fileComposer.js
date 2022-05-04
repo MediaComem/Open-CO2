@@ -1,11 +1,19 @@
 import {
   formatString,
   hashString,
-  getAverageFromArray
+  getMeanFromArray,
+  getDeviationFromArray
 } from "../../../src/helpers/utils.js";
-import util from "util";
+// import util from "util";
 
+/**
+ * Class to process XLS sheets and turn it to JS objets
+ */
 export default class FileComposer {
+  /**
+   * FileComposer constructor
+   * @param {Sheet content from fileReader} sheet
+   */
   constructor(sheet) {
     this.sheet = sheet;
     this.maxDepth = 10;
@@ -15,21 +23,21 @@ export default class FileComposer {
   }
 
   /**
-   * Simple function to execute internal methods in order to process sheet
+   * Group internal methods and execute in order to process sheet
    */
   #processing() {
     // 1 – Update object keys from sheet headers
-    this.updateKeys();
+    this.#updateKeys();
     // 2 – Construct path (based on unique name)
-    this.addPath();
+    this.#addPath();
     // 3 – Add category ID (hash from fullpath)
-    this.addCategoryId();
+    this.#addCategoryId();
     // 4 – Add reference to children categories
-    this.addChildrens();
+    this.#addChildrens();
     // 5 – Calculate average for parent categories
-    this.addAverage();
+    this.#addAverage();
     // 6 – Clean unused keys and order its
-    this.orderObject();
+    this.#orderObject();
   }
 
   /**
@@ -68,7 +76,7 @@ export default class FileComposer {
     }
   }
 
-  updateKeys() {
+  #updateKeys() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
@@ -104,6 +112,7 @@ export default class FileComposer {
             source
           }
         ];
+        // Remove some keys
         delete row[`Details`];
         delete row[`Source`];
         delete row[`URL`];
@@ -118,9 +127,9 @@ export default class FileComposer {
     }
   }
 
-  addPath() {
+  #addPath() {
     const deepTree = this.#getDeepTree();
-
+    // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
       const path = this.#findInTree(row.uniqueName, deepTree).path;
@@ -131,16 +140,18 @@ export default class FileComposer {
     }
   }
 
-  addCategoryId() {
+  #addCategoryId() {
+    // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
+      // Generate hash from fullpath
       row.categoryId = hashString(row.fullPath);
     }
   }
 
-  addChildrens() {
+  #addChildrens() {
     const deepTree = this.#getDeepTree();
-
+    // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
 
@@ -159,7 +170,7 @@ export default class FileComposer {
     }
   }
 
-  addAverage() {
+  #addAverage() {
     const deepTree = this.#getDeepTree();
 
     // Anonymous function to check if all element are the same in given array
@@ -177,22 +188,13 @@ export default class FileComposer {
         let childArray;
 
         if (object.children.length === 1) {
-          console.log("SINGLE CO2 CHILD");
+          // console.log("SINGLE CO2 CHILD");
           childArray = object.children.flatMap((child) => child.co2eqs[0]);
         } else {
           // console.log("------------------------------------");
           // console.log("MULTIPLE CO2 CHILD");
           // console.log(object.name);
           // console.log("------------------------------------");
-
-          // if (object.name === "helicopter")
-          //   console.log(
-          //     util.inspect(object.children, {
-          //       showHidden: false,
-          //       depth: null,
-          //       colors: true
-          //     })
-          //   );
 
           const flatCo2eqs = [];
           object.children.forEach((element) => {
@@ -204,25 +206,41 @@ export default class FileComposer {
 
         // Flatten direct child values
         const childValues = childArray.flatMap((child) => child.value);
+
         // Flatten direct child units
         const childUnits = childArray.flatMap((child) => child.unit);
-        // Calculate average from child values
-        const average = getAverageFromArray(childValues, this.floatPrecision);
 
         let co2eq;
 
-        console.log();
+        // console.log();
         if (allEqual(childUnits)) {
           // ----------------------------------------------------------------
           // Single unit - Childrens have the same unit
           // ----------------------------------------------------------------
 
+          // Calculate mean from child values
+          const mean = getMeanFromArray(childValues, this.floatPrecision);
+
+          const deviation = getDeviationFromArray(
+            childValues,
+            this.floatPrecision
+          );
+
+          const source = {
+            title: "Open CO2 automatic calculation",
+            url: "https://github.com/MediaComem/open-co2",
+            year: new Date().getFullYear()
+          };
+
           co2eq = {
-            value: average,
+            value: mean,
             unit: childUnits[0],
             approximated: true,
-            details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`
-            // source
+            details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`,
+            min: Math.min.apply(Math, childValues),
+            max: Math.max.apply(Math, childValues),
+            standardDeviation: deviation,
+            source
           };
 
           object.co2eqs = [co2eq];
@@ -262,21 +280,24 @@ export default class FileComposer {
 
                 valuesForUnit.push(childValues[i3]);
 
-                const average = getAverageFromArray(
-                  childValues,
+                const mean = getMeanFromArray(
+                  valuesForUnit,
+                  this.floatPrecision
+                );
+
+                const deviation = getDeviationFromArray(
+                  valuesForUnit,
                   this.floatPrecision
                 );
 
                 co2eqObject = {
-                  // value: valuesForUnit,
-                  // value: valuesForUnit.reduce((a, b) => a + b, 0) / l3,
-                  value: getAverageFromArray(
-                    valuesForUnit,
-                    this.floatPrecision
-                  ),
+                  value: mean,
                   unit: uniqueUnits[i2],
                   approximated: true,
-                  details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`
+                  details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`,
+                  min: Math.min.apply(Math, childValues),
+                  max: Math.max.apply(Math, childValues),
+                  standardDeviation: deviation
                 };
               }
             }
@@ -318,13 +339,14 @@ export default class FileComposer {
     }
   }
 
-  orderObject() {
+  #orderObject() {
+    // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const object = this.sheet[i];
-
+      // Remove some keys
       delete this.sheet[i].uniqueName;
       delete this.sheet[i].childrenUniqueNames;
-
+      // Set object's keys in this order
       const objectOrder = {
         categoryId: null,
         title: null,
@@ -335,7 +357,7 @@ export default class FileComposer {
         details: null,
         co2eqs: null
       };
-
+      // Reassign object to order its keys
       this.sheet[i] = Object.assign(objectOrder, object);
     }
   }
