@@ -32,7 +32,8 @@ RUN addgroup --system open-co2 && \
 # Copy project sources to a current directory
 COPY --chown=open-co2:open-co2 /app/ .
 # Copy the JSON compiled data and DB init script from the seeder image
-COPY --chown=open-co2:open-co2 --from=seeder ["/usr/src/seeder/data/output/*.json", "/usr/src/seeder/db-init.js", "/usr/src/app/data/"]
+COPY --chown=open-co2:open-co2 --from=seeder ["/usr/src/seeder/data/output/*.js", "/usr/src/app/data/input/"]
+COPY --chown=open-co2:open-co2 --from=seeder ["/usr/src/seeder/db-init.js", "/usr/src/app/data/"]
 # Install node dependencies
 RUN npm ci
 RUN npm prune --production && \
