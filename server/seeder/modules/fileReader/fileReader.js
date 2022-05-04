@@ -1,13 +1,21 @@
 import XLSX from "xlsx";
 
+/**
+ * Class to read XLS file and extract sheets content
+ */
 export default class FileReader {
   /**
-  Path to an XLS source file as argument
-  */
+   * FileReader constructor
+   * @param {Path to XLS file} file
+   */
   constructor(file) {
     this.file = file;
   }
 
+  /**
+   * Return sheets content from XLS
+   * @returns {Array} Array with sheets content
+   */
   getSheets() {
     const workbook = XLSX.readFile(this.file);
     const sheets = workbook.Sheets;
@@ -15,6 +23,10 @@ export default class FileReader {
     return sheets;
   }
 
+  /**
+   * Return sheets name from XLS
+   * @returns {Array} Array of string with sheets name
+   */
   getSheetNames() {
     const workbook = XLSX.readFile(this.file);
     const sheetNames = workbook.SheetNames;
@@ -23,31 +35,22 @@ export default class FileReader {
   }
 
   /**
-  Return first sheet OR sheet with name passed as argument as JSON
-  */
+   * Return a single sheet.
+   * First sheet OR sheet with name passed as argument as JSON
+   * @param {string} sheet
+   * @returns {Object} Sheet content
+   */
   getSheetContent(sheet) {
     const workbook = XLSX.readFile(this.file);
-
-    function format_column_name(name) {
-      return name.replace(/\s/g, "_");
-    }
-
-    const sheetOptions = {
-      // header: ["sheet", "js"],
-      // range: 1
-    };
 
     let data;
     if (sheet) {
       // Get defined sheet
-      data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], sheetOptions);
+      data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
     } else {
       // Or get first sheet
-      let sheetList = workbook.SheetNames;
-      data = XLSX.utils.sheet_to_json(
-        workbook.Sheets[sheetList[0]],
-        sheetOptions
-      );
+      const sheetList = workbook.SheetNames;
+      data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetList[0]]);
     }
 
     return data;
