@@ -9,7 +9,7 @@
     "start": "node seed.js",
     "dev": "nodemon seed.js",
     "release": "standard-version",
-    "lint": "npx eslint 'src/**'",
+    "lint": "npx eslint './**'",
     "test": "jest --config=jest.config.js",
     "test-watch": "jest --config=jest.config.js --watchAll"
   },
