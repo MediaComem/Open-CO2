@@ -80,7 +80,7 @@ export const typeDefs = gql`
   """
   type Unit {
     "Unit name"
-    type: UnitEnum!
+    type: UnitEnum
     "Unit description"
     description: String
   }
