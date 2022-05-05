@@ -1,2 +1,2 @@
-# Ignore generated JSON files
-*.json
+# Ignore generated JS files
+*.js
