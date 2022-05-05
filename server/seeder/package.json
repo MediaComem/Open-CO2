@@ -1,8 +1,8 @@
 {
   "name": "open-co2-seeder",
-  "title": "Open CO2",
+  "title": "Open CO2 Seeder",
   "version": "0.0.1",
-  "description": "Open Data Database and API for CO2 Equivalent Values",
+  "description": "Process data sources and populate MongoDB",
   "type": "module",
   "main": "seed.js",
   "scripts": {

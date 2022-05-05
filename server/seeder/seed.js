@@ -8,17 +8,55 @@ const inputFile = "./data/input/Open CO2.xlsx";
 // Read file
 const fileReader = new FileReader(inputFile);
 
-const electricityData = fileReader.getSheetContent("Electricity");
-const heatData = fileReader.getSheetContent("Heat");
-const transportsData = fileReader.getSheetContent("Transports");
+const categoriesConfig = {
+  fileName: "data/output/categories.js",
+  varName: "categoriesData",
+  sheets: ["Electricity", "Heat", "Transports"]
+};
 
-const consolidatedCategories = [];
-let fileComposer = new FileComposer(electricityData);
-consolidatedCategories.push(...fileComposer.sheet);
-fileComposer = new FileComposer(heatData);
-consolidatedCategories.push(...fileComposer.sheet);
-fileComposer = new FileComposer(transportsData);
-consolidatedCategories.push(...fileComposer.sheet);
+const unitsConfig = {
+  fileName: "data/output/units.js",
+  varName: "unitsData",
+  sheets: ["Units"]
+};
+
+function processCategoriesFromConfig(config) {
+  let consolidatedData = [];
+
+  for (let i = 0, l = config.sheets.length; i < l; i++) {
+    const sheetName = config.sheets[i];
+    const rawContent = fileReader.getSheetContent(sheetName);
+    const fileComposer = new FileComposer(rawContent);
+    // Start processing sheet
+    fileComposer.processCategories();
+    consolidatedData.push(...fileComposer.sheet);
+  }
+
+  // Save JSON file
+  const fileExporter = new FileExporter();
+  fileExporter.saveAsJsonFile(
+    consolidatedData,
+    config.fileName,
+    config.varName
+  );
+}
+
+// Generate categories file
+processCategoriesFromConfig(categoriesConfig);
+
+// Generate units file
+const rawContent = fileReader.getSheetContent(unitsConfig.sheets[0]);
+const fileComposer = new FileComposer(rawContent);
+// Start processing sheet
+fileComposer.processUnits();
+
+// Save JSON file
+const fileExporter = new FileExporter();
+fileExporter.saveAsJsonFile(
+  [...fileComposer.sheet],
+  unitsConfig.fileName,
+  unitsConfig.varName
+);
 
 // console.dir(consolidatedCategories, { deep: null });
 // import util from "util";
@@ -30,14 +68,3 @@ consolidatedCategories.push(...fileComposer.sheet);
 //   })
 // );
 // console.log(`Number of categories: ${consolidatedCategories.length}`);
-
-// Save JSON file
-const fileExporter = new FileExporter();
-// fileExporter.saveAsJsonFile(consolidatedCategories, "populate/categories.json");
-fileExporter.saveAsJsonFile(
-  consolidatedCategories,
-  "data/output/categories.js",
-  "categoriesData"
-);
-
-// !TODO: Add generic method to generate JSON from X sheets

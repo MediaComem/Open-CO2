@@ -18,14 +18,25 @@ export default class FileComposer {
     this.sheet = sheet;
     this.maxDepth = 10;
     this.floatPrecision = 3;
-    // Start processing sheet
-    this.#processing();
   }
 
   /**
-   * Group internal methods and execute in order to process sheet
+   * Group internal methods to process units sheet
    */
-  #processing() {
+  processUnits() {
+    for (let i = 0, l = this.sheet.length; i < l; i++) {
+      const row = this.sheet[i];
+      row.type = row.Type;
+      row.description = row.Description;
+      delete row[`Type`];
+      delete row[`Description`];
+    }
+  }
+
+  /**
+   * Group internal methods and execute in order to process categories sheet
+   */
+  processCategories() {
     // 1 – Update object keys from sheet headers
     this.#updateKeys();
     // 2 – Construct path (based on unique name)
