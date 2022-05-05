@@ -17,19 +17,19 @@
 Clone this repository:  
 `git clone git@github.com:MediaComem/open-co2.git`
 
-Move to server:  
+Move to server directory:  
 `cd open-co2/server`
 
-And install dependencies:  
-`npm ci`
+Run stack using docker-compose:  
+`docker-compose up -d`
 
-## Run the server
+<!-- ## Run the server
 
-Development mode (live reload enabled):  
+Development mode (live reload enabled):
 `npm run dev`
 
-Production mode:  
-`npm start`
+Production mode:
+`npm start` -->
 
 ## Configuration
 
