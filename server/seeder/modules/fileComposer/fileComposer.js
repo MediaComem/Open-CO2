@@ -51,6 +51,17 @@ export default class FileComposer {
     this.#orderObject();
   }
 
+  unitTest(method) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(process.env.NODE_ENV);
+      throw('unitTest can only be used in test mode');
+    }
+    switch(method) {
+      case 'getDeepTree':
+        return this.#getDeepTree();
+    }
+  }
+
   /**
    * Construct and return a deep tree with children categories
    */
@@ -59,6 +70,9 @@ export default class FileComposer {
       levels = [deepTree];
 
     this.sheet.forEach((row) => {
+      if (row.depth === 1 && levels[0].length > 0) {
+        throw('Only one root node supported');
+      }
       levels[row.depth - 1].push({
         ...row,
         children: (levels[row.depth] = [])
