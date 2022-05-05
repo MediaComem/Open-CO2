@@ -14,15 +14,13 @@
 
 ## First-time setup
 
-Clone this repository:
+Clone this repository:  
 `git clone git@github.com:MediaComem/open-co2.git`
 
-Move to server
-
+Move to server:  
 `cd open-co2/server`
 
-And install dependencies:
-
+And install dependencies:  
 `npm ci`
 
 ## Run the server
