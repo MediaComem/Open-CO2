@@ -98,6 +98,7 @@ export const typeDefs = gql`
     TKM
     H
     PKM
+    G_CO2_KWH
   }
 
   type Info {
