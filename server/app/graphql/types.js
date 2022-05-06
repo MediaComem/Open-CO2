@@ -12,7 +12,7 @@ export const typeDefs = gql`
     "Get a list of all CO2 value's categories"
     categories: [Category]
     "Get a category based on its name"
-    categoryByName(name: String!): Category
+    category(name: String!): Category
     # """
     # Get a category based on its name
     # Use a hierarchical path with '/' to separate categories (e.g. energy/electricity/grid) to point a specific category

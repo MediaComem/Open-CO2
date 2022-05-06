@@ -42,7 +42,7 @@ export const resolvers = {
         logger.error(error);
       }
     },
-    async categoryByName(parent, args) {
+    async category(parent, args) {
       try {
         return await Category.findOne({ name: args.name });
       } catch (error) {
