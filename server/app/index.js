@@ -3,7 +3,8 @@ dotenv.config();
 import {
   NODE_ENV,
   DEFAULT_PORT,
-  DEFAULT_ENDPOINT,
+  DEFAULT_GRAPHQL_ENDPOINT,
+  DEFAULT_REST_BASE,
   DEFAULT_APOLLO_INTROSPECTION,
   DEFAULT_APOLLO_PLAYGROUND
 } from "./config/default.js";
@@ -42,7 +43,7 @@ async function startServer(schema) {
     introspection:
       process.env.APOLLO_INTROSPECTION || DEFAULT_APOLLO_INTROSPECTION,
     playground: process.env.APOLLO_PLAYGROUND || DEFAULT_APOLLO_PLAYGROUND,
-    path: process.env.ENDPOINT || DEFAULT_ENDPOINT
+    path: process.env.GRAPHQL_ENDPOINT || DEFAULT_GRAPHQL_ENDPOINT
   });
 
   await server.start();
@@ -73,7 +74,7 @@ async function startServer(schema) {
   // Use Express in Apollo server
   server.applyMiddleware({
     app,
-    path: process.env.ENDPOINT || DEFAULT_ENDPOINT
+    path: process.env.GRAPHQL_ENDPOINT || DEFAULT_GRAPHQL_ENDPOINT
   });
 
   router.use(
