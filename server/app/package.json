@@ -44,6 +44,7 @@
     "standard-version": "^9.3.2"
   },
   "dependencies": {
+    "@graphql-tools/schema": "^8.3.10",
     "apollo-server-core": "^3.6.7",
     "apollo-server-express": "^3.6.7",
     "dotenv": "^16.0.0",
@@ -52,6 +53,7 @@
     "graphql-tools": "^8.2.8",
     "mongoose": "^6.3.0",
     "pug": "^3.0.2",
+    "sofa-api": "^0.11.2",
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.6.1",
     "xlsx": "^0.18.5"
