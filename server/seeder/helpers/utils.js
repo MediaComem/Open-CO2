@@ -1,12 +1,23 @@
+/**
+ * Format a string to snake_case
+ * @param {string} string input string to format
+ * @returns {string} output string in snake case format
+ * @throws {ParamTypeError} throw error if param isn't a string
+ */
 export function formatString(string) {
-  if (string && (typeof string === "string" || string instanceof String)) {
-    return string
-      .normalize("NFD") // Normalization form canonical decomposition
-      .replace(/[\u0300-\u036f]/g, "") // Remove accents
-      .replace(/,/g, "") // Remove comma
-      .replace(/ /g, "_") // Replace spaces with underscore
-      .toLowerCase(); // Convert to lowercase
-  } else return "";
+  // If not a string
+  if (!(string && (typeof string === "string" || string instanceof String)))
+    throw new Error(
+      "formatString() must receive a string as an input parameter"
+    );
+  // Else return formatted string
+  return string
+    .normalize("NFD") // Normalization form canonical decomposition
+    .replace(/[^a-zA-Z0-9 ]/g, "") // Remove special characters, keep letters and numbers
+    .replace(/[\u0300-\u036f]/g, "") // Remove accents
+    .replace(/,/g, "") // Remove comma
+    .replace(/ /g, "_") // Replace spaces with underscore
+    .toLowerCase(); // Convert to lowercase
 }
 
 export function hashString(string, asString, seed) {
