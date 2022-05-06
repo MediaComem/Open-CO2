@@ -1,37 +1,36 @@
 import "./config/env.js";
-import { ApolloServer } from "apollo-server-express";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { useSofa } from "sofa-api";
 import express from "express";
 import http from "http";
-import path from "path";
-const rootPath = path.resolve();
-import { readFile } from "fs/promises";
-const pkg = JSON.parse(
-  await readFile(new URL("./package.json", import.meta.url))
-);
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 // Database
 import { initDatabase } from "./config/database.js";
+// View engine
+import viewEngine from "./config/viewEngine.js";
+// Routes
+import homeRouter from "./routes/home.js";
 // GraphQL
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { useSofa } from "sofa-api";
+// Definitions
 import { typeDefs } from "./graphql/types.js";
 import { resolvers } from "./graphql/resolvers.js";
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+});
 
 /**
  * Main function to init and start server
  */
 async function startServer() {
+  // Express server
   const app = express();
-  const router = express.Router();
-
-  // GraphQL schema
-  const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers
-  });
-
+  // const router = express.Router();
   // Used by ApolloServerPluginDrainHttpServer - See https://www.apollographql.com/docs/apollo-server/api/plugin/drain-http-server/
   const httpServer = http.createServer(app);
+
+  // Apollo server
   const server = new ApolloServer({
     schema,
     formatError: (error) => ({
@@ -44,38 +43,14 @@ async function startServer() {
     path: process.env.GRAPHQL_ENDPOINT
   });
 
-  await server.start();
+  // Init view engine
+  viewEngine(app);
 
-  // View engine setup
-  app.set("views", path.join(rootPath, "./views"));
-  app.set("view engine", "pug");
-  app.use(express.static(path.join(rootPath, "./public")));
-
-  function creditYears() {
-    const currentYear = new Date().getFullYear();
-    if (currentYear > 2022) return `2022-${currentYear}`;
-    else return currentYear;
-  }
-
-  // Get environment value
-  const environment = process.env.NODE_ENV;
-
-  // Landing page route
-  router.get("/", (req, res) => {
-    res.render("index", {
-      version: pkg.version,
-      environment: environment.charAt(0).toUpperCase() + environment.slice(1), // Capitalize first letter
-      creditYears: creditYears()
-    });
-  });
-
-  // Use Express in Apollo server
-  server.applyMiddleware({
-    app,
-    path: process.env.GRAPHQL_ENDPOINT
-  });
-
-  router.use(
+  // Define routes
+  // Server landing page
+  app.use("/", homeRouter);
+  // REST API
+  app.use(
     process.env.REST_BASE,
     useSofa({
       schema,
@@ -83,10 +58,18 @@ async function startServer() {
       depthLimit: process.env.REST_DEPTH
     })
   );
-  app.use("/", router);
 
   // Connect to DB
   await initDatabase();
+
+  // Start Apollo server
+  await server.start();
+
+  // Use Express in Apollo server
+  server.applyMiddleware({
+    app,
+    path: process.env.GRAPHQL_ENDPOINT
+  });
 
   // Start Express server
   await new Promise((resolve) =>
