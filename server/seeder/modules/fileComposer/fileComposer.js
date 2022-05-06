@@ -119,7 +119,7 @@ export default class FileComposer {
             value: row.CO2,
             unit: row.Unit,
             approximated: false,
-            details: row.details,
+            details: row.Details,
             source
           }
         ];
@@ -130,7 +130,7 @@ export default class FileComposer {
         delete row[`Year`];
       } else {
         // Keys to lowercase
-        row.details = row[`Details`];
+        row.details = row.Details;
         delete row[`Details`];
       }
       delete row[`CO2`];
