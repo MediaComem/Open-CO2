@@ -3,7 +3,7 @@ import XLSX from "xlsx";
 /**
  * Class to read XLS file and extract sheets content
  */
-export default class XLSDataReader{
+export default class XLSDataReader {
   /**
    * FileReader constructor
    * @param {Path to XLS file} file

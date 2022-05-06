@@ -1,5 +1,5 @@
-import FileComposer from "./FileComposer";
-import FileComposerConsumer from "./fileComposerConsumer";
+import FileComposer from "./DataParser";
+import FileComposerConsumer from "./DataParserConsumer";
 jest.mock("./fileComposer");
 
 beforeEach(() => {

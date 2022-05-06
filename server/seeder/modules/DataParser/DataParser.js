@@ -9,7 +9,7 @@ import {
 /**
  * Class to process XLS sheets and turn it to JS objets
  */
-export default class DataParser{
+export default class DataParser {
   /**
    * FileComposer constructor
    * @param {Sheet content from fileReader} sheet
@@ -87,7 +87,7 @@ export default class DataParser{
     }
   }
 
-  #updateKeys() {
+  #parseRows() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];

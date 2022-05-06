@@ -1,5 +1,5 @@
 import FileReader from "./fileReader";
-import FileReaderConsumer from "./fileReaderConsumer";
+import FileReaderConsumer from "./XLSDataReaderConsumer";
 jest.mock("./fileReader");
 
 beforeEach(() => {

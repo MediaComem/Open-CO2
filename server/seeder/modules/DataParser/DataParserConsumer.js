@@ -1,4 +1,4 @@
-import FileComposer from "./fileComposer";
+import FileComposer from "./DataParser";
 
 export default class FileComposerConsumer {
   constructor() {
