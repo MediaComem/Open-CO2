@@ -9,7 +9,7 @@ import {
 /**
  * Class to process XLS sheets and turn it to JS objets
  */
-export default class FileComposer {
+export default class DataParser{
   /**
    * FileComposer constructor
    * @param {Sheet content from fileReader} sheet
