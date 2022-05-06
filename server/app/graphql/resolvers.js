@@ -28,14 +28,14 @@ export const resolvers = {
         logger.error(error);
       }
     },
-    async getAllUnits() {
+    async units() {
       try {
         return await Unit.find();
       } catch (error) {
         logger.error(error);
       }
     },
-    async getAllCategories() {
+    async categories() {
       try {
         return await Category.find();
       } catch (error) {

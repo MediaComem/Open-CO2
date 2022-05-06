@@ -8,11 +8,11 @@ export const typeDefs = gql`
     "Get Open CO2 infos"
     getApiInfos: Info
     "Get a list of all unit types"
-    getAllUnits: [Unit]
+    units: [Unit]
     # "Get a list of all CO2 values equivalents"
     # getAllCo2eqs: [Co2eq]
     "Get a list of all CO2 value's categories"
-    getAllCategories: [Category]
+    categories: [Category]
     # "Get an CO2 value based on its ID"
     # getCo2eqByName(name: String!): Co2eq
     "Get a category based on its name"
