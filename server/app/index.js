@@ -25,20 +25,28 @@ import { initDatabase } from "./config/database.js";
 // GraphQL
 import { typeDefs } from "./graphql/types.js";
 import { resolvers } from "./graphql/resolvers.js";
-// Schema
-const executableSchema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-});
 
-async function startServer(schema) {
+/**
+ * Main function to init and start server
+ */
+async function startServer() {
   const app = express();
   const router = express.Router();
+
+  // GraphQL schema
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers
+  });
 
   // Used by ApolloServerPluginDrainHttpServer - See https://www.apollographql.com/docs/apollo-server/api/plugin/drain-http-server/
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema,
+    formatError: (error) => ({
+      name: error.name,
+      message: error.message.replace("Error", "")
+    }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     introspection:
       process.env.APOLLO_INTROSPECTION || DEFAULT_APOLLO_INTROSPECTION,
@@ -102,4 +110,4 @@ async function startServer(schema) {
 }
 
 // Start server
-startServer(executableSchema);
+startServer();
