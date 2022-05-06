@@ -36,35 +36,3 @@ export function isArrayEmpty(array) {
   // Not an empty array
   return false;
 }
-
-export function getMeanFromArray(array, precision = 3) {
-  const mean = array.reduce((a, b) => a + b, 0) / array.length;
-  return Number(mean.toFixed(precision));
-}
-
-export function getDeviationFromArray(array, precision = 3) {
-  // Mean
-  const mean = array.reduce((a, b) => a + b, 0) / array.length;
-
-  // Assigning (value - mean) ^ 2 to every array item
-  array = array.map((i) => (i - mean) ** 2);
-  // Calculating the sum of updated array
-  const sum = array.reduce((a, b) => a + b, 0);
-  // Variance
-  const variance = sum / array.length;
-
-  return Number(Math.sqrt(variance).toFixed(precision));
-}
-
-export function hashString(string, asString, seed) {
-  let hval = seed === undefined ? 0x811c9dc5 : seed;
-
-  for (let i = 0, l = string.length; i < l; i++) {
-    hval ^= string.charCodeAt(i);
-    hval +=
-      (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
-  }
-  if (asString) return ("0000000" + (hval >>> 0).toString(16)).substr(-8); // Convert to 8 digit hex string
-
-  return hval >>> 0;
-}
