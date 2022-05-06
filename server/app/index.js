@@ -10,6 +10,7 @@ import {
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+import { useSofa } from "sofa-api";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -31,6 +32,8 @@ const executableSchema = makeExecutableSchema({
 
 async function startServer(schema) {
   const app = express();
+  const router = express.Router();
+
   // Used by ApolloServerPluginDrainHttpServer - See https://www.apollographql.com/docs/apollo-server/api/plugin/drain-http-server/
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
@@ -59,7 +62,7 @@ async function startServer(schema) {
   const environment = process.env.NODE_ENV || NODE_ENV;
 
   // Landing page route
-  app.get("/", (req, res) => {
+  router.get("/", (req, res) => {
     res.render("index", {
       version: pkg.version,
       environment: environment.charAt(0).toUpperCase() + environment.slice(1), // Capitalize first letter
@@ -72,6 +75,16 @@ async function startServer(schema) {
     app,
     path: process.env.ENDPOINT || DEFAULT_ENDPOINT
   });
+
+  router.use(
+    process.env.REST_BASE || DEFAULT_REST_BASE,
+    useSofa({
+      basePath: process.env.REST_BASE || DEFAULT_REST_BASE,
+      schema,
+      depthLimit: 3
+    })
+  );
+  app.use("/", router);
 
   // Connect to DB
   await initDatabase();
