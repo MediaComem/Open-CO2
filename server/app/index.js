@@ -12,7 +12,7 @@ import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
 import http from "http";
 import path from "path";
-const __dirname = path.resolve();
+const rootPath = path.resolve();
 import { readFile } from "fs/promises";
 const pkg = JSON.parse(
   await readFile(new URL("./package.json", import.meta.url))
@@ -39,9 +39,9 @@ async function startServer(typeDefs, resolvers) {
   await server.start();
 
   // View engine setup
-  app.set("views", path.join(__dirname, "./views"));
+  app.set("views", path.join(rootPath, "./views"));
   app.set("view engine", "pug");
-  app.use(express.static(path.join(__dirname, "./public")));
+  app.use(express.static(path.join(rootPath, "./public")));
 
   function creditYears() {
     const currentYear = new Date().getFullYear();
