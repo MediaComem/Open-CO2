@@ -78,9 +78,9 @@ async function startServer() {
   router.use(
     process.env.REST_BASE,
     useSofa({
-      basePath: process.env.REST_BASE,
       schema,
-      depthLimit: 3
+      basePath: process.env.REST_BASE,
+      depthLimit: process.env.REST_DEPTH
     })
   );
   app.use("/", router);
