@@ -38,7 +38,7 @@ export default class DataParser{
    */
   processCategories() {
     // 1 – Update object keys from sheet headers
-    this.#updateKeys();
+    this.#parseRows();
     // 2 – Construct path (based on unique name)
     this.#addPath();
     // 3 – Add category ID (hash from fullpath)
