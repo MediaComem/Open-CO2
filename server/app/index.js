@@ -1,13 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
-import {
-  NODE_ENV,
-  DEFAULT_PORT,
-  DEFAULT_GRAPHQL_ENDPOINT,
-  DEFAULT_REST_BASE,
-  DEFAULT_APOLLO_INTROSPECTION,
-  DEFAULT_APOLLO_PLAYGROUND
-} from "./config/default.js";
+import "./config/env.js";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -48,10 +39,9 @@ async function startServer() {
       message: error.message.replace("Error", "")
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    introspection:
-      process.env.APOLLO_INTROSPECTION || DEFAULT_APOLLO_INTROSPECTION,
-    playground: process.env.APOLLO_PLAYGROUND || DEFAULT_APOLLO_PLAYGROUND,
-    path: process.env.GRAPHQL_ENDPOINT || DEFAULT_GRAPHQL_ENDPOINT
+    introspection: process.env.APOLLO_INTROSPECTION,
+    playground: process.env.APOLLO_PLAYGROUND,
+    path: process.env.GRAPHQL_ENDPOINT
   });
 
   await server.start();
@@ -68,7 +58,7 @@ async function startServer() {
   }
 
   // Get environment value
-  const environment = process.env.NODE_ENV || NODE_ENV;
+  const environment = process.env.NODE_ENV;
 
   // Landing page route
   router.get("/", (req, res) => {
@@ -82,13 +72,13 @@ async function startServer() {
   // Use Express in Apollo server
   server.applyMiddleware({
     app,
-    path: process.env.GRAPHQL_ENDPOINT || DEFAULT_GRAPHQL_ENDPOINT
+    path: process.env.GRAPHQL_ENDPOINT
   });
 
   router.use(
-    process.env.REST_BASE || DEFAULT_REST_BASE,
+    process.env.REST_BASE,
     useSofa({
-      basePath: process.env.REST_BASE || DEFAULT_REST_BASE,
+      basePath: process.env.REST_BASE,
       schema,
       depthLimit: 3
     })
@@ -100,13 +90,11 @@ async function startServer() {
 
   // Start Express server
   await new Promise((resolve) =>
-    httpServer.listen({ port: process.env.PORT || DEFAULT_PORT }, resolve)
+    httpServer.listen({ port: process.env.PORT }, resolve)
   );
 
   console.info(`\n🚀 Open CO2 server ready!`);
-  console.info(
-    `Homepage at http://localhost:${process.env.PORT || DEFAULT_PORT}\n`
-  );
+  console.info(`Homepage at http://localhost:${process.env.PORT}\n`);
 }
 
 // Start server

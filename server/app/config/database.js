@@ -1,4 +1,3 @@
-import { DEFAULT_MONGO_URI } from "./default.js";
 import mongoose from "mongoose";
 import logger from "./logger.js";
 
@@ -32,14 +31,10 @@ export const initDatabase = () => {
     });
   });
 
-  return mongoose.connect(
-    process.env.MONGO_URI || DEFAULT_MONGO_URI,
-    options,
-    function (error) {
-      if (error) {
-        logger.error("MongoDB connection error: " + error);
-        process.exit(1);
-      }
+  return mongoose.connect(process.env.MONGO_URI, options, function (error) {
+    if (error) {
+      logger.error("MongoDB connection error: " + error);
+      process.exit(1);
     }
-  );
+  });
 };
