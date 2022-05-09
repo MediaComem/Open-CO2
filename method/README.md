@@ -1,4 +1,4 @@
-![](../cover.png)
+![Open Database and API for CO₂ equivalencies](../cover.png)
 
 # Method and informations
 

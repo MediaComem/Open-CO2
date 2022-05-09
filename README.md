@@ -1,12 +1,8 @@
-![](./cover.png)
+![Open Database and API for CO₂ equivalencies](./cover.png)
 
 > An open Data Database and API for CO₂ Equivalent Values
 
 [Project reference on Aramis DB](https://www.aramis-a.admin.ch/Texte/?ProjectID=49723)
-
----
-
-## Description
 
 **Open CO2** project enables companies to estimate their CO2 footprint through an open DB and API which can be used with their accounting tool.
 
@@ -54,3 +50,7 @@ See `server/src/config/default.js` for default values.
 ![Apollo-GraphQL](https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql)
 ![GraphQL](https://img.shields.io/badge/-GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+
+## License
+
+TBD

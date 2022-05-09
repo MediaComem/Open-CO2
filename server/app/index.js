@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import {
+  NODE_ENV,
   DEFAULT_PORT,
   DEFAULT_ENDPOINT,
   DEFAULT_APOLLO_INTROSPECTION,
@@ -48,13 +49,14 @@ async function startServer(typeDefs, resolvers) {
     else return currentYear;
   }
 
-  const environment = process.env.NODE_ENV;
+  // Get environment value
+  const environment = process.env.NODE_ENV || NODE_ENV;
 
   // Landing page route
   app.get("/", (req, res) => {
     res.render("index", {
       version: pkg.version,
-      environment: environment.charAt(0).toUpperCase() + environment.slice(1),
+      environment: environment.charAt(0).toUpperCase() + environment.slice(1), // Capitalize first letter
       creditYears: creditYears()
     });
   });
