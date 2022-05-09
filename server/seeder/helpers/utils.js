@@ -40,7 +40,7 @@ export function getMeanFromArray(array, precision = 3) {
 
 export function getDeviationFromArray(array, precision = 3) {
   // Mean
-  const mean = array.reduce((a, b) => a + b, 0) / array.length;
+  const mean = getMeanFromArray(array, 6);
 
   // Assigning (value - mean) ^ 2 to every array item
   array = array.map((i) => (i - mean) ** 2);
@@ -49,5 +49,6 @@ export function getDeviationFromArray(array, precision = 3) {
   // Variance
   const variance = sum / array.length;
 
+  // Deviation
   return Number(Math.sqrt(variance).toFixed(precision));
 }
