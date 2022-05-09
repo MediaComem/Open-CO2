@@ -9,9 +9,14 @@ import { initDatabase } from "./config/database.js";
 import viewEngine from "./config/viewEngine.js";
 // Routes
 import homeRouter from "./routes/home.js";
-// GraphQL
+// GraphQL + REST API (+ Swagger)
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { useSofa } from "sofa-api";
+import { useSofa, OpenAPI } from "sofa-api";
+import * as swaggerUi from "swagger-ui-express";
+import { readFile } from "fs/promises";
+const swaggerDocument = JSON.parse(
+  await readFile(new URL("./swagger.json", import.meta.url))
+);
 // Definitions
 import { typeDefs } from "./graphql/types.js";
 import { resolvers } from "./graphql/resolvers.js";
@@ -50,13 +55,33 @@ async function startServer() {
   // Server landing page
   app.use("/", homeRouter);
   // REST API
+  const openApi = OpenAPI({
+    schema,
+    info: {
+      title: "Open CO2 REST API",
+      version: "1.0.0"
+    }
+  });
   app.use(
     process.env.REST_BASE,
     useSofa({
       schema,
       basePath: process.env.REST_BASE,
-      depthLimit: process.env.REST_DEPTH
+      depthLimit: process.env.REST_DEPTH,
+      onRoute(info) {
+        openApi.addRoute(info, {
+          basePath: process.env.REST_BASE
+        });
+      }
     })
+  );
+  openApi.save("./swagger.json");
+  // openApi.save("./swagger.yml");
+  // Server API doc using Swagger
+  app.use(
+    `${process.env.REST_BASE}/docs`,
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
   );
 
   // Connect to DB

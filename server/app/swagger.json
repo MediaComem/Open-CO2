@@ -1,0 +1,286 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Open CO2 REST API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/rest/infos": {
+      "get": {
+        "operationId": "infos_query",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get Open CO2 infos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/units": {
+      "get": {
+        "operationId": "units_query",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get a list of all unit types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Unit"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/categories": {
+      "get": {
+        "operationId": "categories_query",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get a list of all CO2 value's categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/category": {
+      "get": {
+        "operationId": "category_query",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a category based on its name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Query": {
+        "type": "object",
+        "properties": {
+          "infos": {
+            "$ref": "#/components/schemas/Info",
+            "description": "Get Open CO2 infos"
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            },
+            "description": "Get a list of all unit types"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "description": "Get a list of all CO2 value's categories"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category",
+            "description": "Get a category based on its name"
+          }
+        },
+        "description": "Open CO2 API queries"
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "name",
+          "path",
+          "fullPath",
+          "co2eqs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Category UUID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Category title"
+          },
+          "name": {
+            "type": "string",
+            "description": "Category name (normalized from title)"
+          },
+          "path": {
+            "type": "string",
+            "description": "Category path"
+          },
+          "fullPath": {
+            "type": "string",
+            "description": "Category path"
+          },
+          "details": {
+            "type": "string",
+            "description": "Category description"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "description": "Category subcategories"
+          },
+          "childrens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of subcategories by name"
+          },
+          "co2eqs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Co2eq"
+            },
+            "description": "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
+          }
+        },
+        "description": "A category is a group of CO2 values equivalents with a common thematic"
+      },
+      "Unit": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KWH",
+              "TKM",
+              "H",
+              "PKM",
+              "G_CO2_KWH"
+            ],
+            "description": "Unit type defined by a strict list of units"
+          },
+          "description": {
+            "type": "string",
+            "description": "Unit description"
+          }
+        },
+        "description": "An unit is attached to a CO2eq to mesure its value"
+      },
+      "Source": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Source title (e.g. Name of the entity or company who produced the data)"
+          },
+          "url": {
+            "type": "string",
+            "description": "Source URL pointing a link to the data source"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Source year (YYYY format)"
+          }
+        },
+        "description": "A source structure for a CO2eq"
+      },
+      "Co2eq": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "float",
+            "description": "Co2eq value"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Co2eq unit"
+          },
+          "approximated": {
+            "type": "boolean",
+            "description": "Is this CO2eq value approximated or not?\nWhen a category have subcategories, Open CO2 automatically calculate a mean CO2eq value based on its children value.\nIn this case, the CO2eq value of the parent is flagged as \"approximated\"."
+          },
+          "details": {
+            "type": "string",
+            "description": "Co2eq details"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source",
+            "description": "Co2eq data source"
+          }
+        },
+        "description": "A CO2eq gives an equivalence value of the carbon footprint for a given appliance"
+      },
+      "Info": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the API"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the API"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the API"
+          },
+          "homepage": {
+            "type": "string",
+            "description": "Homepage URL of the API"
+          },
+          "categories": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Current number of categories in the collection"
+          },
+          "units": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Current number of units  in the collection"
+          }
+        },
+        "description": "An info describes information about the Open CO2 API"
+      }
+    }
+  }
+}
