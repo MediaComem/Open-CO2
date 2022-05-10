@@ -1,7 +1,5 @@
 import DataParser from "./DataParser";
 
-beforeEach(() => {});
-
 describe("FileComposer", () => {
   it("should construct correctly deep tree", () => {
     const data = [
