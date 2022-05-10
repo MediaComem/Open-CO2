@@ -1,0 +1,9 @@
+{
+  "exec": "npm start",
+  "ignore": [".git", "node_modules/*/*"],
+  "watch": [".env", "./"],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js,graphql"
+}

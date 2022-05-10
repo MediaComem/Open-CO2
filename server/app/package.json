@@ -1,0 +1,62 @@
+{
+  "name": "open-co2",
+  "title": "Open CO2",
+  "version": "0.1.0",
+  "description": "Open Data Database and API for CO2 Equivalent Values",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "release": "standard-version",
+    "lint": "npx eslint './**'",
+    "test": "jest --config=jest.config.js",
+    "test-watch": "jest --config=jest.config.js --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MediaComem/open-co2"
+  },
+  "keywords": [
+    "CO2",
+    "Footprint",
+    "Open data",
+    "Express",
+    "Apollo",
+    "GraphQL",
+    "MongoDB",
+    "API"
+  ],
+  "author": "MEI",
+  "license": "ISC",
+  "private": false,
+  "bugs": {
+    "url": "https://github.com/MediaComem/open-co2/issues"
+  },
+  "homepage": "https://github.com/MediaComem/open-co2#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "jest": "^28.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.2",
+    "standard-version": "^9.3.2"
+  },
+  "dependencies": {
+    "@graphql-tools/schema": "^8.3.10",
+    "apollo-server-core": "^3.6.7",
+    "apollo-server-express": "^3.6.7",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "graphql": "^15.8.0",
+    "graphql-tools": "^8.2.8",
+    "mongoose": "^6.3.0",
+    "pug": "^3.0.2",
+    "sofa-api": "^0.11.2",
+    "swagger-ui-express": "^4.3.0",
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1",
+    "xlsx": "^0.18.5"
+  }
+}

@@ -1,18 +1,80 @@
-version: "3"
+version: "3.9"
 
+# ----------------------------------------------------------
+# SERVICES
+# ----------------------------------------------------------
 services:
+  # ========================================================
   # Server
-  open-co2-server:
+  # ========================================================
+  server:
     build:
-      context: ./
+      # Point Dockerfile file in the current directory
+      context: .
       dockerfile: Dockerfile
     image: open-co2-server
+    container_name: server
+    volumes:
+      - open-co2-seeder-data:/usr/src/app/data/
     ports:
       - "4000:4000"
-    depends_on:
-      - open-co2-db
-    links:
-      - open-co2-db
+    # depends_on:
+    #   - database
+    networks:
+      - open-co2
+  # ========================================================
   # Database
-  open-co2-db:
-    image: dgraph/dgraph:v21.12.0
+  # ========================================================
+  database:
+    image: mongo:5.0
+    container_name: database
+    restart: always
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    volumes:
+      - mongodb:/data/db # $HOME/mongo:/data/db
+      - mongodb-config:/data/configdb
+      - open-co2-seeder-data:/docker-entrypoint-initdb.d/
+    environment:
+      # - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      # - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=open-co2
+    networks:
+      - open-co2
+    # healthcheck:
+    #   test: 'echo ''db.runCommand("ping").ok'''
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 3
+  # ========================================================
+  # GraphQL playground
+  # ========================================================
+  playground:
+    image: mkrou/graphql-playground-docker
+    container_name: playgrounds
+    restart: always
+    environment:
+      - HOST=http://localhost:4000/graphql
+      - TITLE="Open CO2 Playground"
+      - PORT=6600
+    ports:
+      - "4200:6600"
+    depends_on:
+      - server
+
+# ----------------------------------------------------------
+# NETWORK
+# ----------------------------------------------------------
+networks:
+  open-co2:
+    name: openco2-net
+
+# ----------------------------------------------------------
+# VOLUMES
+# ----------------------------------------------------------
+volumes:
+  mongodb:
+  mongodb-config:
+  open-co2-seeder-data:
