@@ -5,11 +5,11 @@ import XLSX from "xlsx";
  */
 export default class XLSDataReader {
   /**
-   * FileReader constructor
-   * @param {Path to XLS file} file
+   * XLSDataReader constructor
+   * @param {string} xlsFile path to XLS file
    */
-  constructor(file) {
-    this.file = file;
+  constructor(xlsFile) {
+    this.file = xlsFile;
   }
 
   /**
@@ -19,7 +19,6 @@ export default class XLSDataReader {
   getSheets() {
     const workbook = XLSX.readFile(this.file);
     const sheets = workbook.Sheets;
-
     return sheets;
   }
 
@@ -30,7 +29,6 @@ export default class XLSDataReader {
   getSheetNames() {
     const workbook = XLSX.readFile(this.file);
     const sheetNames = workbook.SheetNames;
-
     return sheetNames;
   }
 
@@ -38,11 +36,10 @@ export default class XLSDataReader {
    * Return a single sheet.
    * First sheet OR sheet with name passed as argument as JSON
    * @param {string} sheet
-   * @returns {Object} Sheet content
+   * @returns {Array} Sheet content as an array of rows
    */
   getSheetContent(sheet) {
     const workbook = XLSX.readFile(this.file);
-
     let data;
     if (sheet) {
       // Get defined sheet
@@ -52,7 +49,6 @@ export default class XLSDataReader {
       const sheetList = workbook.SheetNames;
       data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetList[0]]);
     }
-
     return data;
   }
 }
