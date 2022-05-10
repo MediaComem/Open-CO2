@@ -11,7 +11,7 @@ const pkg = JSON.parse(
 // A resolver can optionally accept four positional arguments: (parent, args, context, info)
 export const resolvers = {
   Query: {
-    async getApiInfos() {
+    async infos() {
       try {
         const unitsCount = await Unit.countDocuments();
         const categoriesCount = await Category.countDocuments();
@@ -28,21 +28,21 @@ export const resolvers = {
         logger.error(error);
       }
     },
-    async getAllUnits() {
+    async units() {
       try {
         return await Unit.find();
       } catch (error) {
         logger.error(error);
       }
     },
-    async getAllCategories() {
+    async categories() {
       try {
         return await Category.find();
       } catch (error) {
         logger.error(error);
       }
     },
-    async getCategoryByName(parent, args) {
+    async category(parent, args) {
       try {
         return await Category.findOne({ name: args.name });
       } catch (error) {

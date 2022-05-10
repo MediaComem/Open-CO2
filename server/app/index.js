@@ -1,85 +1,109 @@
-import dotenv from "dotenv";
-dotenv.config();
-import {
-  NODE_ENV,
-  DEFAULT_PORT,
-  DEFAULT_ENDPOINT,
-  DEFAULT_APOLLO_INTROSPECTION,
-  DEFAULT_APOLLO_PLAYGROUND
-} from "./config/default.js";
-import { ApolloServer } from "apollo-server-express";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import "./config/env.js";
 import express from "express";
 import http from "http";
-import path from "path";
-const __dirname = path.resolve();
-import { readFile } from "fs/promises";
-const pkg = JSON.parse(
-  await readFile(new URL("./package.json", import.meta.url))
-);
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 // Database
 import { initDatabase } from "./config/database.js";
-// GraphQL
+// View engine
+import viewEngine from "./config/viewEngine.js";
+// Routes
+import homeRouter from "./routes/home.js";
+// GraphQL + REST API (+ Swagger)
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { useSofa, OpenAPI } from "sofa-api";
+import * as swaggerUi from "swagger-ui-express";
+import { readFile } from "fs/promises";
+const swaggerDocument = JSON.parse(
+  await readFile(new URL("./swagger.json", import.meta.url))
+);
+// Definitions
 import { typeDefs } from "./graphql/types.js";
 import { resolvers } from "./graphql/resolvers.js";
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+});
 
-async function startServer(typeDefs, resolvers) {
+/**
+ * Main function to init and start server
+ */
+async function startServer() {
+  // Express server
   const app = express();
+  // const router = express.Router();
+  // Used by ApolloServerPluginDrainHttpServer - See https://www.apollographql.com/docs/apollo-server/api/plugin/drain-http-server/
   const httpServer = http.createServer(app);
+
+  // Apollo server
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
+    formatError: (error) => ({
+      name: error.name,
+      message: error.message.replace("Error", "")
+    }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    introspection:
-      process.env.APOLLO_INTROSPECTION || DEFAULT_APOLLO_INTROSPECTION,
-    playground: process.env.APOLLO_PLAYGROUND || DEFAULT_APOLLO_PLAYGROUND,
-    path: process.env.ENDPOINT || DEFAULT_ENDPOINT
+    introspection: process.env.APOLLO_INTROSPECTION,
+    playground: process.env.APOLLO_PLAYGROUND,
+    path: process.env.GRAPHQL_ENDPOINT
   });
 
-  await server.start();
+  // Init view engine
+  viewEngine(app);
 
-  // View engine setup
-  app.set("views", path.join(__dirname, "./views"));
-  app.set("view engine", "pug");
-  app.use(express.static(path.join(__dirname, "./public")));
-
-  function creditYears() {
-    const currentYear = new Date().getFullYear();
-    if (currentYear > 2022) return `2022-${currentYear}`;
-    else return currentYear;
-  }
-
-  // Get environment value
-  const environment = process.env.NODE_ENV || NODE_ENV;
-
-  // Landing page route
-  app.get("/", (req, res) => {
-    res.render("index", {
-      version: pkg.version,
-      environment: environment.charAt(0).toUpperCase() + environment.slice(1), // Capitalize first letter
-      creditYears: creditYears()
-    });
+  // Define routes
+  // Server landing page
+  app.use("/", homeRouter);
+  // REST API
+  const openApi = OpenAPI({
+    schema,
+    info: {
+      title: "Open CO2 REST API",
+      version: "1.0.0"
+    }
   });
-
-  // Use Express in Apollo server
-  server.applyMiddleware({
-    app,
-    path: process.env.ENDPOINT || DEFAULT_ENDPOINT
-  });
+  app.use(
+    process.env.REST_BASE,
+    useSofa({
+      schema,
+      basePath: process.env.REST_BASE,
+      depthLimit: process.env.REST_DEPTH,
+      onRoute(info) {
+        openApi.addRoute(info, {
+          basePath: process.env.REST_BASE
+        });
+      }
+    })
+  );
+  openApi.save("./swagger.json");
+  // openApi.save("./swagger.yml");
+  // Server API doc using Swagger
+  app.use(
+    `${process.env.REST_BASE}/docs`,
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+  );
 
   // Connect to DB
   await initDatabase();
 
+  // Start Apollo server
+  await server.start();
+
+  // Use Express in Apollo server
+  server.applyMiddleware({
+    app,
+    path: process.env.GRAPHQL_ENDPOINT
+  });
+
   // Start Express server
   await new Promise((resolve) =>
-    httpServer.listen({ port: process.env.PORT || DEFAULT_PORT }, resolve)
+    httpServer.listen({ port: process.env.PORT }, resolve)
   );
 
   console.info(`\n🚀 Open CO2 server ready!`);
-  console.info(
-    `Homepage at http://localhost:${process.env.PORT || DEFAULT_PORT}\n`
-  );
+  console.info(`Homepage at http://localhost:${process.env.PORT}\n`);
 }
 
 // Start server
-startServer(typeDefs, resolvers);
+startServer();

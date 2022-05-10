@@ -6,17 +6,13 @@ export const typeDefs = gql`
   """
   type Query {
     "Get Open CO2 infos"
-    getApiInfos: Info
+    infos: Info
     "Get a list of all unit types"
-    getAllUnits: [Unit]
-    # "Get a list of all CO2 values equivalents"
-    # getAllCo2eqs: [Co2eq]
+    units: [Unit]
     "Get a list of all CO2 value's categories"
-    getAllCategories: [Category]
-    # "Get an CO2 value based on its ID"
-    # getCo2eqByName(name: String!): Co2eq
+    categories: [Category]
     "Get a category based on its name"
-    getCategoryByName(name: String!): Category
+    category(name: String!): Category
     # """
     # Get a category based on its name
     # Use a hierarchical path with '/' to separate categories (e.g. energy/electricity/grid) to point a specific category
@@ -24,38 +20,14 @@ export const typeDefs = gql`
     # categoryByName(name: String!): Category
   }
 
-  # """
-  # Define a CO2 value
-  # An CO2 value gives an equivalence estimation of the carbon footprint for a given appliance
-  # """
-  # type Co2eq {
-  #   "CO2 value UUID"
-  #   id: ID!
-  #   "CO2 value unit"
-  #   unit: Unit!
-  #   "CO2 value"
-  #   value: Float!
-  #   "CO2 value name"
-  #   name: String
-  #   "CO2 value description"
-  #   description: String
-  #   "Is this CO2 value an average or not?"
-  #   isCalculated: Boolean
-  #   "CO2 value source"
-  #   source: String
-  #   "CO2 value reference date of the source"
-  #   dateOfReference: Date
-  # }
-
   """
-  Define a Category
   A category is a group of CO2 values equivalents with a common thematic
   """
   type Category {
     "Category UUID"
     id: ID!
-    "CO2 value UUID"
-    categoryId: Int!
+    # "CO2 value UUID"
+    # categoryId: Int!
     "Category title"
     title: String!
     "Category name (normalized from title)"
@@ -67,31 +39,28 @@ export const typeDefs = gql`
     "Category description"
     details: String
     "Category subcategories"
-    categories: [Category]!
+    categories: [Category]
+    "List of subcategories by name"
     childrens: [String]
-    childrenIds: [Int]
+    # childrenIds: [Int]
     # "Category CO2 values"
     # co2eqs: [Co2eq]!
+    "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
     co2eqs: [Co2eq]!
   }
 
   """
-  Define a unit
+  An unit is attached to a CO2eq to mesure its value
   """
   type Unit {
-    "Unit name"
+    "Unit type defined by a strict list of units"
     type: UnitEnum
     "Unit description"
     description: String
   }
 
   """
-  Define a date following ISO 8601 syntax with YYYY-MM-DD format
-  """
-  scalar Date
-
-  """
-  Define a list of units used by equivalent value
+  UnitEnum defines a static list of units used by Co2eq
   """
   enum UnitEnum {
     KWH
@@ -101,26 +70,58 @@ export const typeDefs = gql`
     G_CO2_KWH
   }
 
-  type Info {
-    name: String
-    version: String
-    description: String
-    homepage: String
-    units: Int
-    categories: Int
-  }
-
+  """
+  A source structure for a CO2eq
+  """
   type Source {
+    "Source title (e.g. Name of the entity or company who produced the data)"
     title: String
+    "Source URL pointing a link to the data source"
     url: String
+    "Source year (YYYY format)"
     year: Int
   }
 
+  """
+  A CO2eq gives an equivalence value of the carbon footprint for a given appliance
+  """
   type Co2eq {
-    value: Float!
-    unit: String!
-    approximated: Boolean!
+    "Co2eq value"
+    value: Float
+    "Co2eq unit"
+    unit: String
+    """
+    Is this CO2eq value approximated or not?
+    When a category have subcategories, Open CO2 automatically calculate a mean CO2eq value based on its children value.
+    In this case, the CO2eq value of the parent is flagged as "approximated".
+    """
+    approximated: Boolean
+    "Co2eq details"
     details: String
+    "Co2eq data source"
     source: Source
   }
+
+  """
+  An info describes information about the Open CO2 API
+  """
+  type Info {
+    "Name of the API"
+    name: String
+    "Version of the API"
+    version: String
+    "Description of the API"
+    description: String
+    "Homepage URL of the API"
+    homepage: String
+    "Current number of categories in the collection"
+    categories: Int
+    "Current number of units  in the collection"
+    units: Int
+  }
+
+  """
+  Define a date following ISO 8601 syntax with YYYY-MM-DD format
+  """
+  scalar Date
 `;

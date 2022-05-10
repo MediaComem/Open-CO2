@@ -41,6 +41,26 @@ See `server/src/config/default.js` for default values.
 
 ---
 
+## Project structure
+
+Source code is mostly located in `server`.  
+The `client` directory only provides some applications to consume the API as examples.
+
+The `server`directory is splitted in two main parts:
+
+- `app` is where the Express/GraphQL core server is living
+- `seeder` is compose of modules to process the data source and populate the database
+
+## Build
+
+!TODO: Add infos about Docker build
+
+## Contribution guidelines
+
+!TODO: Add infos about contribution (Linter, Gitflow, SemVer, etc.)
+
+---
+
 ## Stack
 
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
