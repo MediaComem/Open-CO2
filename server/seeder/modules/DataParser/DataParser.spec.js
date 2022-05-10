@@ -40,4 +40,22 @@ describe("FileComposer", () => {
     expect(data[1].path).toBe("/category");
     expect(data[1].fullPath).toBe("/category/subcategory");
   });
+  it("should parse units correctly", () => {
+    const data = [
+      {
+        Type: "FOO",
+        Description: "Foo"
+      },
+      {
+        Type: "BAR",
+        Description: "Bar"
+      }
+    ];
+    const dataParser = new DataParser(data);
+    dataParser.processUnits();
+    expect(Array.isArray(data));
+    expect(data[0].type).toBe("FOO"); // Turn key to lowercase
+    expect(data[1].description).toBe("Bar"); // Turn key to lowercase
+    expect(data.length).toBe(2); // Same number of units in input
+  });
 });
