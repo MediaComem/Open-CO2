@@ -9,7 +9,8 @@ import {
 /**
  * Class to process XLS sheets and turn it to JS objets
  */
-export default class FileComposer {
+export default class DataParser {
+  #deepTree;
   /**
    * FileComposer constructor
    * @param {Sheet content from fileReader} sheet
@@ -38,7 +39,7 @@ export default class FileComposer {
    */
   processCategories() {
     // 1 – Update object keys from sheet headers
-    this.#updateKeys();
+    this.#parseRows();
     // 2 – Construct path (based on unique name)
     this.#addPath();
     // 3 – Add category ID (hash from fullpath)
@@ -87,7 +88,7 @@ export default class FileComposer {
     }
   }
 
-  #updateKeys() {
+  #parseRows() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
@@ -139,11 +140,13 @@ export default class FileComposer {
   }
 
   #addPath() {
-    const deepTree = this.#getDeepTree();
+    // Store deep tree in private var to avoid parsing the tree multiple times
+    this.#deepTree = this.#getDeepTree();
+
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
-      const path = this.#findInTree(row.uniqueName, deepTree).path;
+      const path = this.#findInTree(row.uniqueName, this.#deepTree).path;
 
       row.fullPath = "/" + path.join("/");
       path.pop();
@@ -161,12 +164,11 @@ export default class FileComposer {
   }
 
   #addChildrens() {
-    const deepTree = this.#getDeepTree();
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
 
-      const object = this.#findInTree(row.uniqueName, deepTree).result;
+      const object = this.#findInTree(row.uniqueName, this.#deepTree).result;
 
       if (object.children && object.children.length > 0) {
         row.childrens = object.children.flatMap((child) => child.name);
@@ -182,8 +184,6 @@ export default class FileComposer {
   }
 
   #addAverage() {
-    const deepTree = this.#getDeepTree();
-
     // Anonymous function to check if all element are the same in given array
     const allEqual = (arr) => arr.every((v) => v === arr[0]);
 
@@ -192,7 +192,8 @@ export default class FileComposer {
       const row = this.sheet[i];
       let object;
 
-      if (row.name) object = this.#findInTree(row.uniqueName, deepTree).result;
+      if (row.name)
+        object = this.#findInTree(row.uniqueName, this.#deepTree).result;
 
       // Row that doesn't have CO2eq
       if (object.co2eqs === null || !object.co2eqs) {

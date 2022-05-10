@@ -1,12 +1,12 @@
-import FileReader from "./modules/fileReader/fileReader.js";
-import FileComposer from "./modules/fileComposer/fileComposer.js";
+import XLSDataReader from "./modules/XLSDataReader/XLSDataReader.js";
+import DataParser from "./modules/DataParser/DataParser.js";
 import FileExporter from "./modules/fileExporter/fileExporter.js";
 
 // Excel file used as input
 const inputFile = "./data/input/Open CO2.xlsx";
 
 // Read file
-const fileReader = new FileReader(inputFile);
+const xlsDataReader = new XLSDataReader(inputFile);
 
 const categoriesConfig = {
   fileName: "data/output/categories.js",
@@ -25,11 +25,11 @@ function processCategoriesFromConfig(config) {
 
   for (let i = 0, l = config.sheets.length; i < l; i++) {
     const sheetName = config.sheets[i];
-    const rawContent = fileReader.getSheetContent(sheetName);
-    const fileComposer = new FileComposer(rawContent);
+    const rawContent = xlsDataReader.getSheetContent(sheetName);
+    const dataParser = new DataParser(rawContent);
     // Start processing sheet
-    fileComposer.processCategories();
-    consolidatedData.push(...fileComposer.sheet);
+    dataParser.processCategories();
+    consolidatedData.push(...dataParser.sheet);
   }
 
   // Save JSON file
@@ -45,15 +45,15 @@ function processCategoriesFromConfig(config) {
 processCategoriesFromConfig(categoriesConfig);
 
 // Generate units file
-const rawContent = fileReader.getSheetContent(unitsConfig.sheets[0]);
-const fileComposer = new FileComposer(rawContent);
+const rawContent = xlsDataReader.getSheetContent(unitsConfig.sheets[0]);
+const dataParser = new DataParser(rawContent);
 // Start processing sheet
-fileComposer.processUnits();
+dataParser.processUnits();
 
 // Save JSON file
 const fileExporter = new FileExporter();
 fileExporter.saveAsJsonFile(
-  [...fileComposer.sheet],
+  [...dataParser.sheet],
   unitsConfig.fileName,
   unitsConfig.varName
 );
