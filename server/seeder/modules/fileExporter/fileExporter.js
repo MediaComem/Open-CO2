@@ -8,9 +8,10 @@ export default class FileExporter {
   constructor() {}
 
   /**
-   * Save JS object as JSON file
+   * Save object in a JS file with specified variable name
    * @param {Object} sheet Sheet content as JS object
    * @param {String} fileName Filename (with path) of the exported JSON
+   * @param {String} varName Variable name of the array used in generated JS file
    */
   saveAsJsonFile(sheet, fileName, varName) {
     const jsonContent = JSON.stringify(sheet);
