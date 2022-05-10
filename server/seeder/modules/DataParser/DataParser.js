@@ -12,7 +12,7 @@ import {
 export default class DataParser {
   #deepTree;
   /**
-   * FileComposer constructor
+   * DataParser constructor
    * @param {Sheet content from fileReader} sheet
    */
   constructor(sheet) {
@@ -52,14 +52,31 @@ export default class DataParser {
     this.#orderObject();
   }
 
+  unitTest(method) {
+    if (process.env.NODE_ENV !== "test") {
+      console.log(process.env.NODE_ENV);
+      throw "unitTest can only be used in test mode";
+    }
+    switch (method) {
+      case "getDeepTree":
+        return this.#getDeepTree();
+      case "findNodeInTree":
+        return this.#findNodeInTree();
+    }
+  }
+
   /**
    * Construct and return a deep tree with children categories
+   * @returns {Object} return the deep tree with all children categories
    */
   #getDeepTree() {
     const deepTree = [],
       levels = [deepTree];
 
     this.sheet.forEach((row) => {
+      if (row.depth === 1 && levels[0].length > 0) {
+        throw new Error("Only one root node supported");
+      }
       levels[row.depth - 1].push({
         ...row,
         children: (levels[row.depth] = [])
@@ -69,16 +86,18 @@ export default class DataParser {
   }
 
   /**
-   * Find a node in tree by passing its uniqueName
-   * Return the node object (result) and its path (path)
+   * Find a node in tree by passing its unique name
+   * @param {string} name unique name of the node to search (see row.uniqueName in #parseRows function)
+   * @param {Object} tree the tree to search in
+   * @returns {Object} return the node object and its path in an object
    */
-  #findInTree(name, tree) {
+  #findNodeInTree(name, tree) {
     if (tree.uniqueName === name) {
       const path = [tree.name];
-      return { result: tree, path };
+      return { node: tree, path };
     } else if (tree.children) {
       for (const child of tree.children) {
-        const tmp = this.#findInTree(name, child);
+        const tmp = this.#findNodeInTree(name, child);
         if (!(Object.keys(tmp).length === 0 && tmp.constructor === Object)) {
           tmp.path.unshift(tree.name);
           return tmp;
@@ -94,14 +113,16 @@ export default class DataParser {
       const row = this.sheet[i];
       // Loop over level's names
       for (let n = 0; n < this.maxDepth; n++) {
-        if (row[`Level ${n + 1}`] !== undefined) {
+        const currentLevel = n + 1;
+        const key = `Level ${currentLevel}`;
+        if (row[key] !== undefined) {
           // Add title key with value from level
-          row.title = row[`Level ${n + 1}`];
+          row.title = row[key];
           // Add depth key from level number
-          const currentLevel = Object.keys(row)[0].replace("Level ", "");
-          row.depth = parseInt(currentLevel);
+          row.depth = currentLevel;
           // Delete unused level key
-          delete row[`Level ${n + 1}`];
+          delete row[key];
+          break;
         }
       }
       // Add name key with value from formatted title
@@ -146,7 +167,7 @@ export default class DataParser {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
-      const path = this.#findInTree(row.uniqueName, this.#deepTree).path;
+      const path = this.#findNodeInTree(row.uniqueName, this.#deepTree).path;
 
       row.fullPath = "/" + path.join("/");
       path.pop();
@@ -168,7 +189,7 @@ export default class DataParser {
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
 
-      const object = this.#findInTree(row.uniqueName, this.#deepTree).result;
+      const object = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
 
       if (object.children && object.children.length > 0) {
         row.childrens = object.children.flatMap((child) => child.name);
@@ -193,7 +214,7 @@ export default class DataParser {
       let object;
 
       if (row.name)
-        object = this.#findInTree(row.uniqueName, this.#deepTree).result;
+        object = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
 
       // Row that doesn't have CO2eq
       if (object.co2eqs === null || !object.co2eqs) {

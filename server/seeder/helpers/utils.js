@@ -20,6 +20,14 @@ export function formatString(string) {
     .toLowerCase(); // Convert to lowercase
 }
 
+/**
+ * Calculate a 32 bit FNV-1a hash
+ * Ref.: http://isthe.com/chongo/tech/comp/fnv/ / https://gist.github.com/vaiorabbit/5657561
+ * @param {string} str the input value
+ * @param {boolean} [asString=false] set to true to return the hash value as 8-digit hex string instead of an integer
+ * @param {integer} [seed] optionally pass the hash of the previous chunk
+ * @returns {integer | string} hash
+ */
 export function hashString(string, asString, seed) {
   let hval = seed === undefined ? 0x811c9dc5 : seed;
 
@@ -33,14 +41,26 @@ export function hashString(string, asString, seed) {
   return hval >>> 0;
 }
 
+/**
+ * Calculate the mean value of a series of numbers
+ * @param {Array<number>} array the input series of number
+ * @param {number} [precision=3] integer to specify the decimal precision of the result
+ * @returns {number} mean of the series
+ */
 export function getMeanFromArray(array, precision = 3) {
   const mean = array.reduce((a, b) => a + b, 0) / array.length;
   return Number(mean.toFixed(precision));
 }
 
+/**
+ * Calculate the standard deviation value of a series of numbers
+ * @param {Array<number>} array the input series of number
+ * @param {number} [precision=3] integer to specify the decimal precision of the result
+ * @returns {number} standard deviation of the series
+ */
 export function getDeviationFromArray(array, precision = 3) {
   // Mean
-  const mean = array.reduce((a, b) => a + b, 0) / array.length;
+  const mean = getMeanFromArray(array, 6);
 
   // Assigning (value - mean) ^ 2 to every array item
   array = array.map((i) => (i - mean) ** 2);
@@ -49,5 +69,6 @@ export function getDeviationFromArray(array, precision = 3) {
   // Variance
   const variance = sum / array.length;
 
+  // Deviation
   return Number(Math.sqrt(variance).toFixed(precision));
 }
