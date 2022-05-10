@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/MediaComem/open-co2/compare/v0.1.0...v0.2.0) (2022-05-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **rest-api:** Use env var to define tree depth rendered by the rest api
+* **resolver:** use categories() and units() queries to get full list of categories and units
+
+### Features
+
+* **graphql:** Use graphql tools to generate executable schema ([aa9eed4](https://github.com/MediaComem/open-co2/commit/aa9eed409958e8b1f7f010e78f336a46b8e825a9))
+* **REST API:** Add swagger-ui package to serve REST API doc ([f3547af](https://github.com/MediaComem/open-co2/commit/f3547af2c92e56e009beab0c8fd1ca4d67a212f9))
+* **REST API:** Use Sofa/OpenAPI to generate REST doc + server with swagger UI ([c618fe8](https://github.com/MediaComem/open-co2/commit/c618fe85e551b073f8cd15969cae6ac65ac2d030))
+* **rest-api:** Use env var to define tree depth rendered by the rest api ([9ef38aa](https://github.com/MediaComem/open-co2/commit/9ef38aa473609a42f149e1adbe6ea87037c4ac5b))
+* **server:** Use Sofa and Express router to create REST API ([04bc8cc](https://github.com/MediaComem/open-co2/commit/04bc8cc67ad30234f79bfc5ca9a7fac27721d37d))
+
+
+### Bug Fixes
+
+* Add default NODE_ENV value ([8f94b1e](https://github.com/MediaComem/open-co2/commit/8f94b1ed36b1172be209bf0aae9d63a6b96a1f54))
+* **ci:** Change to npm i ([8897488](https://github.com/MediaComem/open-co2/commit/88974887d2dd239d437dd0d7706e4cced06d99ac))
+* **ci:** Remove change directory ([df8ec85](https://github.com/MediaComem/open-co2/commit/df8ec8506a9d809ce350a073a0ff6488668f5130))
+* **ci:** Update working directory ([1cf4356](https://github.com/MediaComem/open-co2/commit/1cf43563bee71239ca74f3f7ac8d6e3ee6274745))
+* Remove special characters and keep only letters/numbers to formatString ([cae93d7](https://github.com/MediaComem/open-co2/commit/cae93d7bb9d06d731656e89b28329666f0c89ed0))
+* **seeder:** Fix typo with row details property name ([b2a1ef5](https://github.com/MediaComem/open-co2/commit/b2a1ef5d2b475792ae37ac4045fbc6767641c8e7))
+* **seeder:** Use getMeanFromArray() in deviation calculation ([fb823a3](https://github.com/MediaComem/open-co2/commit/fb823a34a3c34cddaadbba24a8b0696913ee2ccb))
+* Update default link to rest endpoint to /infos ([167185a](https://github.com/MediaComem/open-co2/commit/167185a5bce55726c8e0333fbbabacfea60b32fe))
+* Update links on server landing page ([6eb264d](https://github.com/MediaComem/open-co2/commit/6eb264dd12eec5c131d7bb54371c79e4d65abb97))
+* Update resolver queries name according to Schema ([c971696](https://github.com/MediaComem/open-co2/commit/c971696e47fad05b78b245bff715f60beaa0cd47))
+
+
+* **resolver:** Update queries name for categories/units ([c16659b](https://github.com/MediaComem/open-co2/commit/c16659b048b64d5c914e21566a0daf5e3d950896))
+
 ## [0.1.0](https://github.com/MediaComem/open-co2/compare/v0.0.1...v0.1.0) (2022-05-05)
 
 
