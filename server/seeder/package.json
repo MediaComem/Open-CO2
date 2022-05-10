@@ -1,7 +1,7 @@
 {
   "name": "open-co2-seeder",
   "title": "Open CO2 Seeder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Process data sources and populate MongoDB",
   "type": "module",
   "main": "seed.js",
@@ -39,7 +39,8 @@
     "@babel/preset-env": "^7.17.10",
     "babel-jest": "^28.0.3",
     "jest": "^28.0.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "standard-version": "^9.3.2"
   },
   "dependencies": {
     "winston": "^3.7.2",
