@@ -12,7 +12,15 @@ describe("FileReader", () => {
   });
   it("getSheetNames() should return XLS sheets name correctly", () => {
     const sheetNames = xlsDataReader.getSheetNames();
-    expect(sheetNames).toEqual(["Electricity", "Heat", "Transports", "Units"]);
+    expect(sheetNames).toEqual([
+      "Electricity",
+      "Heat",
+      "Transports",
+      "Electronics",
+      "Furnitures",
+      "Alimentation",
+      "Units"
+    ]);
   });
   it("getSheetContent() should return an array", () => {
     const sheetContent = xlsDataReader.getSheetContent();
