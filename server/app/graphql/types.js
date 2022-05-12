@@ -43,12 +43,12 @@ export const typeDefs = gql`
     "Category subcategories"
     categories: [Category]
     "List of subcategories by name"
-    childrens: [String]
+    children: [String]
     # childrenIds: [Int]
     # "Category CO2 values"
     # co2eqs: [Co2eq]!
     "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
-    co2eqs: [Co2eq]!
+    co2eq: Co2eq!
   }
 
   """
@@ -100,6 +100,12 @@ export const typeDefs = gql`
     approximated: Boolean
     "Co2eq details"
     details: String
+    "Co2eq min"
+    min: Float
+    "Co2eq max"
+    max: Float
+    "Co2eq standard deviation"
+    standardDeviation: Float
     "Co2eq data source"
     source: Source
   }
