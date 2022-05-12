@@ -196,6 +196,8 @@ export default class DataParser {
       // Generate hash from fullpath
       row.categoryId = hashString(row.fullPath);
     }
+    // Recalculate deep tree to add categoryID
+    this.#deepTree = this.#getDeepTree();
   }
 
   /**
