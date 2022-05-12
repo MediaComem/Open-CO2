@@ -286,10 +286,14 @@ export default class DataParser {
             unit: childUnits[0],
             approximated: true,
             details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`,
-            min: Math.min.apply(Math, childValues),
-            max: Math.max.apply(Math, childValues),
-            standardDeviation: deviation,
-            source
+            source,
+            calculationDetails: {
+              mean: mean,
+              count: childValues.length,
+              min: Math.min.apply(Math, childValues),
+              max: Math.max.apply(Math, childValues),
+              standardDeviation: deviation
+            }
           };
 
           node.co2eq = co2eq;
