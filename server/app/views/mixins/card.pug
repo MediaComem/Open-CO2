@@ -1,10 +1,15 @@
-mixin card(title, link, type)
+mixin card(title, cardLink, label, btnLink, type)
   if type === "gql"
-    a.card.pink(href=link)
-      include ../includes/svg/graphql.pug
-      h3.subtitle= title
+    div.card.pink
+      a(href=cardLink)
+        include ../includes/svg/graphql.pug
+        h3.subtitle= title
+      a.button(href=btnLink)= label
+
   else if type === "rest"
-    a.card.blue(href=link)
-      include ../includes/svg/rest.pug
-      h3.subtitle= title
+     div.card.blue
+      a(href=cardLink)
+        include ../includes/svg/rest.pug
+        h3.subtitle= title
+      a.button(href=btnLink)= label
 
