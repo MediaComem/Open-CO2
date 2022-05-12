@@ -48,7 +48,8 @@ async function startServer() {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     introspection: process.env.APOLLO_INTROSPECTION,
     playground: process.env.APOLLO_PLAYGROUND,
-    path: process.env.GRAPHQL_ENDPOINT
+    path: process.env.GRAPHQL_ENDPOINT,
+    debug: process.env.NODE_ENV === "production" ? true : false
   });
 
   // Init view engine
