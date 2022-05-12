@@ -46,12 +46,17 @@ export default class DataParser {
     this.#addCategoryId();
     // 4 – Add reference to children categories
     this.#addChildrens();
-    // 5 – Calculate average for parent categories
-    this.#addAverage();
+    // 5 – Calculate mean for parent categories
+    this.#calculateMeans();
     // 6 – Clean unused keys and order its
     this.#orderObject();
   }
 
+  /**
+   * Make a private function accessible from outside for test purposes
+   * @param {string} method name of the method to test in this class
+   * @returns {Object} function of this class
+   */
   unitTest(method) {
     if (process.env.NODE_ENV !== "test") {
       console.log(process.env.NODE_ENV);
@@ -107,6 +112,9 @@ export default class DataParser {
     }
   }
 
+  /**
+   * 1 – Update object keys from sheet headers
+   */
   #parseRows() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
@@ -160,6 +168,9 @@ export default class DataParser {
     }
   }
 
+  /**
+   * 2 – Construct path (based on unique name)
+   */
   #addPath() {
     // Store deep tree in private var to avoid parsing the tree multiple times
     this.#deepTree = this.#getDeepTree();
@@ -175,6 +186,9 @@ export default class DataParser {
     }
   }
 
+  /**
+   * 3 – Add category ID (hash from fullpath)
+   */
   #addCategoryId() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
@@ -184,6 +198,9 @@ export default class DataParser {
     }
   }
 
+  /**
+   * 4 – Add reference to children categories
+   */
   #addChildrens() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
@@ -204,7 +221,10 @@ export default class DataParser {
     }
   }
 
-  #addAverage() {
+  /**
+   * 5 – Calculate mean for parent categories
+   */
+  #calculateMeans() {
     // Anonymous function to check if all element are the same in given array
     const allEqual = (arr) => arr.every((v) => v === arr[0]);
 
@@ -372,6 +392,9 @@ export default class DataParser {
     }
   }
 
+  /**
+   * 6 – Clean unused keys and order its
+   */
   #orderObject() {
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
