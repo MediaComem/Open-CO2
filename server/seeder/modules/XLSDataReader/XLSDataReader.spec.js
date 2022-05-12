@@ -16,7 +16,8 @@ describe("FileReader", () => {
       "Electricity",
       "Heat",
       "Transports",
-      "Electronics",
+      "IT",
+      "Appliances",
       "Furnitures",
       "Alimentation",
       "Units"
