@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Open CO2 REST API",
-    "version": "1.0.0"
+    "version": "0.2.0"
   },
   "paths": {
     "/rest/infos": {
@@ -37,6 +37,33 @@
                   "items": {
                     "$ref": "#/components/schemas/Unit"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/unit": {
+      "get": {
+        "operationId": "unit_query",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a unit based on its type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
                 }
               }
             }
@@ -109,6 +136,10 @@
             },
             "description": "Get a list of all unit types"
           },
+          "unit": {
+            "$ref": "#/components/schemas/Unit",
+            "description": "Get a unit based on its type"
+          },
           "categories": {
             "type": "array",
             "items": {
@@ -131,7 +162,7 @@
           "name",
           "path",
           "fullPath",
-          "co2eqs"
+          "co2eq"
         ],
         "properties": {
           "id": {
@@ -165,18 +196,15 @@
             },
             "description": "Category subcategories"
           },
-          "childrens": {
+          "children": {
             "type": "array",
             "items": {
               "type": "string"
             },
             "description": "List of subcategories by name"
           },
-          "co2eqs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Co2eq"
-            },
+          "co2eq": {
+            "$ref": "#/components/schemas/Co2eq",
             "description": "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
           }
         },
@@ -241,6 +269,21 @@
           "details": {
             "type": "string",
             "description": "Co2eq details"
+          },
+          "min": {
+            "type": "number",
+            "format": "float",
+            "description": "Co2eq min"
+          },
+          "max": {
+            "type": "number",
+            "format": "float",
+            "description": "Co2eq max"
+          },
+          "standardDeviation": {
+            "type": "number",
+            "format": "float",
+            "description": "Co2eq standard deviation"
           },
           "source": {
             "$ref": "#/components/schemas/Source",
