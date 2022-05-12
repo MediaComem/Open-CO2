@@ -250,6 +250,37 @@
         },
         "description": "A source structure for a CO2eq"
       },
+      "Calculation": {
+        "type": "object",
+        "properties": {
+          "mean": {
+            "type": "number",
+            "format": "float",
+            "description": "mean (μ) – Average value from the children"
+          },
+          "count": {
+            "type": "number",
+            "format": "float",
+            "description": "count (n) – Children amount / Sample size"
+          },
+          "min": {
+            "type": "number",
+            "format": "float",
+            "description": "min – The smallest children value"
+          },
+          "max": {
+            "type": "number",
+            "format": "float",
+            "description": "max – The largest children value"
+          },
+          "standardDeviation": {
+            "type": "number",
+            "format": "float",
+            "description": "standardDeviation (σ) – Population standard deviation (SD)"
+          }
+        },
+        "description": "A source structure for a CO2eq"
+      },
       "Co2eq": {
         "type": "object",
         "properties": {
@@ -270,24 +301,13 @@
             "type": "string",
             "description": "Co2eq details"
           },
-          "min": {
-            "type": "number",
-            "format": "float",
-            "description": "Co2eq min"
-          },
-          "max": {
-            "type": "number",
-            "format": "float",
-            "description": "Co2eq max"
-          },
-          "standardDeviation": {
-            "type": "number",
-            "format": "float",
-            "description": "Co2eq standard deviation"
-          },
           "source": {
             "$ref": "#/components/schemas/Source",
             "description": "Co2eq data source"
+          },
+          "calculationDetails": {
+            "$ref": "#/components/schemas/Calculation",
+            "description": "Co2eq calculation details\n- mean (μ) – Average value from the children\n- count (n) – Children amount / Sample size\n- min – The smallest children value\n- max – The largest children value\n– standardDeviation (σ) – Population standard deviation (SD)"
           }
         },
         "description": "A CO2eq gives an equivalence value of the carbon footprint for a given appliance"

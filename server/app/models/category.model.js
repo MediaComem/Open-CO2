@@ -15,6 +15,24 @@ const SourceSchema = {
   }
 };
 
+const CalculationSchema = {
+  mean: {
+    type: Number
+  },
+  count: {
+    type: Number
+  },
+  min: {
+    type: Number
+  },
+  max: {
+    type: Number
+  },
+  standardDeviation: {
+    type: Number
+  }
+};
+
 const Co2eqSchema = {
   value: {
     type: Number
@@ -29,19 +47,8 @@ const Co2eqSchema = {
     // required: [true, "please add a approximated"]
   },
   details: String,
-  min: {
-    type: Number
-    // required: [true, "please add a value"]
-  },
-  max: {
-    type: Number
-    // required: [true, "please add a value"]
-  },
-  standardDeviation: {
-    type: Number
-    // required: [true, "please add a value"]
-  },
-  source: SourceSchema
+  source: SourceSchema,
+  calculationDetails: CalculationSchema
 };
 
 const CategorySchema = {

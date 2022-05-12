@@ -85,6 +85,22 @@ export const typeDefs = gql`
   }
 
   """
+  A source structure for a CO2eq
+  """
+  type Calculation {
+    "mean (μ) – Average value from the children"
+    mean: Float
+    "count (n) – Children amount / Sample size"
+    count: Float
+    "min – The smallest children value"
+    min: Float
+    "max – The largest children value"
+    max: Float
+    "standardDeviation (σ) – Population standard deviation (SD)"
+    standardDeviation: Float
+  }
+
+  """
   A CO2eq gives an equivalence value of the carbon footprint for a given appliance
   """
   type Co2eq {
@@ -100,14 +116,17 @@ export const typeDefs = gql`
     approximated: Boolean
     "Co2eq details"
     details: String
-    "Co2eq min"
-    min: Float
-    "Co2eq max"
-    max: Float
-    "Co2eq standard deviation"
-    standardDeviation: Float
     "Co2eq data source"
     source: Source
+    """
+    Co2eq calculation details
+    - mean (μ) – Average value from the children
+    - count (n) – Children amount / Sample size
+    - min – The smallest children value
+    - max – The largest children value
+    – standardDeviation (σ) – Population standard deviation (SD)
+    """
+    calculationDetails: Calculation
   }
 
   """
