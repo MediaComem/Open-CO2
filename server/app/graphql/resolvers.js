@@ -35,6 +35,13 @@ export const resolvers = {
         logger.error(error);
       }
     },
+    async unit(parent, args) {
+      try {
+        return await Unit.findOne({ type: args.type });
+      } catch (error) {
+        logger.error(error);
+      }
+    },
     async categories() {
       try {
         return await Category.find();

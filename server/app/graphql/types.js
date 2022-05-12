@@ -9,6 +9,8 @@ export const typeDefs = gql`
     infos: Info
     "Get a list of all unit types"
     units: [Unit]
+    "Get a unit based on its type"
+    unit(type: String!): Unit
     "Get a list of all CO2 value's categories"
     categories: [Category]
     "Get a category based on its name"
