@@ -136,7 +136,6 @@ export default class DataParser {
       // Add name key with value from formatted title
       row.name = formatString(row.title);
       row.uniqueName = formatString(row.title) + `_${i}`;
-
       // Add co2eq object
       if (row.CO2) {
         const source = {
@@ -144,27 +143,25 @@ export default class DataParser {
           url: row.URL,
           year: row.Year
         };
-        row.co2eqs = [
-          {
-            value: row.CO2,
-            unit: row.Unit,
-            approximated: false,
-            details: row.Details,
-            source
-          }
-        ];
+        row.co2eq = {
+          value: row.CO2,
+          unit: row.Unit,
+          approximated: false,
+          details: row.Details,
+          source
+        };
         // Remove some keys
         delete row[`Details`];
         delete row[`Source`];
         delete row[`URL`];
         delete row[`Year`];
+        delete row[`CO2`];
+        delete row[`Unit`];
       } else {
         // Keys to lowercase
         row.details = row.Details;
         delete row[`Details`];
       }
-      delete row[`CO2`];
-      delete row[`Unit`];
     }
   }
 
@@ -174,12 +171,11 @@ export default class DataParser {
   #addPath() {
     // Store deep tree in private var to avoid parsing the tree multiple times
     this.#deepTree = this.#getDeepTree();
-
     // Loop over rows
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
       const path = this.#findNodeInTree(row.uniqueName, this.#deepTree).path;
-
+      // Add base slash and join array items
       row.fullPath = "/" + path.join("/");
       path.pop();
       row.path = "/" + path.join("/");
@@ -208,16 +204,16 @@ export default class DataParser {
     for (let i = 0, l = this.sheet.length; i < l; i++) {
       const row = this.sheet[i];
 
-      const object = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
+      const node = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
 
-      if (object.children && object.children.length > 0) {
-        row.childrens = object.children.flatMap((child) => child.name);
-        row.childrenUniqueNames = object.children.flatMap(
+      if (node.children && node.children.length > 0) {
+        row.children = node.children.flatMap((child) => child.name);
+        row.childrenUniqueNames = node.children.flatMap(
           (child) => child.uniqueName
         );
-        row.childrenIds = object.children.flatMap((child) => child.categoryId);
+        row.childrenIds = node.children.flatMap((child) => child.categoryId);
       } else {
-        row.childrens = null;
+        row.children = null;
         row.childrenIds = null;
       }
     }
@@ -233,29 +229,27 @@ export default class DataParser {
     // Traverse tree from leaf to root
     for (let i = this.sheet.length - 1; i >= 0; i--) {
       const row = this.sheet[i];
-      let object;
+      let node;
 
       if (row.name)
-        object = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
+        node = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
 
       // Row that doesn't have CO2eq
-      if (object.co2eqs === null || !object.co2eqs) {
+      if (node.co2eq === null || !node.co2eq) {
         let childArray;
 
-        if (object.children.length === 1) {
+        if (node.children.length === 1) {
           // console.log("SINGLE CO2 CHILD");
-          childArray = object.children.flatMap((child) => child.co2eqs[0]);
+          childArray = node.children.flatMap((child) => child.co2eq);
         } else {
           // console.log("------------------------------------");
           // console.log("MULTIPLE CO2 CHILD");
-          // console.log(object.name);
+          // console.log(node.name);
           // console.log("------------------------------------");
-
           const flatCo2eqs = [];
-          object.children.forEach((element) => {
-            flatCo2eqs.push(...element.co2eqs);
+          node.children.forEach((element) => {
+            flatCo2eqs.push(element.co2eq);
           });
-
           childArray = flatCo2eqs;
         }
 
@@ -298,8 +292,8 @@ export default class DataParser {
             source
           };
 
-          object.co2eqs = [co2eq];
-          row.co2eqs = [co2eq];
+          node.co2eq = co2eq;
+          row.co2eq = co2eq;
 
           // console.log("-----------------------------------------------------");
           // console.log(`Average for: ${row.name}`);
@@ -318,50 +312,16 @@ export default class DataParser {
           // ----------------------------------------------------------------
 
           // Get list unique child units by remove duplicated ones
-          const uniqueUnits = [...new Set(childUnits)];
 
-          const co2eqs = [];
+          const co2eqObject = {
+            value: null,
+            unit: null,
+            approximated: null,
+            details: `No mean for '${node.title}' category. Open CO2 cannot determine an approximated value because its children categories have different units.`
+          };
 
-          // Loop over unique units
-          for (let i2 = 0, l2 = uniqueUnits.length; i2 < l2; i2++) {
-            // let valuesForUnit = [];
-            const valuesForUnit = [];
-            let co2eqObject;
-
-            // Loop over childs units (and values)
-            for (let i3 = 0, l3 = childUnits.length; i3 < l3; i3++) {
-              if (uniqueUnits[i2] === childUnits[i3]) {
-                // console.log(childValues[j]);
-
-                valuesForUnit.push(childValues[i3]);
-
-                const mean = getMeanFromArray(
-                  valuesForUnit,
-                  this.floatPrecision
-                );
-
-                const deviation = getDeviationFromArray(
-                  valuesForUnit,
-                  this.floatPrecision
-                );
-
-                co2eqObject = {
-                  value: mean,
-                  unit: uniqueUnits[i2],
-                  approximated: true,
-                  details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`,
-                  min: Math.min.apply(Math, childValues),
-                  max: Math.max.apply(Math, childValues),
-                  standardDeviation: deviation
-                };
-              }
-            }
-
-            co2eqs.push(co2eqObject);
-          }
-
-          object.co2eqs = co2eqs;
-          row.co2eqs = co2eqs;
+          node.co2eq = co2eqObject;
+          row.co2eq = co2eqObject;
 
           // console.log("-----------------------------------------------------");
           // console.log(`Average for: ${row.name}`);
@@ -379,12 +339,12 @@ export default class DataParser {
         }
       }
 
-      // if (object.name === "transports") {
+      // if (object.name === "goods") {
       //   console.log("##############################################");
       //   console.log("##############################################");
       //   console.log("##############################################");
       //   console.log(
-      //     util.inspect(object.co2eqs, {
+      //     util.inspect(object.co2eq, {
       //       showHidden: false,
       //       depth: null,
       //       colors: true
@@ -413,7 +373,7 @@ export default class DataParser {
         fullPath: null,
         depth: null,
         details: null,
-        co2eqs: null
+        co2eq: null
       };
       // Reassign object to order its keys
       this.sheet[i] = Object.assign(objectOrder, object);
