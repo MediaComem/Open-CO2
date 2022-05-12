@@ -43,31 +43,31 @@ export function hashString(string, asString, seed) {
 
 /**
  * Calculate the mean value of a series of numbers
- * @param {Array<number>} array the input series of number
+ * @param {Array<number>} numArray the input series of number
  * @param {number} [precision=3] integer to specify the decimal precision of the result
  * @returns {number} mean of the series
  */
-export function getMeanFromArray(array, precision = 3) {
-  const mean = array.reduce((a, b) => a + b, 0) / array.length;
+export function getMeanFromArray(numArray, precision = 3) {
+  const mean = numArray.reduce((a, b) => a + b, 0) / numArray.length;
   return Number(mean.toFixed(precision));
 }
 
 /**
- * Calculate the standard deviation value of a series of numbers
- * @param {Array<number>} array the input series of number
+ * Calculate the standard deviation (SD) value of a series of numbers
+ * @param {Array<number>} numArray the input series of number
  * @param {number} [precision=3] integer to specify the decimal precision of the result
  * @returns {number} standard deviation of the series
  */
-export function getDeviationFromArray(array, precision = 3) {
+export function getDeviationFromArray(numArray, precision = 3) {
   // Mean
-  const mean = getMeanFromArray(array, 6);
+  const mean = getMeanFromArray(numArray, 6);
 
   // Assigning (value - mean) ^ 2 to every array item
-  array = array.map((i) => (i - mean) ** 2);
+  numArray = numArray.map((i) => (i - mean) ** 2);
   // Calculating the sum of updated array
-  const sum = array.reduce((a, b) => a + b, 0);
+  const sum = numArray.reduce((a, b) => a + b, 0);
   // Variance
-  const variance = sum / array.length;
+  const variance = sum / numArray.length;
 
   // Deviation
   return Number(Math.sqrt(variance).toFixed(precision));
