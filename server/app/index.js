@@ -14,6 +14,9 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { useSofa, OpenAPI } from "sofa-api";
 import * as swaggerUi from "swagger-ui-express";
 import { readFile } from "fs/promises";
+const pkg = JSON.parse(
+  await readFile(new URL("./package.json", import.meta.url))
+);
 const swaggerDocument = JSON.parse(
   await readFile(new URL("./swagger.json", import.meta.url))
 );
@@ -45,7 +48,8 @@ async function startServer() {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     introspection: process.env.APOLLO_INTROSPECTION,
     playground: process.env.APOLLO_PLAYGROUND,
-    path: process.env.GRAPHQL_ENDPOINT
+    path: process.env.GRAPHQL_ENDPOINT,
+    debug: process.env.NODE_ENV === "production" ? true : false
   });
 
   // Init view engine
@@ -59,7 +63,7 @@ async function startServer() {
     schema,
     info: {
       title: "Open CO2 REST API",
-      version: "1.0.0"
+      version: pkg.version
     }
   });
   app.use(
@@ -76,7 +80,6 @@ async function startServer() {
     })
   );
   openApi.save("./swagger.json");
-  // openApi.save("./swagger.yml");
   // Server API doc using Swagger
   app.use(
     `${process.env.REST_BASE}/docs`,

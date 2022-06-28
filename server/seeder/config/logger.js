@@ -1,4 +1,4 @@
-import { DEFAULT_LOG_LEVEL, DEFAULT_LOG_DIR } from "./default.js";
+import { DEFAULT_LOG_LEVEL, DEFAULT_LOG_DIR } from "./env.js";
 import * as winston from "winston";
 import "winston-daily-rotate-file";
 
