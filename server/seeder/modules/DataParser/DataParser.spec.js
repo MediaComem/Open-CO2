@@ -1,6 +1,6 @@
 import DataParser from "./DataParser";
 
-describe("FileComposer", () => {
+describe("FileParser", () => {
   it("should construct correctly deep tree", () => {
     const data = [
       { "Level 1": "category", depth: 1 },
@@ -12,9 +12,25 @@ describe("FileComposer", () => {
     ];
     const dataParser = new DataParser(data);
     const deepTree = dataParser.unitTest("getDeepTree");
-    expect(deepTree.children.length).toBe(2);
-    expect(deepTree.children[0].children.length).toBe(1);
-    expect(deepTree.children[1].children.length).toBe(2);
+    expect(deepTree.descendants.length).toBe(2);
+    expect(deepTree.descendants[0].descendants.length).toBe(1);
+    expect(deepTree.descendants[1].descendants.length).toBe(2);
+  });
+  it("should throw an error if level data invalid", () => {
+    const data = [
+      { "Level 1": "category", CO2: 1 },
+      { "Level 2": "subcategory", "Level 3": "sub-subcategory", CO2: 2 }, // 2 subcategories
+      { "Level 3": "sub-subcategory", CO2: 3 },
+    ];
+    expect(() => DataParser.validate(data, 5)).toThrow();
+  });
+  it("should throw an error if CO2 data invalid", () => {
+    const data = [
+      { "Level 1": "category", CO2: 1 },
+      { "Level 2": "subcategory", CO2: '3kg' }, // Nan value
+      { "Level 3": "sub-subcategory", CO2: 3 },
+    ];
+    expect(() => DataParser.validate(data, 5)).toThrow();
   });
   it("should throw an error if more than one root node", () => {
     const data = [
@@ -30,9 +46,9 @@ describe("FileComposer", () => {
     expect(() => dataParser.unitTest("getDeepTree")).toThrow();
   });
   it("should parse correctly subcategories", () => {
-    const data = [{ "Level 1": "category" }, { "Level 2": "subcategory" }];
+    const data = [{ "Level 1": "category", "CO2": undefined }, { "Level 2": "subcategory", "CO2": 1 }];
     const dataParser = new DataParser(data);
-    dataParser.processCategories();
+    dataParser.process();
     expect(data[0].path).toBe("/");
     expect(data[0].fullPath).toBe("/category");
     expect(data[1].path).toBe("/category");

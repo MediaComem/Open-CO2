@@ -1,31 +1,44 @@
 ![Open Database and API for CO₂ equivalencies](./cover.png)
 
-> An open Data Database and API for CO₂ Equivalent Values
+> An open Data Database and API for CO₂ Equivalent Values. Project funded by Innosuisse.
 
 [Project reference on Aramis DB](https://www.aramis-a.admin.ch/Texte/?ProjectID=49723)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Development](#development)
+  - [First-time setup](#first-time-setup)
+  - [Configuration](#configuration)
+  - [Project structure](#project-structure)
+  - [Build](#build)
+  - [Contribution guidelines](#contribution-guidelines)
+  - [Stack](#stack)
+  - [License](#license)
+- [Co2 Data](#co2-data)
+  - [CO2 data structure and modules](#co2-data-structure-and-modules)
+  - [Updating Co2 data](#updating-co2-data)
+  - [Data sources](#data-sources)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 **Open CO2** project enables companies to estimate their CO2 footprint through an open DB and API which can be used with their accounting tool.
 
 ---
 
+# Development
+
 ## First-time setup
 
-Clone this repository:  
+Clone this repository:
 `git clone git@github.com:MediaComem/open-co2.git`
 
-Move to server directory:  
+Move to server directory:
 `cd open-co2/server`
 
-Run stack using docker-compose:  
+Run stack using docker-compose:
 `docker-compose up -d`
-
-<!-- ## Run the server
-
-Development mode (live reload enabled):
-`npm run dev`
-
-Production mode:
-`npm start` -->
 
 ## Configuration
 
@@ -43,7 +56,7 @@ See `server/src/config/default.js` for default values.
 
 ## Project structure
 
-Source code is mostly located in `server`.  
+Source code is mostly located in `server`.
 The `client` directory only provides some applications to consume the API as examples.
 
 The `server`directory is splitted in two main parts:
@@ -74,3 +87,11 @@ The `server`directory is splitted in two main parts:
 ## License
 
 TBD
+
+# Co2 Data
+
+## CO2 data structure and modules
+
+## Updating Co2 data
+
+## Data sources

@@ -7,26 +7,59 @@ import {
 // import util from "util";
 
 /**
- * Class to process XLS sheets and turn it to JS objets
+ * Class to process CO2 Data XLS sheets and turn it to JS objets
  */
 export default class DataParser {
-  #deepTree;
   /**
    * DataParser constructor
-   * @param {Sheet content from fileReader} sheet
+   * @param {Sheet content from fileReader} rows
    */
-  constructor(sheet) {
-    this.sheet = sheet;
+  constructor(rows) {
+    this.rows = rows;
     this.maxDepth = 10;
     this.floatPrecision = 3;
+  }
+
+  /** Validate input CO2 data
+   * @param {array<row>} rows rows object corresponding to content of excel CO2 data sheet
+   * @param {number} maxDepth maximum depth of subcategories
+   * @throws { Error } in case of invalid data
+   * Sheet headers are expected to be `Level 1`, `Level 2`, `Level 3`, etc.
+   * Rows follow that structure:
+   * - Root category row will be {"Level 1": "Title category", "CO2":... }
+   * - Subcategory  { "Level 2": "Title subcategory", "CO2":... }
+   * - sub-Subcategory  { "Level 3": "sub-subcategory", "CO2":... }
+   * Only one `Level x` can be filled
+  */
+  static validate(rows, maxDepth = 10) {
+    for (const row of rows) {
+      const validation = { ...row };
+      // Loop over level's names
+      for (let n = 0; n < maxDepth; n++) {
+        const currentLevel = n + 1;
+        const key = `Level ${currentLevel}`;
+        if (validation[key] !== undefined) {
+          if (validation.depth) {
+            throw new Error(`Row invalid, 2 levels filled - ${validation}`);
+          }
+          // Add depth key from level number
+          validation.depth = currentLevel;
+        }
+      }
+      if (validation.CO2) {
+        if (isNaN(validation.CO2)) {
+          throw new Error(`Co2 value needs to be a number - ${validation.co2} invalid`);
+        }
+      }
+    }
   }
 
   /**
    * Group internal methods to process units sheet
    */
   processUnits() {
-    for (let i = 0, l = this.sheet.length; i < l; i++) {
-      const row = this.sheet[i];
+    for (let i = 0, l = this.rows.length; i < l; i++) {
+      const row = this.rows[i];
       row.type = row.Type;
       row.description = row.Description;
       delete row[`Type`];
@@ -36,20 +69,19 @@ export default class DataParser {
 
   /**
    * Group internal methods and execute in order to process categories sheet
+   * Please see 'Open Co2.xls' file for structure example
    */
-  processCategories() {
-    // 1 – Update object keys from sheet headers
-    this.#parseRows();
-    // 2 – Construct path (based on unique name)
-    this.#addPath();
-    // 3 – Add category ID (hash from fullpath)
-    this.#addCategoryId();
-    // 4 – Add reference to children categories
-    this.#addChildrens();
-    // 5 – Calculate mean for parent categories
-    this.#calculateMeans();
-    // 6 – Clean unused keys and order its
-    this.#orderObject();
+  process() {
+    // 0 - Validate Data
+    DataParser.validate(this.rows, this.maxDepth);
+    // 1 – Parse rows and create tree of CO2 data
+    const tree = this.#parseRows();
+    // 2 – Construct full path (based on unique name) and associated category ids
+    this.#fillPath(tree);
+    // 3 – Add list of children ids, means, etc.
+    this.#extendData(tree);
+    // 4 – Clean unused keys and order its
+    this.#clean();
   }
 
   /**
@@ -65,8 +97,8 @@ export default class DataParser {
     switch (method) {
       case "getDeepTree":
         return this.#getDeepTree();
-      case "findNodeInTree":
-        return this.#findNodeInTree();
+      case "computeTreePath":
+        return this.#computeTreePath();
     }
   }
 
@@ -75,19 +107,31 @@ export default class DataParser {
    * @returns {Object} return the deep tree with all children categories
    */
   #getDeepTree() {
-    const deepTree = [],
-      levels = [deepTree];
+    let deepTree;
+    const nodeChildrens = [[]];
 
-    this.sheet.forEach((row) => {
-      if (row.depth === 1 && levels[0].length > 0) {
-        throw new Error("Only one root node supported");
+    for (const row of this.rows) {
+      const currentDepth = row.depth - 1;
+      const treeNode = {
+        row,
+        descendants: []
+      };
+      if (row.depth === 1) {
+        // root node
+        if (deepTree) {
+          throw new Error("Only one root node supported");
+        } else {
+          deepTree = treeNode;
+        }
+      } else {
+        // new children at level current depth
+        nodeChildrens[currentDepth].push(treeNode);
       }
-      levels[row.depth - 1].push({
-        ...row,
-        children: (levels[row.depth] = [])
-      });
-    });
-    return deepTree[0];
+      // update list of next level children
+      nodeChildrens[currentDepth+1] = treeNode.descendants;
+    };
+    return deepTree;
+
   }
 
   /**
@@ -96,29 +140,30 @@ export default class DataParser {
    * @param {Object} tree the tree to search in
    * @returns {Object} return the node object and its path in an object
    */
-  #findNodeInTree(name, tree) {
-    if (tree.uniqueName === name) {
-      const path = [tree.name];
-      return { node: tree, path };
-    } else if (tree.children) {
-      for (const child of tree.children) {
-        const tmp = this.#findNodeInTree(name, child);
-        if (!(Object.keys(tmp).length === 0 && tmp.constructor === Object)) {
-          tmp.path.unshift(tree.name);
-          return tmp;
+  #computeTreePath(name, treeNode) {
+    const row = treeNode.row;
+    if (row.uniqueName === name) {
+      const path = [row.name];
+      return path;
+    } else if (treeNode.descendants) {
+      for (const descendant of treeNode.descendants) {
+        const path = this.#computeTreePath(name, descendant);
+        if (path) {
+          path.unshift(row.name);
+          return path;
         }
       }
-      return {};
     }
+    return undefined;
   }
 
   /**
-   * 1 – Update object keys from sheet headers
+   * Update object keys from sheet headers and contruct data tree
    */
   #parseRows() {
     // Loop over rows
-    for (let i = 0, l = this.sheet.length; i < l; i++) {
-      const row = this.sheet[i];
+    for (let i = 0, l = this.rows.length; i < l; i++) {
+      const row = this.rows[i];
       // Loop over level's names
       for (let n = 0; n < this.maxDepth; n++) {
         const currentLevel = n + 1;
@@ -163,224 +208,122 @@ export default class DataParser {
         delete row[`Details`];
       }
     }
+    return this.#getDeepTree();
   }
 
   /**
-   * 2 – Construct path (based on unique name)
+   * Fill data path (based on unique name)
    */
-  #addPath() {
-    // Store deep tree in private var to avoid parsing the tree multiple times
-    this.#deepTree = this.#getDeepTree();
+  #fillPath(tree) {
     // Loop over rows
-    for (let i = 0, l = this.sheet.length; i < l; i++) {
-      const row = this.sheet[i];
-      const path = this.#findNodeInTree(row.uniqueName, this.#deepTree).path;
+    for (const row of this.rows) {
+      const path = this.#computeTreePath(row.uniqueName, tree);
       // Add base slash and join array items
       row.fullPath = "/" + path.join("/");
+      // Add category ID (hash from fullpath)
+      row.categoryId = hashString(row.fullPath);
       path.pop();
       row.path = "/" + path.join("/");
     }
   }
 
   /**
-   * 3 – Add category ID (hash from fullpath)
+   * Add reference to children categories, means, etc.
    */
-  #addCategoryId() {
-    // Loop over rows
-    for (let i = 0, l = this.sheet.length; i < l; i++) {
-      const row = this.sheet[i];
-      // Generate hash from fullpath
-      row.categoryId = hashString(row.fullPath);
-    }
-    // Recalculate deep tree to add categoryID
-    this.#deepTree = this.#getDeepTree();
-  }
-
-  /**
-   * 4 – Add reference to children categories
-   */
-  #addChildrens() {
-    // Loop over rows
-    for (let i = 0, l = this.sheet.length; i < l; i++) {
-      const row = this.sheet[i];
-
-      const node = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
-
-      if (node.children && node.children.length > 0) {
-        row.children = node.children.flatMap((child) => child.name);
-        row.childrenUniqueNames = node.children.flatMap(
-          (child) => child.uniqueName
-        );
-        row.childrenIds = node.children.flatMap((child) => child.categoryId);
-      } else {
-        row.children = null;
-        row.childrenIds = null;
-      }
-    }
-  }
-
-  /**
-   * 5 – Calculate mean for parent categories
-   */
-  #calculateMeans() {
+  #extendData(node) {
     // Anonymous function to check if all element are the same in given array
     const allEqual = (arr) => arr.every((v) => v === arr[0]);
-
-    // Traverse tree from leaf to root
-    for (let i = this.sheet.length - 1; i >= 0; i--) {
-      const row = this.sheet[i];
-      let node;
-
-      if (row.name)
-        node = this.#findNodeInTree(row.uniqueName, this.#deepTree).node;
-
-      // Row that doesn't have CO2eq
-      if (node.co2eq === null || !node.co2eq) {
-        let childArray;
-
-        if (node.children.length === 1) {
-          // console.log("SINGLE CO2 CHILD");
-          childArray = node.children.flatMap((child) => child.co2eq);
-        } else {
-          // console.log("------------------------------------");
-          // console.log("MULTIPLE CO2 CHILD");
-          // console.log(node.name);
-          // console.log("------------------------------------");
-          const flatCo2eqs = [];
-          node.children.forEach((element) => {
-            flatCo2eqs.push(element.co2eq);
-          });
-          childArray = flatCo2eqs;
-        }
-
-        // Flatten direct child values
-        const childValues = childArray.flatMap((child) => child.value);
-
-        // Flatten direct child units
-        const childUnits = childArray.flatMap((child) => child.unit);
-
-        let co2eq;
-
-        // console.log();
-        if (allEqual(childUnits)) {
+    // Recursively parse tree nodes
+    if (node.descendants && node.descendants.length > 0) {
+      const row = node.row;
+      for (const descendant of node.descendants) {
+        // extend children first, since computed CO2 may depends on children
+        this.#extendData(descendant);
+      }
+      // Fill children categories
+      row.children = node.descendants.map((child) => child.row.name);
+      row.childrenUniqueNames = node.descendants.map(
+        (child) => child.row.uniqueName
+      );
+      row.childrenIds = node.descendants.map((child) => child.row.categoryId);
+      // Fill co2 based on children value if necessary
+      if (!row.co2eq) {
+        const childrenCO2 = node.descendants.map((child) => child.row.co2eq);
+        const values = childrenCO2.map((co2eq) => co2eq.value);
+        const units = childrenCO2.map((co2eq) => co2eq.unit);
+        const sourcesUrls = childrenCO2.map((co2eq) => co2eq.source?.url);
+        const sourcesTitles = childrenCO2.map((co2eq) => co2eq.source?.title);
+        if (allEqual(units)) {
           // ----------------------------------------------------------------
           // Single unit - Childrens have the same unit
           // ----------------------------------------------------------------
-
           // Calculate mean from child values
-          const mean = getMeanFromArray(childValues, this.floatPrecision);
-
+          const mean = getMeanFromArray(values, this.floatPrecision);
           const deviation = getDeviationFromArray(
-            childValues,
+            values,
             this.floatPrecision
           );
-
+          const uniqueTitles = [...new Set(sourcesTitles)];
+          const uniqueUrls = [...new Set(sourcesUrls)];
           const source = {
-            title: "Open CO2 automatic calculation",
-            url: "https://github.com/MediaComem/open-co2",
+            title: uniqueTitles.join(','),
+            url: uniqueUrls.join(','),
             year: new Date().getFullYear()
           };
-
-          co2eq = {
+          const co2eq = {
             value: mean,
-            unit: childUnits[0],
+            unit: units[0],
             approximated: true,
             details: `Approximated CO2e value for '${row.title}' category. Open CO2 API automatically calculate average from children's categories values.`,
             source,
             calculationDetails: {
               mean: mean,
-              count: childValues.length,
-              min: Math.min.apply(Math, childValues),
-              max: Math.max.apply(Math, childValues),
+              count: values.length,
+              min: Math.min.apply(Math, values),
+              max: Math.max.apply(Math, values),
               standardDeviation: deviation
             }
           };
-
-          node.co2eq = co2eq;
           row.co2eq = co2eq;
-
-          // console.log("-----------------------------------------------------");
-          // console.log(`Average for: ${row.name}`);
-          // console.log("-----------------------------------------------------");
-          // console.log(childArray);
-          // console.log(childValues);
-          // console.log(childUnits);
-          // console.log("✅✅✅");
-          // console.log("Children units are the same");
-          // console.log("✅✅✅");
-          // console.log(`Average: ${average}`);
-          // console.log(object.co2eqs);
         } else {
           // ----------------------------------------------------------------
           // Multiples units - Childrens have different units
           // ----------------------------------------------------------------
-
-          // Get list unique child units by remove duplicated ones
-
           const co2eqObject = {
             value: null,
             unit: null,
             approximated: null,
             details: `No mean for '${node.title}' category. Open CO2 cannot determine an approximated value because its children categories have different units.`
           };
-
-          node.co2eq = co2eqObject;
           row.co2eq = co2eqObject;
-
-          // console.log("-----------------------------------------------------");
-          // console.log(`Average for: ${row.name}`);
-          // console.log("-----------------------------------------------------");
-          // console.log(childArray);
-          // console.log(childValues);
-          // console.log("❌❌❌");
-          // console.log("Children units are different");
-          // console.log("❌❌❌");
-          // console.log(childUnits);
-          // console.log(`Average: ${average}`);
-          // console.log(object.co2eqs);
-          // console.log("Unique units:");
-          // console.log(uniqueUnits);
         }
       }
-
-      // if (object.name === "goods") {
-      //   console.log("##############################################");
-      //   console.log("##############################################");
-      //   console.log("##############################################");
-      //   console.log(
-      //     util.inspect(object.co2eq, {
-      //       showHidden: false,
-      //       depth: null,
-      //       colors: true
-      //     })
-      //   );
-      // }
     }
   }
 
   /**
    * 6 – Clean unused keys and order its
    */
-  #orderObject() {
+  #clean() {
     // Loop over rows
-    for (let i = 0, l = this.sheet.length; i < l; i++) {
-      const object = this.sheet[i];
+    for (let i = 0, l = this.rows.length; i < l; i++) {
+      const row = this.rows[i];
       // Remove some keys
-      delete this.sheet[i].uniqueName;
-      delete this.sheet[i].childrenUniqueNames;
+      delete this.rows[i].uniqueName;
+      delete this.rows[i].childrenUniqueNames;
+      delete this.rows[i].depth;
       // Set object's keys in this order
-      const objectOrder = {
+      const cleanData = {
         categoryId: null,
         title: null,
         name: null,
         path: null,
         fullPath: null,
-        depth: null,
         details: null,
         co2eq: null
       };
       // Reassign object to order its keys
-      this.sheet[i] = Object.assign(objectOrder, object);
+      this.rows[i] = Object.assign(cleanData, row);
     }
   }
 }

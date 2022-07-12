@@ -20,7 +20,7 @@ const unitsConfig = {
   sheets: ["Units"]
 };
 
-function processCategoriesFromConfig(config) {
+function processCategories(config) {
   let consolidatedData = [];
 
   for (let i = 0, l = config.sheets.length; i < l; i++) {
@@ -28,8 +28,8 @@ function processCategoriesFromConfig(config) {
     const rawContent = xlsDataReader.getSheetContent(sheetName);
     const dataParser = new DataParser(rawContent);
     // Start processing sheet
-    dataParser.processCategories();
-    consolidatedData.push(...dataParser.sheet);
+    dataParser.process();
+    consolidatedData.push(...dataParser.rows);
   }
 
   // Save JSON file
@@ -42,7 +42,7 @@ function processCategoriesFromConfig(config) {
 }
 
 // Generate categories file
-processCategoriesFromConfig(categoriesConfig);
+processCategories(categoriesConfig);
 
 // Generate units file
 const rawContent = xlsDataReader.getSheetContent(unitsConfig.sheets[0]);
@@ -53,18 +53,7 @@ dataParser.processUnits();
 // Save JSON file
 const fileExporter = new FileExporter();
 fileExporter.saveAsJsonFile(
-  [...dataParser.sheet],
+  [...dataParser.rows],
   unitsConfig.fileName,
   unitsConfig.varName
 );
-
-// console.dir(consolidatedCategories, { deep: null });
-// import util from "util";
-// console.log(
-//   util.inspect(consolidatedCategories, {
-//     depth: null,
-//     showHidden: false,
-//     colors: true
-//   })
-// );
-// console.log(`Number of categories: ${consolidatedCategories.length}`);
