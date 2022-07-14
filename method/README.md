@@ -18,6 +18,8 @@ Due to the expected use case, the CO2 equivalent data in the database correspond
 
 The end-of-life analysis is considered insignificant for most of the assessed products. In case it has a significant impact, it has been added to the value returned by the API. See [End of life relative contribution Analysis](raw%20data/EndOfLifeAnalysis.pdf).
 
+Although most of the data are independent of the location, the database is targeted to be used for use cases in **Switzerland**. In particular energy information are based on swiss electricity providers and swiss energy mix, public transports on swiss public transport providers.
+
 ## Data source
 
 You can check the details of the sources used for a specific data by checking the *source* field of the data returned by the API. The number of sources have been limited to keep consistency between data sources. As a basic rule, only one source is used for a specific field.
