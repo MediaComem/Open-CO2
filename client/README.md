@@ -3,6 +3,7 @@
 When deploying the stack using docker-compose, a "GraphQL Playground" service is accessible by default [on port 4200](http://localhost:4200/), which allows you to consult the documented GraphQL API schema and perform queries.
 
 Try this query to access all categories and related CO2eq:
+
 ```graphql
 {
   categories {
@@ -23,5 +24,5 @@ Try this query to access all categories and related CO2eq:
 ## API development tool
 
 - [ ] Postman
-- [ ] Hoppscotch
+- [x] Hoppscotch
 - [x] Apollo Studio
