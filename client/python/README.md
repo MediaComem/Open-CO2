@@ -6,7 +6,7 @@ Activate venv:
 `source venv/bin/activate`
 
 Install modules:  
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 Run script:  
 `python3 main.py`
