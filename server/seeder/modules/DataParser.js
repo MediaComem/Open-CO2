@@ -13,7 +13,7 @@ class DataParser {
   /**
    * DataParser constructor4
    * @constructor
-   * @param {Sheet content from fileReader} rows
+   * @param {Object} rows Sheet content from fileReader
    */
   constructor(rows) {
     this.rows = rows;
