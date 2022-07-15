@@ -6,7 +6,7 @@ const pkg = JSON.parse(
 );
 // Get environment
 const environment = process.env.NODE_ENV;
-// Get date fot footer
+// Get date for footer
 function creditYears() {
   const currentYear = new Date().getFullYear();
   if (currentYear > 2022) return `2022-${currentYear}`;
