@@ -1,10 +1,12 @@
 ![Open Database and API for CO₂ equivalencies](./cover.png)
 
-> An open Data Database and API for CO₂ Equivalent Values
+>**This Database for CO₂ Equivalent Values is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/**
+
+An open Data Database and API for CO₂ Equivalent Values. Project funded by [Innosuisse](https://www.innosuisse.ch).
 
 [Project reference on Aramis DB](https://www.aramis-a.admin.ch/Texte/?ProjectID=49723)
 
-**Open CO2** project enables companies to estimate their CO2 footprint through an open DB and API which can be used with their accounting tool.
+**Open CO2** project enables companies to estimate their CO2 footprint through an open DB and API which can be used with their accounting tool. Although most of the data are independent of the location, the database is targeted to be used by companies operating in **Switzerland**. In particular energy information are based on swiss electricity providers and swiss energy mix, public transports on swiss public transport providers.
 
 ---
 
@@ -73,4 +75,9 @@ The `server`directory is splitted in two main parts:
 
 ## License
 
-TBD
+Data(base) is licensed under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/
+Source code is licensed under the MIT License.
+
+## Co2 Data
+
+See [Method](method/README.md).
