@@ -3,6 +3,8 @@
 # ----------------------------------------------------------
 # Node base image with the latest LTS version
 FROM node:16.14.2 as seeder
+# Updates
+RUN npm install -g npm@latest
 # Changes working directory
 WORKDIR /usr/src/seeder
 # Create and assign user/group permissions
@@ -23,6 +25,8 @@ RUN npm start
 # ----------------------------------------------------------
 # Node base image with the latest LTS version
 FROM node:16.14.2
+# Updates
+RUN npm install -g npm@latest
 # Changes working directory
 WORKDIR /usr/src/app
 # Create and assign user/group permissions
