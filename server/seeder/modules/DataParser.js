@@ -31,7 +31,7 @@ class DataParser {
    * - Subcategory  { "Level 2": "Title subcategory", "CO2":... }
    * - sub-Subcategory  { "Level 3": "sub-subcategory", "CO2":... }
    * Only one `Level x` can be filled
-  */
+   */
   static validate(rows, maxDepth = 10) {
     for (const row of rows) {
       const validation = { ...row };
@@ -49,7 +49,9 @@ class DataParser {
       }
       if (validation.CO2) {
         if (isNaN(validation.CO2)) {
-          throw new Error(`Co2 value needs to be a number - ${validation.co2} invalid`);
+          throw new Error(
+            `Co2 value needs to be a number - ${validation.co2} invalid`
+          );
         }
       }
     }
@@ -131,10 +133,9 @@ class DataParser {
         nodeChildrens[currentDepth].push(treeNode);
       }
       // update list of next level children
-      nodeChildrens[currentDepth+1] = treeNode.descendants;
-    };
+      nodeChildrens[currentDepth + 1] = treeNode.descendants;
+    }
     return deepTree;
-
   }
 
   /**
@@ -262,15 +263,12 @@ class DataParser {
           // ----------------------------------------------------------------
           // Calculate mean from child values
           const mean = getMeanFromArray(values, this.floatPrecision);
-          const deviation = getDeviationFromArray(
-            values,
-            this.floatPrecision
-          );
+          const deviation = getDeviationFromArray(values, this.floatPrecision);
           const uniqueTitles = [...new Set(sourcesTitles)];
           const uniqueUrls = [...new Set(sourcesUrls)];
           const source = {
-            title: uniqueTitles.join(','),
-            url: uniqueUrls.join(','),
+            title: uniqueTitles.join(","),
+            url: uniqueUrls.join(","),
             year: new Date().getFullYear()
           };
           const co2eq = {
