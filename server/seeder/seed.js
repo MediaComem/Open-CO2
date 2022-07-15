@@ -1,6 +1,6 @@
-import XLSDataReader from "./modules/XLSDataReader/XLSDataReader.js";
-import DataParser from "./modules/DataParser/DataParser.js";
-import FileExporter from "./modules/fileExporter/fileExporter.js";
+import XLSDataReader from "./modules/XLSDataReader.js";
+import DataParser from "./modules/DataParser.js";
+import FileExporter from "./modules/FileExporter.js";
 
 // Excel file used as input
 const inputFile = "./data/input/Open CO2.xlsx";
@@ -8,12 +8,22 @@ const inputFile = "./data/input/Open CO2.xlsx";
 // Read file
 const xlsDataReader = new XLSDataReader(inputFile);
 
+/**
+ * Configuration object to export categories sheets
+ * @constant
+ * @type {Object}
+ */
 const categoriesConfig = {
   fileName: "data/output/categories.js",
   varName: "categoriesData",
   sheets: ["Electricity", "Heat", "Transports"]
 };
 
+/**
+ * Configuration object to export units sheet
+ * @constant
+ * @type {Object}
+ */
 const unitsConfig = {
   fileName: "data/output/units.js",
   varName: "unitsData",
