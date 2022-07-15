@@ -14,12 +14,13 @@ services:
       dockerfile: Dockerfile
     image: open-co2-server
     container_name: server
+    restart: on-failure
     volumes:
       - open-co2-seeder-data:/usr/src/app/data/
     ports:
       - "4000:4000"
-    # depends_on:
-    #   - database
+    links:
+      - database
     networks:
       - open-co2
   # ========================================================
