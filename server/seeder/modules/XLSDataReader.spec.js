@@ -1,6 +1,6 @@
 import XLSDataReader from "./XLSDataReader";
 
-describe("FileReader", () => {
+describe("XLSDataReader", () => {
   const xlsDataReader = new XLSDataReader("./data/input/Open CO2.xlsx");
   it("getSheets() should return an array", () => {
     const sheets = xlsDataReader.getSheets();

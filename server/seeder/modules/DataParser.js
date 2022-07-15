@@ -3,15 +3,16 @@ import {
   hashString,
   getMeanFromArray,
   getDeviationFromArray
-} from "../../helpers/utils.js";
+} from "../helpers/utils.js";
 // import util from "util";
 
 /**
  * Class to process CO2 Data XLS sheets and turn it to JS objets
  */
-export default class DataParser {
+class DataParser {
   /**
-   * DataParser constructor
+   * DataParser constructor4
+   * @constructor
    * @param {Sheet content from fileReader} rows
    */
   constructor(rows) {
@@ -104,6 +105,8 @@ export default class DataParser {
 
   /**
    * Construct and return a deep tree with children categories
+   * @private
+   * @throws {Error} Only one root node supported
    * @returns {Object} return the deep tree with all children categories
    */
   #getDeepTree() {
@@ -327,3 +330,5 @@ export default class DataParser {
     }
   }
 }
+
+export default DataParser;

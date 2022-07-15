@@ -2,11 +2,17 @@ import XLSX from "xlsx";
 
 /**
  * Class to read XLS file and extract sheets content
+ * @example const xlsDataReader = new XLSDataReader("myExcelFile.xlsx");
  */
-export default class XLSDataReader {
+class XLSDataReader {
+  /**
+   * @type {Array}
+   * @private
+   */
   #workbook;
   /**
    * XLSDataReader constructor
+   * @constructor
    * @param {string} xlsFile path to XLS file
    */
   constructor(xlsFile) {
@@ -51,3 +57,5 @@ export default class XLSDataReader {
     return data;
   }
 }
+
+export default XLSDataReader;
