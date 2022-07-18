@@ -3,16 +3,17 @@ import {
   hashString,
   getMeanFromArray,
   getDeviationFromArray
-} from "../../helpers/utils.js";
+} from "../helpers/utils.js";
 // import util from "util";
 
 /**
  * Class to process CO2 Data XLS sheets and turn it to JS objets
  */
-export default class DataParser {
+class DataParser {
   /**
-   * DataParser constructor
-   * @param {Sheet content from fileReader} rows
+   * DataParser constructor4
+   * @constructor
+   * @param {Object} rows Sheet content from fileReader
    */
   constructor(rows) {
     this.rows = rows;
@@ -30,7 +31,7 @@ export default class DataParser {
    * - Subcategory  { "Level 2": "Title subcategory", "CO2":... }
    * - sub-Subcategory  { "Level 3": "sub-subcategory", "CO2":... }
    * Only one `Level x` can be filled
-  */
+   */
   static validate(rows, maxDepth = 10) {
     for (const row of rows) {
       const validation = { ...row };
@@ -48,7 +49,9 @@ export default class DataParser {
       }
       if (validation.CO2) {
         if (isNaN(validation.CO2)) {
-          throw new Error(`Co2 value needs to be a number - ${validation.co2} invalid`);
+          throw new Error(
+            `Co2 value needs to be a number - ${validation.co2} invalid`
+          );
         }
       }
     }
@@ -104,6 +107,8 @@ export default class DataParser {
 
   /**
    * Construct and return a deep tree with children categories
+   * @private
+   * @throws {Error} Only one root node supported
    * @returns {Object} return the deep tree with all children categories
    */
   #getDeepTree() {
@@ -128,10 +133,9 @@ export default class DataParser {
         nodeChildrens[currentDepth].push(treeNode);
       }
       // update list of next level children
-      nodeChildrens[currentDepth+1] = treeNode.descendants;
-    };
+      nodeChildrens[currentDepth + 1] = treeNode.descendants;
+    }
     return deepTree;
-
   }
 
   /**
@@ -259,15 +263,12 @@ export default class DataParser {
           // ----------------------------------------------------------------
           // Calculate mean from child values
           const mean = getMeanFromArray(values, this.floatPrecision);
-          const deviation = getDeviationFromArray(
-            values,
-            this.floatPrecision
-          );
+          const deviation = getDeviationFromArray(values, this.floatPrecision);
           const uniqueTitles = [...new Set(sourcesTitles)];
           const uniqueUrls = [...new Set(sourcesUrls)];
           const source = {
-            title: uniqueTitles.join(','),
-            url: uniqueUrls.join(','),
+            title: uniqueTitles.join(","),
+            url: uniqueUrls.join(","),
             year: new Date().getFullYear()
           };
           const co2eq = {
@@ -327,3 +328,5 @@ export default class DataParser {
     }
   }
 }
+
+export default DataParser;

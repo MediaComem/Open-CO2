@@ -4,7 +4,7 @@
  * @returns {string} output string in snake case format
  * @throws {ParamTypeError} throw error if param isn't a string
  */
-export function formatString(string) {
+function formatString(string) {
   // If not a string
   if (!(string && (typeof string === "string" || string instanceof String)))
     throw new Error(
@@ -22,13 +22,14 @@ export function formatString(string) {
 
 /**
  * Calculate a 32 bit FNV-1a hash
- * Ref.: http://isthe.com/chongo/tech/comp/fnv/ / https://gist.github.com/vaiorabbit/5657561
+ * @see http://isthe.com/chongo/tech/comp/fnv/
+ * @see https://gist.github.com/vaiorabbit/5657561
  * @param {string} str the input value
  * @param {boolean} [asString=false] set to true to return the hash value as 8-digit hex string instead of an integer
  * @param {integer} [seed] optionally pass the hash of the previous chunk
  * @returns {integer | string} hash
  */
-export function hashString(string, asString, seed) {
+function hashString(string, asString, seed) {
   let hval = seed === undefined ? 0x811c9dc5 : seed;
 
   for (let i = 0, l = string.length; i < l; i++) {
@@ -47,7 +48,7 @@ export function hashString(string, asString, seed) {
  * @param {number} [precision=3] integer to specify the decimal precision of the result
  * @returns {number} mean of the series
  */
-export function getMeanFromArray(numArray, precision = 3) {
+function getMeanFromArray(numArray, precision = 3) {
   const mean = numArray.reduce((a, b) => a + b, 0) / numArray.length;
   return Number(mean.toFixed(precision));
 }
@@ -58,7 +59,7 @@ export function getMeanFromArray(numArray, precision = 3) {
  * @param {number} [precision=3] integer to specify the decimal precision of the result
  * @returns {number} standard deviation of the series
  */
-export function getDeviationFromArray(numArray, precision = 3) {
+function getDeviationFromArray(numArray, precision = 3) {
   // Mean
   const mean = getMeanFromArray(numArray, 6);
 
@@ -72,3 +73,5 @@ export function getDeviationFromArray(numArray, precision = 3) {
   // Deviation
   return Number(Math.sqrt(variance).toFixed(precision));
 }
+
+export { formatString, hashString, getMeanFromArray, getDeviationFromArray };

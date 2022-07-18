@@ -1,6 +1,9 @@
 import DataParser from "./DataParser";
 
-describe("FileParser", () => {
+/**
+ * @test {DataParser}
+ */
+describe("DataParser", () => {
   it("should construct correctly deep tree", () => {
     const data = [
       { "Level 1": "category", depth: 1 },
@@ -20,15 +23,15 @@ describe("FileParser", () => {
     const data = [
       { "Level 1": "category", CO2: 1 },
       { "Level 2": "subcategory", "Level 3": "sub-subcategory", CO2: 2 }, // 2 subcategories
-      { "Level 3": "sub-subcategory", CO2: 3 },
+      { "Level 3": "sub-subcategory", CO2: 3 }
     ];
     expect(() => DataParser.validate(data, 5)).toThrow();
   });
   it("should throw an error if CO2 data invalid", () => {
     const data = [
       { "Level 1": "category", CO2: 1 },
-      { "Level 2": "subcategory", CO2: '3kg' }, // Nan value
-      { "Level 3": "sub-subcategory", CO2: 3 },
+      { "Level 2": "subcategory", CO2: "3kg" }, // Nan value
+      { "Level 3": "sub-subcategory", CO2: 3 }
     ];
     expect(() => DataParser.validate(data, 5)).toThrow();
   });
@@ -45,8 +48,14 @@ describe("FileParser", () => {
     const dataParser = new DataParser(data);
     expect(() => dataParser.unitTest("getDeepTree")).toThrow();
   });
+  /**
+   * @test {DataParser#processCategories}
+   */
   it("should parse correctly subcategories", () => {
-    const data = [{ "Level 1": "category", "CO2": undefined }, { "Level 2": "subcategory", "CO2": 1 }];
+    const data = [
+      { "Level 1": "category", CO2: undefined },
+      { "Level 2": "subcategory", CO2: 1 }
+    ];
     const dataParser = new DataParser(data);
     dataParser.process();
     expect(data[0].path).toBe("/");
