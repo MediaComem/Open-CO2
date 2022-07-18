@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Open CO2 REST API",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "paths": {
     "/rest/infos": {
@@ -205,7 +205,7 @@
           },
           "co2eq": {
             "$ref": "#/components/schemas/Co2eq",
-            "description": "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
+            "description": "A CO2eq gives an equivalence estimation value of the carbon footprint in kg CO2Eq for a given unit"
           }
         },
         "description": "A category is a group of CO2 values equivalents with a common thematic"
@@ -216,11 +216,13 @@
           "type": {
             "type": "string",
             "enum": [
-              "KWH",
-              "TKM",
-              "H",
-              "PKM",
-              "G_CO2_KWH"
+              "KG_CO2_PER_UNIT",
+              "KG_CO2_PER_KWH",
+              "KG_CO2_PER_TKM",
+              "KG_CO2_PER_KG",
+              "KG_CO2_PER_H",
+              "KG_CO2_PER_PKM",
+              "KG_CO2_PER_PERSON_NIGHT"
             ],
             "description": "Unit type defined by a strict list of units"
           },
@@ -291,7 +293,7 @@
           },
           "unit": {
             "type": "string",
-            "description": "Co2eq unit"
+            "description": "unit"
           },
           "approximated": {
             "type": "boolean",

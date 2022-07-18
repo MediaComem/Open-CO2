@@ -47,7 +47,7 @@ export const typeDefs = gql`
     # childrenIds: [Int]
     # "Category CO2 values"
     # co2eqs: [Co2eq]!
-    "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
+    "A CO2eq gives an equivalence estimation value of the carbon footprint in kg CO2Eq for a given unit"
     co2eq: Co2eq!
   }
 
@@ -65,11 +65,13 @@ export const typeDefs = gql`
   UnitEnum defines a static list of units used by Co2eq
   """
   enum UnitEnum {
-    KWH
-    TKM
-    H
-    PKM
-    G_CO2_KWH
+    KG_CO2_PER_UNIT
+    KG_CO2_PER_KWH
+    KG_CO2_PER_TKM
+    KG_CO2_PER_KG
+    KG_CO2_PER_H
+    KG_CO2_PER_PKM
+    KG_CO2_PER_PERSON_NIGHT
   }
 
   """
@@ -106,7 +108,7 @@ export const typeDefs = gql`
   type Co2eq {
     "Co2eq value"
     value: Float
-    "Co2eq unit"
+    "unit"
     unit: String
     """
     Is this CO2eq value approximated or not?

@@ -186,7 +186,7 @@ class DataParser {
       row.name = formatString(row.title);
       row.uniqueName = formatString(row.title) + `_${i}`;
       // Add co2eq object
-      if (row.CO2) {
+      if (row.CO2 !== undefined) {
         const source = {
           title: row.Source,
           url: row.URL,
