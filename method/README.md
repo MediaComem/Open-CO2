@@ -6,7 +6,7 @@ The data are based on Life Cycle Assessment (LCA).
 
 ## Scope
 
-The expected use case of the data from this repository is for SMEs to estimate a simplified company's carbon footprint based on easy accessible data.  
+The expected use case of the data from this repository is for SMEs to estimate a simplified company's carbon footprint based on easy accessible data.
 Here are the most relevant categories identified:
 
 - Energy consumption (electricity / heating)
@@ -23,7 +23,7 @@ Although most of the data are independent of the location, the database is targe
 
 ## Data source
 
-You can check the details of the sources used for a specific data by checking the `source` field of the data returned by the API.  
+You can check the details of the sources used for a specific data by checking the `source` field of the data returned by the API.
 The number of sources has been limited to keep consistency between data sources. As a basic rule, only one source is used for a specific field.
 
 Here are the main external sources used:
@@ -34,4 +34,4 @@ Here are the main external sources used:
 
 The consolidation, analysis and verification of data for the version 1.0 was conducted by the [IGT](https://heig-vd.ch/rad/instituts/igt) from the Swiss Universities of Applied Science Wester Switzerland.
 
-More information on original data and hypotheses are available in the [raw data](raw%20data/) folder.
+More information for derived data (original data and hypotheses) are available in the [raw data](raw%20data/) folder.

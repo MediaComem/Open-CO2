@@ -23,6 +23,6 @@ Try this query to access all categories and related CO2eq:
 
 ## API development tool
 
-- [ ] Postman
+- [x] Postman
 - [x] Hoppscotch
 - [x] Apollo Studio
