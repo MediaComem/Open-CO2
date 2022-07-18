@@ -6,69 +6,9 @@
     "requests": [
       {
         "v": 2,
-        "name": "co2values",
+        "name": "infos",
         "url": "http://localhost:4000/graphql",
-        "query": "query co2Values {\n  co2Values {\n    id\n    unit {\n  \t\tname\n    }\n  \tvalue\n  \tdescription\n  \tisAverage\n  \tsource\n  \t#dateOfReference\n  \t#dateOfLatestUpdate\n  }\n}\n",
-        "headers": [],
-        "variables": "{\n  \"id\": \"1\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "categories",
-        "url": "http://localhost:4000/graphql",
-        "query": "query categories {\n  categories {\n    id\n  \tname\n    description\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
-        "headers": [],
-        "variables": "{\n  \"id\": \"1\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "unitTypes",
-        "url": "http://localhost:4000/graphql",
-        "query": "query unitTypes {\n  __type(name:\"Unit\"){\n    name\n    enumValues{\n      name\n    }\n  }\n}",
-        "headers": [],
-        "variables": "{\n  \"id\": \"1\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "categoryById",
-        "url": "http://localhost:4000/graphql",
-        "query": "query categoryById($id: ID!) {\n  categoryById(id: $id) {\n    id\n  \tname\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  }\n}\n",
-        "headers": [],
-        "variables": "{\n  \"id\": \"1100\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "unitTypes",
-        "url": "http://localhost:4000/graphql",
-        "query": "query unitTypes {\n  __type(name:\"UnitEnum\"){\n    name\n    enumValues{\n      name\n    }\n  }\n}",
+        "query": "query Infos {\n  infos {\n    name\n    version\n    description\n    homepage\n    categories\n    units\n  }\n}\n",
         "headers": [],
         "variables": "{\n  \"id\": \"1\"\n}",
         "auth": {
@@ -83,7 +23,7 @@
         "v": 2,
         "name": "units",
         "url": "http://localhost:4000/graphql",
-        "query": "query units {\n  units {\n    name\n    description\n  }\n}\n",
+        "query": "query Units {\n  units {\n    type\n    description\n  }\n}",
         "headers": [],
         "variables": "{\n  \"id\": \"1\"\n}",
         "auth": {
@@ -96,11 +36,11 @@
       },
       {
         "v": 2,
-        "name": "categoryByName - Simple",
+        "name": "unitByType",
         "url": "http://localhost:4000/graphql",
-        "query": "query categoryByNameSimple($name: String!) {\n  categoryByName(name: $name) {\n    id\n  \tdescription\n  \tcategories {\n  \t\tid\n  \t\tname\n    }\n  \tco2values {\n  \t\tdescription\n  \t\tvalue\n    }\n  }\n}\n",
+        "query": "query UnitByType($type: String!) {\n  unit(type: $type) {\n    type\n    description\n  }\n}",
         "headers": [],
-        "variables": "{\n  \"name\": \"electricity_mix\"\n}",
+        "variables": "{\n  \"type\": \"KWH\"\n}",
         "auth": {
           "authType": "none",
           "authActive": true,
@@ -111,11 +51,26 @@
       },
       {
         "v": 2,
-        "name": "categoryByName - Path",
+        "name": "CategoriesFull",
         "url": "http://localhost:4000/graphql",
-        "query": "query categoryByNamePath {\n  #categoryByName(name: \"energy\") {\n  #categoryByName(name: \"energy/electricity\") {\n  categoryByName(name: \"energy/electricity/grid\") {\n    id\n  \tdescription\n  \tcategories {\n  \t\tname\n    }\n  \tco2values {\n  \t\tdescription\n  \t\tvalue\n    }\n  }\n}\n",
+        "query": "query CategoriesFull {\n  categories {\n    id\n    title\n    name\n    path\n    fullPath\n    details\n    categories {\n      name\n    }\n    children\n     co2eq {\n        value\n        unit\n        approximated\n        details\n        source {\n          title\n          url\n          year\n        }\n        calculationDetails {\n          mean\n          count\n          min\n          max\n          standardDeviation\n        }\n      }\n  }\n}",
         "headers": [],
-        "variables": "{\n  \"id\": \"1\"\n}",
+        "variables": "{\n  \"type\": \"KWH\"\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "CategoryByName",
+        "url": "http://localhost:4000/graphql",
+        "query": "query CategoryByName($name: String!) {\n  category(name: $name) {\n    name\n    path\n    categories {\n      name\n    }\n  }\n}",
+        "headers": [],
+        "variables": "{\n  \"name\": \"electricity\"\n}",
         "auth": {
           "authType": "none",
           "authActive": true,
