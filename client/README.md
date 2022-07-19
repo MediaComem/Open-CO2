@@ -19,10 +19,9 @@ Try this query to access all categories and related CO2eq:
 ## Client implementation
 
 - [x] Python
-- [ ] Vue
 
 ## API development tool
 
-- [ ] Postman
+- [x] Postman
 - [x] Hoppscotch
 - [x] Apollo Studio

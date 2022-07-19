@@ -15,10 +15,10 @@ Project funded by [Innosuisse](https://www.innosuisse.ch).
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-## **Table of Contents**
-
-- [**Table of Contents**](#table-of-contents)
 - [First-time setup](#first-time-setup)
+- [Test the API](#test-the-api)
+  - [GraphQL API](#graphql-api)
+  - [REST API](#rest-api)
 - [Configuration](#configuration)
 - [Project structure](#project-structure)
 - [Contribution guidelines](#contribution-guidelines)
@@ -40,8 +40,26 @@ Project funded by [Innosuisse](https://www.innosuisse.ch).
 - Move to server directory:
   `cd open-co2/server`
 
-- Run stack using docker-compose:  
-  `docker-compose up -d`
+- Run stack using docker-compose:
+  `docker-compose up --build -d`
+
+See [Co2 Data](#co2-data) in case you want to update the input data.
+
+## Test the API
+
+The GraphQl documentation is available directly through the GraphQL endpoint and the schema can be browsed using any GraphQL client.
+The [Open API documentation for the REST API](./server/app/swagger.json) is available and can be visualised using [Swagger editor](https://editor.swagger.io)
+
+You have different options to test the API:
+
+### GraphQL API
+
+- Use Apollo Stuido sandbox. Open your browser to https://studio.apollographql.com/sandbox/explorer
+- Use GraphQL playground. Open your browser to http://localhost:4200/
+
+### REST API
+
+- Use Postman by importing the [Open API documentation](./server/app/swagger.json)
 
 ## Configuration
 
@@ -89,9 +107,17 @@ The `server` directory is splitted in two main parts:
 
 ## License
 
-Data(base) is licensed under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/
+Data(base) is licensed under the [Open Database License](http://opendatacommons.org/licenses/odbl/1.0/)
 Source code is licensed under the MIT License.
 
 ## Co2 Data
 
 See [Method](method/README.md).
+
+In case you update the input data, do not forget to:
+
+1. Update the excel file _seeder/data/input/Open CO2.xlsx_
+1. Update the list of first level categories in _seeder/seed.js_ if needed
+1. Run the seeder _cd server/seeder_ and _npm run start_
+1. Drop the current mongo table _docker-compose down -v_
+1. Rebuild and repopulate data _docker-compose up -d_

@@ -1,16 +1,16 @@
 [
   {
     "v": 1,
-    "name": "Open CO2",
+    "name": "Open CO2 API",
     "folders": [],
     "requests": [
       {
         "v": 2,
-        "name": "infos",
+        "name": "Infos",
         "url": "http://localhost:4000/graphql",
-        "query": "query Infos {\n  infos {\n    name\n    version\n    description\n    homepage\n    categories\n    units\n  }\n}\n",
         "headers": [],
         "variables": "{\n  \"id\": \"1\"\n}",
+        "query": "query Query {\n  infos {\n    name\n    version\n    description\n    homepage\n    categories\n    units\n  }\n}",
         "auth": {
           "authType": "none",
           "authActive": true,
@@ -21,56 +21,41 @@
       },
       {
         "v": 2,
-        "name": "units",
+        "name": "Categories summary",
         "url": "http://localhost:4000/graphql",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
+        "query": "query Categories {\n  categories {\n    title\n    name\n    co2eq {\n      value\n      unit\n    }\n  }\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "Units",
+        "url": "http://localhost:4000/graphql",
+        "headers": [],
+        "variables": "{\n  \"id\": \"1\"\n}",
         "query": "query Units {\n  units {\n    type\n    description\n  }\n}",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        }
+      },
+      {
+        "v": 2,
+        "name": "Units",
+        "url": "http://localhost:4000/graphql",
         "headers": [],
         "variables": "{\n  \"id\": \"1\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "unitByType",
-        "url": "http://localhost:4000/graphql",
-        "query": "query UnitByType($type: String!) {\n  unit(type: $type) {\n    type\n    description\n  }\n}",
-        "headers": [],
-        "variables": "{\n  \"type\": \"KWH\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "CategoriesFull",
-        "url": "http://localhost:4000/graphql",
-        "query": "query CategoriesFull {\n  categories {\n    id\n    title\n    name\n    path\n    fullPath\n    details\n    categories {\n      name\n    }\n    children\n     co2eq {\n        value\n        unit\n        approximated\n        details\n        source {\n          title\n          url\n          year\n        }\n        calculationDetails {\n          mean\n          count\n          min\n          max\n          standardDeviation\n        }\n      }\n  }\n}",
-        "headers": [],
-        "variables": "{\n  \"type\": \"KWH\"\n}",
-        "auth": {
-          "authType": "none",
-          "authActive": true,
-          "addTo": "Headers",
-          "key": "",
-          "value": ""
-        }
-      },
-      {
-        "v": 2,
-        "name": "CategoryByName",
-        "url": "http://localhost:4000/graphql",
-        "query": "query CategoryByName($name: String!) {\n  category(name: $name) {\n    name\n    path\n    categories {\n      name\n    }\n  }\n}",
-        "headers": [],
-        "variables": "{\n  \"name\": \"electricity\"\n}",
+        "query": "query Co2SpecificCategory {\n  category(name: \"smartphone\") {\n    title\n    name\n    details\n    children\n    co2eq {\n      value\n      unit\n      approximated\n      details\n      source {\n        title\n        url\n        year\n      }\n      calculationDetails {\n        mean\n        count\n        min\n        max\n        standardDeviation\n      }\n    }\n  }\n}",
         "auth": {
           "authType": "none",
           "authActive": true,
