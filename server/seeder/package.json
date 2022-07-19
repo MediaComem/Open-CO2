@@ -11,7 +11,11 @@
     "release": "standard-version",
     "lint": "npx eslint './**'",
     "test": "jest --config=jest.config.js",
-    "test-watch": "jest --config=jest.config.js --watchAll"
+    "test-watch": "jest --config=jest.config.js --watchAll",
+    "test-open": "jest --config=jest.config.js && open ./coverage/lcov-report/index.html",
+    "docs-gen": "npx jsdoc -c .jsdoc.json",
+    "docs-open": "open ./docs/index.html",
+    "docs": "npm run docs-gen && npm run docs-open"
   },
   "repository": {
     "type": "git",
@@ -21,9 +25,12 @@
     "CO2",
     "Footprint",
     "Open data",
+    "XLS",
+    "NodeJS",
     "Express",
     "Apollo",
     "GraphQL",
+    "Seeder",
     "MongoDB",
     "API"
   ],
@@ -39,6 +46,8 @@
     "@babel/preset-env": "^7.17.10",
     "babel-jest": "^28.0.3",
     "jest": "^28.0.3",
+    "jsdoc": "^3.6.10",
+    "minami": "^1.2.3",
     "nodemon": "^2.0.15",
     "standard-version": "^9.3.2"
   },

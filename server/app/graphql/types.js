@@ -9,6 +9,8 @@ export const typeDefs = gql`
     infos: Info
     "Get a list of all unit types"
     units: [Unit]
+    "Get a unit based on its type"
+    unit(type: String!): Unit
     "Get a list of all CO2 value's categories"
     categories: [Category]
     "Get a category based on its name"
@@ -41,12 +43,12 @@ export const typeDefs = gql`
     "Category subcategories"
     categories: [Category]
     "List of subcategories by name"
-    childrens: [String]
+    children: [String]
     # childrenIds: [Int]
     # "Category CO2 values"
     # co2eqs: [Co2eq]!
-    "A CO2eq gives an equivalence estimation value of the carbon footprint for a given appliance"
-    co2eqs: [Co2eq]!
+    "A CO2eq gives an equivalence estimation value of the carbon footprint in kg CO2Eq for a given unit"
+    co2eq: Co2eq!
   }
 
   """
@@ -63,11 +65,13 @@ export const typeDefs = gql`
   UnitEnum defines a static list of units used by Co2eq
   """
   enum UnitEnum {
-    KWH
-    TKM
-    H
-    PKM
-    G_CO2_KWH
+    KG_CO2_PER_UNIT
+    KG_CO2_PER_KWH
+    KG_CO2_PER_TKM
+    KG_CO2_PER_KG
+    KG_CO2_PER_H
+    KG_CO2_PER_PKM
+    KG_CO2_PER_PERSON_NIGHT
   }
 
   """
@@ -83,12 +87,28 @@ export const typeDefs = gql`
   }
 
   """
+  A source structure for a CO2eq
+  """
+  type Calculation {
+    "mean (μ) – Average value from the children"
+    mean: Float
+    "count (n) – Children amount / Sample size"
+    count: Float
+    "min – The smallest children value"
+    min: Float
+    "max – The largest children value"
+    max: Float
+    "standardDeviation (σ) – Population standard deviation (SD)"
+    standardDeviation: Float
+  }
+
+  """
   A CO2eq gives an equivalence value of the carbon footprint for a given appliance
   """
   type Co2eq {
     "Co2eq value"
     value: Float
-    "Co2eq unit"
+    "unit"
     unit: String
     """
     Is this CO2eq value approximated or not?
@@ -100,6 +120,15 @@ export const typeDefs = gql`
     details: String
     "Co2eq data source"
     source: Source
+    """
+    Co2eq calculation details
+    - mean (μ) – Average value from the children
+    - count (n) – Children amount / Sample size
+    - min – The smallest children value
+    - max – The largest children value
+    – standardDeviation (σ) – Population standard deviation (SD)
+    """
+    calculationDetails: Calculation
   }
 
   """

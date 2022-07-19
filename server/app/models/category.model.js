@@ -1,22 +1,55 @@
 import mongoose from "mongoose";
 
-const Co2eqSchema = mongoose.Schema({
-  co2eq: {
-    value: {
-      type: Number
-      // required: [true, "please add a value"]
-    },
-    unit: {
-      type: String
-      // required: [true, "please add a unit"]
-    },
-    approximated: {
-      type: Boolean
-      // required: [true, "please add a approximated"]
-    },
-    details: String
+const SourceSchema = {
+  title: {
+    type: String
+    // required: [true, "please add a value"]
+  },
+  url: {
+    type: String
+    // required: [true, "please add a unit"]
+  },
+  year: {
+    type: Number
+    // required: [true, "please add a approximated"]
   }
-});
+};
+
+const CalculationSchema = {
+  mean: {
+    type: Number
+  },
+  count: {
+    type: Number
+  },
+  min: {
+    type: Number
+  },
+  max: {
+    type: Number
+  },
+  standardDeviation: {
+    type: Number
+  }
+};
+
+const Co2eqSchema = {
+  value: {
+    type: Number
+    // required: [true, "please add a value"]
+  },
+  unit: {
+    type: String
+    // required: [true, "please add a unit"]
+  },
+  approximated: {
+    type: Boolean
+    // required: [true, "please add a approximated"]
+  },
+  details: String,
+  source: SourceSchema,
+  calculationDetails: CalculationSchema
+};
 
 const CategorySchema = {
   categoryId: {
@@ -40,7 +73,7 @@ const CategorySchema = {
     required: [true, "please add a fullPath"]
   },
   details: String,
-  childrens: [
+  children: [
     {
       type: String
     }
@@ -50,7 +83,7 @@ const CategorySchema = {
       type: Number
     }
   ],
-  co2eqs: [Co2eqSchema]
+  co2eq: Co2eqSchema
 };
 
 const Category = mongoose.model("Category", CategorySchema);

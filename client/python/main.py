@@ -20,9 +20,12 @@ def query(graphqlQuery):
 # Define GraphQL query
 allCategories = """
 {
-  getAllCategories {
+  categories {
     name
-    description
+    co2eq {
+      value
+      unit
+    }
   }
 }
 """

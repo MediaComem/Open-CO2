@@ -35,6 +35,13 @@ export const resolvers = {
         logger.error(error);
       }
     },
+    async unit(parent, args) {
+      try {
+        return await Unit.findOne({ type: args.type });
+      } catch (error) {
+        logger.error(error);
+      }
+    },
     async categories() {
       try {
         return await Category.find();
@@ -53,13 +60,13 @@ export const resolvers = {
   Category: {
     categories(parent) {
       try {
-        if (parent.childrenIds) {
-          const results = [];
+        if (parent.childrenIds && parent.childrenIds.length > 0) {
+          const subcategories = [];
           parent.childrenIds.forEach((id) => {
             const category = Category.findOne({ categoryId: id });
-            results.push(category);
+            subcategories.push(category);
           });
-          return results;
+          return subcategories;
         } else {
           return null;
         }

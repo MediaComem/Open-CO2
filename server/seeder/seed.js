@@ -1,6 +1,6 @@
-import XLSDataReader from "./modules/XLSDataReader/XLSDataReader.js";
-import DataParser from "./modules/DataParser/DataParser.js";
-import FileExporter from "./modules/fileExporter/fileExporter.js";
+import XLSDataReader from "./modules/XLSDataReader.js";
+import DataParser from "./modules/DataParser.js";
+import FileExporter from "./modules/FileExporter.js";
 
 // Excel file used as input
 const inputFile = "./data/input/Open CO2.xlsx";
@@ -8,19 +8,29 @@ const inputFile = "./data/input/Open CO2.xlsx";
 // Read file
 const xlsDataReader = new XLSDataReader(inputFile);
 
+/**
+ * Configuration object to export categories sheets
+ * @constant
+ * @type {Object}
+ */
 const categoriesConfig = {
   fileName: "data/output/categories.js",
   varName: "categoriesData",
-  sheets: ["Electricity", "Heat", "Transports"]
+  sheets: ["Electricity", "Heat", "Transports", "IT", "Appliances", "Furnitures", "Packaging", "Accomodation", "Food"]
 };
 
+/**
+ * Configuration object to export units sheet
+ * @constant
+ * @type {Object}
+ */
 const unitsConfig = {
   fileName: "data/output/units.js",
   varName: "unitsData",
   sheets: ["Units"]
 };
 
-function processCategoriesFromConfig(config) {
+function processCategories(config) {
   let consolidatedData = [];
 
   for (let i = 0, l = config.sheets.length; i < l; i++) {
@@ -28,8 +38,8 @@ function processCategoriesFromConfig(config) {
     const rawContent = xlsDataReader.getSheetContent(sheetName);
     const dataParser = new DataParser(rawContent);
     // Start processing sheet
-    dataParser.processCategories();
-    consolidatedData.push(...dataParser.sheet);
+    dataParser.process();
+    consolidatedData.push(...dataParser.rows);
   }
 
   // Save JSON file
@@ -42,7 +52,7 @@ function processCategoriesFromConfig(config) {
 }
 
 // Generate categories file
-processCategoriesFromConfig(categoriesConfig);
+processCategories(categoriesConfig);
 
 // Generate units file
 const rawContent = xlsDataReader.getSheetContent(unitsConfig.sheets[0]);
@@ -53,18 +63,7 @@ dataParser.processUnits();
 // Save JSON file
 const fileExporter = new FileExporter();
 fileExporter.saveAsJsonFile(
-  [...dataParser.sheet],
+  [...dataParser.rows],
   unitsConfig.fileName,
   unitsConfig.varName
 );
-
-// console.dir(consolidatedCategories, { deep: null });
-// import util from "util";
-// console.log(
-//   util.inspect(consolidatedCategories, {
-//     depth: null,
-//     showHidden: false,
-//     colors: true
-//   })
-// );
-// console.log(`Number of categories: ${consolidatedCategories.length}`);

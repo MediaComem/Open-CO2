@@ -1,6 +1,6 @@
 import XLSDataReader from "./XLSDataReader";
 
-describe("FileReader", () => {
+describe("XLSDataReader", () => {
   const xlsDataReader = new XLSDataReader("./data/input/Open CO2.xlsx");
   it("getSheets() should return an array", () => {
     const sheets = xlsDataReader.getSheets();
@@ -12,7 +12,7 @@ describe("FileReader", () => {
   });
   it("getSheetNames() should return XLS sheets name correctly", () => {
     const sheetNames = xlsDataReader.getSheetNames();
-    expect(sheetNames).toEqual(["Electricity", "Heat", "Transports", "Units"]);
+    expect(sheetNames).toEqual(["Electricity", "Heat", "Transports", "IT", "Appliances", "Furnitures", "Packaging", "Accomodation", "Food", "Units"]);
   });
   it("getSheetContent() should return an array", () => {
     const sheetContent = xlsDataReader.getSheetContent();

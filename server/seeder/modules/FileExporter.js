@@ -1,10 +1,15 @@
 import fs from "fs";
-import logger from "../../config/logger.js";
+import logger from "../config/logger.js";
 
 /**
  * Class to export processed data as JSON file
+ * @example const fileExporter = new FileExporter();
  */
-export default class FileExporter {
+class FileExporter {
+  /**
+   * FileExporter constructor
+   * @constructor
+   */
   constructor() {}
 
   /**
@@ -30,3 +35,5 @@ export default class FileExporter {
     );
   }
 }
+
+export default FileExporter;

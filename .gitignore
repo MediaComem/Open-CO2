@@ -2,6 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,osx,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,visualstudiocode,osx,windows
 
+docs
+
 ### Node ###
 # Logs
 logs
@@ -172,6 +174,7 @@ Temporary Items
 .apdisk
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

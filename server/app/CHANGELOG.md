@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/MediaComem/open-co2/compare/v0.0.2...v0.3.0) (2022-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **model:** Fixing mongoose schema issue which caused a problem for the return of Co2eq values/Sources
+* **seeder:** Calculation details are given in co2eq.calculationDetails
+* **seeder:** Co2eq is no longer an array with different units. If children categories have different units, the mean calculation is ignored.
+
+### Features
+
+* **api:** Add query to get a unit by type ([03486a9](https://github.com/MediaComem/open-co2/commit/03486a991b9c9f1d04daf858f4bc4ce0f5aad067))
+* **api:** Update swagger documentation with version from package.json ([b275de5](https://github.com/MediaComem/open-co2/commit/b275de5090d2166273878dbb139f432b94407a70))
+* **model:** Update model to match data structure of co2eq.calculationDetails ([ce0d7cd](https://github.com/MediaComem/open-co2/commit/ce0d7cd92136b88698fcea3c053efa90a070ae18))
+* **schema:** Update types to match latest updates from seeder/data model ([3f1184e](https://github.com/MediaComem/open-co2/commit/3f1184e5fb1a8fb1d84b4c1ecf3746c22104f994))
+* **seeder:** Calculation details are given in co2eq.calculationDetails ([39d7709](https://github.com/MediaComem/open-co2/commit/39d77097b83ed7def284dce90b5f1fbb38f93eb3))
+* **seeder:** Co2eq is now an object ([e4c3e5f](https://github.com/MediaComem/open-co2/commit/e4c3e5f4e8fd70bb8ec587e45e9563d0a5e97196))
+* **server:** Activate debug on Apollo server if not in production ([83119b4](https://github.com/MediaComem/open-co2/commit/83119b4a39c7e119df49ea37641f6bd7c475f8bb))
+* **server:** Add links to GraphQL/REST documentation on server landing page ([9763835](https://github.com/MediaComem/open-co2/commit/97638351195522c7b75475fc1c693cef1d1fa576))
+* Update python client to consume categories endpoint ([7bc5926](https://github.com/MediaComem/open-co2/commit/7bc5926a816fc7758360818ef442017eeddb04b1))
+
+
+### Bug Fixes
+
+* **config:** Update nodemon config to ignore generated JS ([e29d390](https://github.com/MediaComem/open-co2/commit/e29d390c291cba02be0a1a7cc94b3b3ae008e191))
+* Fix invalid inline doc ([477badc](https://github.com/MediaComem/open-co2/commit/477badc0d68c5824b65d0cc3c9a9b2745a53cab6))
+* **model:** Fixing mongoose schema issue which caused a problem for the return of Co2eq values/Sources ([12ee4ec](https://github.com/MediaComem/open-co2/commit/12ee4ec23e22601f400705091957103c83b1ee7a))
+* **seeder:** Fix error when generate categoryIDs ([9dd763d](https://github.com/MediaComem/open-co2/commit/9dd763d3473310d6165fa448279d7e05de8e8b70))
+* Typo ([b08324c](https://github.com/MediaComem/open-co2/commit/b08324ce4c922bb0a9ce3041aac246fefcc41a1e))
+* Update hoppscotch collection with last API documentation ([6b27202](https://github.com/MediaComem/open-co2/commit/6b27202a3dd5e7b739f80a697c8e5a00b0b9ffe0))
+
 ## [0.2.0](https://github.com/MediaComem/open-co2/compare/v0.1.0...v0.2.0) (2022-05-10)
 
 
