@@ -19,7 +19,6 @@ Try this query to access all categories and related CO2eq:
 ## Client implementation
 
 - [x] Python
-- [ ] Vue
 
 ## API development tool
 
