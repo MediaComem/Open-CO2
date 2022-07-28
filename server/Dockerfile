@@ -1,11 +1,11 @@
 # Base image for stages
-FROM node:16.14.2 as seeder-image
+FROM node:16.14.2 AS base-image
 
 # ----------------------------------------------------------
 # STAGE 1 - Seeder
 # ----------------------------------------------------------
 # Node base image with the latest LTS version
-FROM seeder-image
+FROM base-image AS seeder
 # Updates
 RUN npm install -g npm@latest
 # Changes working directory
@@ -27,7 +27,7 @@ RUN npm start
 # STAGE 2 - Server
 # ----------------------------------------------------------
 # Node base image with the latest LTS version
-FROM seeder-image
+FROM base-image
 # Updates
 RUN npm install -g npm@latest
 # Changes working directory
