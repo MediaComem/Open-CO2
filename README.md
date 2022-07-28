@@ -15,7 +15,7 @@ An open Data Database and API for CO₂ Equivalent Values.
 
 - [First-time setup](#first-time-setup)
 - [Test the API](#test-the-api)
-  - [GraphQL API](#graphql-api)
+  - [GraphQL API (Recommended)](#graphql-api-recommended)
   - [REST API](#rest-api)
 - [Configuration](#configuration)
 - [Project structure](#project-structure)
@@ -48,9 +48,9 @@ See [Co2 Data](#co2-data) in case you want to update the input data.
 The GraphQl documentation is available directly through the GraphQL endpoint and the schema can be browsed using any GraphQL client.
 The [Open API documentation for the REST API](./server/app/swagger.json) is available and can be visualised using [Swagger editor](https://editor.swagger.io)
 
-You have different options to test the API:
+You have 2 main options to consume the API:
 
-### GraphQL API
+### GraphQL API (Recommended)
 
 - Use Apollo Stuido sandbox. Open your browser to https://studio.apollographql.com/sandbox/explorer
 - Use GraphQL playground. Open your browser to http://localhost:4200/
