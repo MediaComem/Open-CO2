@@ -42,7 +42,7 @@ services:
     networks:
       - open-co2
     # healthcheck:
-    #   test: 'echo ''db.runCommand("ping").ok'''
+    #   test: 'echo ''database.runCommand("ping").ok'''
     #   interval: 5s
     #   timeout: 5s
     #   retries: 3
