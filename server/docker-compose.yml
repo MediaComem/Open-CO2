@@ -19,8 +19,6 @@ services:
       - open-co2-seeder-data:/usr/src/app/data/
     ports:
       - "4000:4000"
-    links:
-      - database
     networks:
       - open-co2
   # ========================================================
