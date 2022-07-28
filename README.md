@@ -6,9 +6,7 @@ An open Data Database and API for CO₂ Equivalent Values.
 
 **Open CO2** project enables companies to estimate their CO2 footprint through an open DB and API which can be used with their accounting tool. Although most of the data are independent of the location, the database is targeted to be used by companies operating in **Switzerland**. In particular energy information are based on swiss electricity providers and swiss energy mix, public transports on swiss public transport providers.
 
-[Project reference on Aramis DB](https://www.aramis-a.admin.ch/Texte/?ProjectID=49723)
-
-Project funded by [Innosuisse](https://www.innosuisse.ch).
+[Project reference on Aramis DB](https://www.aramis.admin.ch/Grunddaten/?ProjectID=50417)
 
 ---
 
