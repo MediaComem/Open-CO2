@@ -57,7 +57,7 @@ services:
       - HOST=http://localhost:4000/graphql
       - TITLE="Open CO2 Playground"
     ports:
-      - 4200:6600
+      - 4200:8080
     depends_on:
       - server
 
