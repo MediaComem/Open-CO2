@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/MediaComem/open-co2/compare/v0.3.0...v0.4.0) (2022-08-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* add limit / offset to categories API
+* switch to node-config for configuration
+
+### Features
+
+* add limit / offset to categories API ([80bda78](https://github.com/MediaComem/open-co2/commit/80bda788aa69de1747816d67226e4fda6c9a352d))
+* Add shebang to specified python interpreter version ([45f73f9](https://github.com/MediaComem/open-co2/commit/45f73f942f68d94dba9397e72a52e14a2fe8f84e))
+* Manage formatString() input error ([0b89186](https://github.com/MediaComem/open-co2/commit/0b891866f691c375951b99923c86237cda243975))
+* rootCategories API ([f0cb05e](https://github.com/MediaComem/open-co2/commit/f0cb05e5a35ab8ecf154a0804e830ead6dd59bc3))
+* switch to node-config for configuration ([078df0c](https://github.com/MediaComem/open-co2/commit/078df0c67b3a76cb243195f79b7fc6ecfaae0791))
+
+
+### Bug Fixes
+
+* Doesn't expose DB by default ([c418868](https://github.com/MediaComem/open-co2/commit/c418868b5d01e5b6e0be01e44748ced822884f01))
+* Missing link to license in footer ([edc20e5](https://github.com/MediaComem/open-co2/commit/edc20e5e49de558afc4321a14a0258acfae5f3fe))
+* Playground default port exposed ([62ad857](https://github.com/MediaComem/open-co2/commit/62ad85715483a36f41a5af7c67bc88940d683f2a))
+* Rm legacy links option ([0e457be](https://github.com/MediaComem/open-co2/commit/0e457bed4eb36c930087b7d62fb75815445f746b))
+* Rm unused exposed port for Playground image ([d9202f2](https://github.com/MediaComem/open-co2/commit/d9202f204cfbd05ef50c5fc84af04ea49817755a))
+* Typo ([7d45236](https://github.com/MediaComem/open-co2/commit/7d45236dde0013a07f39d4103f36ecfb9404d47a))
+* Update deadlink to Aramis DB ([9f868cc](https://github.com/MediaComem/open-co2/commit/9f868cc3867f75e9f82892a7e37168e97d8d03bf))
+* Use base image to avoid redundancy in stages ([1eceb56](https://github.com/MediaComem/open-co2/commit/1eceb56015791f6ac25b0578be09d28071cb46dd))
+* Use base image to avoid redundancy in stages ([8433b60](https://github.com/MediaComem/open-co2/commit/8433b608ecc1c3b89f3a43740f6cbfda68832e41))
+
 ## [0.3.0](https://github.com/MediaComem/open-co2/compare/v0.0.2...v0.3.0) (2022-07-18)
 
 

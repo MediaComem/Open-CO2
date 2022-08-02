@@ -1,7 +1,7 @@
 {
   "name": "open-co2",
   "title": "Open CO2",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Open Data Database and API for CO2 Equivalent Values",
   "type": "module",
   "main": "index.js",
