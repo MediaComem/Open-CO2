@@ -16,7 +16,7 @@ Try this query to access all categories and related CO2eq:
 }
 ```
 
-## Client implementation
+## Client example implementation
 
 - [x] Python
 
