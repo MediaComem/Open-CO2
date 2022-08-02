@@ -6,7 +6,7 @@ const pkg = JSON.parse(
   await readFile(new URL("../package.json", import.meta.url))
 );
 // Get environment
-const environment = process.env.NODE_ENV || config.util.getEnv("NODE_ENV");
+const environment = config.util.getEnv("NODE_ENV");
 // Get date for footer
 function creditYears() {
   const currentYear = new Date().getFullYear();

@@ -1,7 +1,8 @@
+import config from "config";
 import { sofaMiddleware, generateSwaggerDoc } from "./sofa.js";
 import { swaggerServe, swaggerSetup } from "./swagger.js";
 
-const REST_BASE = process.env.REST_BASE || config.get("server.restBase");
+const REST_BASE = config.get("server.restBase");
 
 const useMiddlewares = (app) => {
   // Use Sofa to generate RESTful API from GraphQL – https://github.com/Urigo/SOFA

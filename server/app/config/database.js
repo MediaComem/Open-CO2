@@ -1,3 +1,4 @@
+import config from "config";
 import mongoose from "mongoose";
 import logger from "./logger.js";
 
@@ -13,7 +14,7 @@ const initDatabase = () => {
     logger.info("MongoDB event open");
     logger.debug(
       "MongoDB connected [%s]",
-      process.env.MONGO_URI || config.get("server.mongoUri")
+      config.get("server.mongoUri")
     );
 
     // Events
@@ -41,7 +42,7 @@ const initDatabase = () => {
   const connectToDB = async () => {
     try {
       await mongoose.connect(
-        process.env.MONGO_URI || config.get("server.mongoUri"),
+        config.get("server.mongoUri"),
         options
       );
       logger.info("MongoDB connected");

@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import config from "config";
 import express from "express";
 import http from "http";
@@ -34,13 +32,10 @@ async function startServer() {
       message: error.message.replace("Error", "")
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    introspection:
-      process.env.APOLLO_INTROSPECTION ||
-      config.get("server.apolloIntrospection"),
-    playground:
-      process.env.APOLLO_PLAYGROUND || config.get("server.apolloPlayground"),
-    path: process.env.GRAPHQL_ENDPOINT || config.get("server.graphqlEndpoint"),
-    debug: process.env.NODE_ENV === "production" ? true : false
+    introspection: config.get("server.apolloIntrospection"),
+    playground: config.get("server.apolloPlayground"),
+    path: config.get("server.graphqlEndpoint"),
+    debug: config.util.getEnv('NODE_ENV') === "production" ? true : false
   });
 
   // Init view engine
@@ -61,10 +56,10 @@ async function startServer() {
   // Mount Apollo middleware
   server.applyMiddleware({
     app,
-    path: process.env.GRAPHQL_ENDPOINT || config.get("server.graphqlEndpoint")
+    path: config.get("server.graphqlEndpoint")
   });
 
-  const PORT = process.env.PORT || config.get("server.port");
+  const PORT = config.get("server.port");
 
   // Start Express server
   await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));

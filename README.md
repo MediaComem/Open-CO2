@@ -8,6 +8,8 @@ An open Data Database and API for CO₂ Equivalent Values.
 
 [Project reference on Aramis DB](https://www.aramis.admin.ch/Grunddaten/?ProjectID=50417)
 
+Project funded by [Innosuisse](https://www.innosuisse.ch).
+
 ---
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -33,7 +35,7 @@ An open Data Database and API for CO₂ Equivalent Values.
 - Clone this repository:
   `git clone git@github.com:MediaComem/open-co2.git`
 
-- Configure `.env` files in _/server_, _/server/app_, _/server/seeder_ (see [Configuration section](#configuration) for more details)
+- Configure `config` files in _/server/app/config_, _/server/seeder/config_ (see [Configuration section](#configuration) for more details)
 
 - Move to server directory:
   `cd open-co2/server`
@@ -61,22 +63,27 @@ You have 2 main options to consume the API:
 
 ## Configuration
 
-Project use [dotenv](https://github.com/motdotla/dotenv) to loads environment variables.
+Project use [Node-config](https://github.com/node-config/node-config#readme) to loads environment variables.
 
-Copy the `.env.example` file as `.env` in those different directories:
+Default configuration is store in `default.json` JSON file in those different directories:
 
-- /server
 - /server/app
 - /server/seeder
 
-Server app use default value if `.env` isn't defined. See `server/app/config/env.js` for default values.
+Create similar `local.json` files if you need specific local configuration.
+
+To secure your production configuration, you can follow instructions at [Node-config - Securing Production Config Files](https://github.com/node-config/node-config/wiki/Securing-Production-Config-Files)
+
+## Deployment
+
+An example [docker-compose file](./server/docker-compose.yml) is available to seed the database with input CO2 data and deploy locally the API for development purpose.
 
 ---
 
 ## Project structure
 
 Source code is mostly located in `server`.
-The `client` directory only provides some applications to consume the API as examples.
+The `client-examples` directory only provides some applications to consume the API as examples.
 
 The `server` directory is splitted in two main parts:
 
@@ -99,6 +106,7 @@ The `server` directory is splitted in two main parts:
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Sofa-api](https://www.sofa-api.com/)
 ![Apollo-GraphQL](https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql)
 ![GraphQL](https://img.shields.io/badge/-GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)

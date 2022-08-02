@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import XLSDataReader from "./modules/XLSDataReader.js";
 import DataParser from "./modules/DataParser.js";
 import FileExporter from "./modules/FileExporter.js";

@@ -3,7 +3,7 @@ import { useSofa, OpenAPI } from "sofa-api";
 import schema from "../graphql/index.js";
 import { readFile } from "fs/promises";
 
-const REST_BASE = process.env.REST_BASE || config.get("server.restBase");
+const REST_BASE = config.get("server.restBase");
 
 const pkg = JSON.parse(
   await readFile(new URL("../package.json", import.meta.url))
@@ -21,7 +21,7 @@ const openApi = OpenAPI({
 const sofaMiddleware = useSofa({
   schema,
   basePath: REST_BASE,
-  depthLimit: process.env.REST_DEPTH || config.get("server.restDepth"),
+  depthLimit: config.get("server.restDepth"),
   onRoute(info) {
     openApi.addRoute(info, {
       basePath: REST_BASE

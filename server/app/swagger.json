@@ -231,7 +231,7 @@
             "description": "Unit description"
           }
         },
-        "description": "An unit is attached to a CO2eq to mesure its value"
+        "description": "A unit is attached to a CO2eq to mesure its value"
       },
       "Source": {
         "type": "object",

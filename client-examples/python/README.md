@@ -2,11 +2,11 @@
 
 Python client example to consume API with GraphQL (using `requests` module).
 
-Activate venv:  
+Activate venv:
 `source venv/bin/activate`
 
-Install modules:  
+Install modules:
 `pip3 install -r requirements.txt`
 
-Run script:  
+Run script:
 `python3 main.py`
