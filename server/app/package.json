@@ -1,7 +1,7 @@
 {
   "name": "open-co2",
   "title": "Open CO2",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Open Data Database and API for CO2 Equivalent Values",
   "type": "module",
   "main": "index.js",
@@ -9,9 +9,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "release": "standard-version",
-    "lint": "npx eslint './**'",
-    "test": "jest --config=jest.config.js",
-    "test-watch": "jest --config=jest.config.js --watchAll"
+    "lint": "npx eslint './**'"
   },
   "repository": {
     "type": "git",
@@ -38,7 +36,6 @@
     "@babel/preset-env": "^7.16.11",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
-    "jest": "^28.0.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
     "standard-version": "^9.3.2"
@@ -47,7 +44,7 @@
     "@graphql-tools/schema": "^8.3.10",
     "apollo-server-core": "^3.6.7",
     "apollo-server-express": "^3.6.7",
-    "dotenv": "^16.0.0",
+    "config": "^3.3.7",
     "express": "^4.17.3",
     "graphql": "^15.8.0",
     "graphql-tools": "^8.2.8",

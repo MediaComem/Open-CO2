@@ -1,3 +1,4 @@
+import config from "config";
 import * as winston from "winston";
 import "winston-daily-rotate-file";
 
@@ -8,7 +9,7 @@ const consoleTransport = new winston.transports.Console();
 const fileRotateTransport = new winston.transports.DailyRotateFile({
   datePattern: "YYYY-MM-DD",
   filename: "open-co2_%DATE%.log",
-  dirname: process.env.LOG_DIR,
+  dirname: config.get("log.dir"),
   maxSize: "20m",
   maxFiles: "14d",
   zippedArchive: true
@@ -28,7 +29,7 @@ const logFormat = winston.format.combine(
 
 // Config
 const logConfig = {
-  level: process.env.LOG_LEVEL,
+  level: config.get("log.level"),
   format: logFormat,
   transports: [consoleTransport, fileRotateTransport],
   exitOnError: false

@@ -5,25 +5,34 @@ export const typeDefs = gql`
   Open CO2 API queries
   """
   type Query {
-    "Get Open CO2 infos"
+    "Get Open CO2 API infos"
     infos: Info
     "Get a list of all unit types"
     units: [Unit]
     "Get a unit based on its type"
     unit(type: String!): Unit
-    "Get a list of all CO2 value's categories"
-    categories: [Category]
+    """
+    Get a list of all CO2 value's categories.
+    Accept first and offset parameters to return the first parameters at offset.
+    By default limit to 10 first categories.
+    """
+    categories(first: Int, offset: Int): [Category]
+    """
+    Get a list of root categories.
+    Accept first and offset parameters to return the first parameters at offset.
+    By default limit to 10 first categories.
+    """
+    rootCategories(first: Int, offset: Int): [Category]
     "Get a category based on its name"
     category(name: String!): Category
-    # """
-    # Get a category based on its name
-    # Use a hierarchical path with '/' to separate categories (e.g. energy/electricity/grid) to point a specific category
-    # """
-    # categoryByName(name: String!): Category
   }
 
   """
   A category is a group of CO2 values equivalents with a common thematic
+  Values are returned in kg of CO2eq for a given unit of data for that category.
+  CO2eq is a unit based on the Global Warming Potential of greenhouse gases relative to carbon dioxide.
+  ex: An electricity category would return the CO2eq value in kg of 1 KWh.
+  Each category may have zero ore more subcategories.
   """
   type Category {
     "Category UUID"
@@ -40,13 +49,10 @@ export const typeDefs = gql`
     fullPath: String!
     "Category description"
     details: String
-    "Category subcategories"
+    "Category children subcategories"
     categories: [Category]
     "List of subcategories by name"
     children: [String]
-    # childrenIds: [Int]
-    # "Category CO2 values"
-    # co2eqs: [Co2eq]!
     "A CO2eq gives an equivalence estimation value of the carbon footprint in kg CO2Eq for a given unit"
     co2eq: Co2eq!
   }

@@ -1,7 +1,7 @@
 {
   "exec": "npm start",
   "ignore": [".git", "node_modules/*/*", "./data/output/*.js"],
-  "watch": [".env", "./"],
+  "watch": ["./"],
   "env": {
     "NODE_ENV": "development"
   },
