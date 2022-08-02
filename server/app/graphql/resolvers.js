@@ -51,6 +51,15 @@ export const resolvers = {
         logger.error(error);
       }
     },
+    async rootCategories(_, { offset, first }) {
+      try {
+        const skip = offset ?? 0;
+        const limit = first ?? 10;
+        return await Category.find({ path: '/' }).skip(skip).limit(limit);
+      } catch (error) {
+        logger.error(error);
+      }
+    },
     async category(parent, args) {
       try {
         return await Category.findOne({ name: args.name });

@@ -11,7 +11,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Get Open CO2 infos",
+            "description": "Get Open CO2 API infos",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,7 +96,47 @@
         ],
         "responses": {
           "200": {
-            "description": "Get a list of all CO2 value's categories",
+            "description": "Get a list of all CO2 value's categories.\nAccept first and offset parameters to return the first parameters at offset.\nBy default limit to 10 first categories.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/root-categories": {
+      "get": {
+        "operationId": "rootCategories_query",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "first",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of root categories.\nAccept first and offset parameters to return the first parameters at offset.\nBy default limit to 10 first categories.",
             "content": {
               "application/json": {
                 "schema": {
@@ -146,7 +186,7 @@
         "properties": {
           "infos": {
             "$ref": "#/components/schemas/Info",
-            "description": "Get Open CO2 infos"
+            "description": "Get Open CO2 API infos"
           },
           "units": {
             "type": "array",
@@ -164,7 +204,14 @@
             "items": {
               "$ref": "#/components/schemas/Category"
             },
-            "description": "Get a list of all CO2 value's categories"
+            "description": "Get a list of all CO2 value's categories.\nAccept first and offset parameters to return the first parameters at offset.\nBy default limit to 10 first categories."
+          },
+          "rootCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "description": "Get a list of root categories.\nAccept first and offset parameters to return the first parameters at offset.\nBy default limit to 10 first categories."
           },
           "category": {
             "$ref": "#/components/schemas/Category",
@@ -213,7 +260,7 @@
             "items": {
               "$ref": "#/components/schemas/Category"
             },
-            "description": "Category subcategories"
+            "description": "Category children subcategories"
           },
           "children": {
             "type": "array",
@@ -227,7 +274,7 @@
             "description": "A CO2eq gives an equivalence estimation value of the carbon footprint in kg CO2Eq for a given unit"
           }
         },
-        "description": "A category is a group of CO2 values equivalents with a common thematic"
+        "description": "A category is a group of CO2 values equivalents with a common thematic\nValues are returned in kg of CO2eq for a given unit of data for that category.\nCO2eq is a unit based on the Global Warming Potential of greenhouse gases relative to carbon dioxide.\nex: An electricity category would return the CO2eq value in kg of 1 KWh.\nEach category may have zero ore more subcategories."
       },
       "Unit": {
         "type": "object",
