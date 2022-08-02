@@ -42,9 +42,11 @@ export const resolvers = {
         logger.error(error);
       }
     },
-    async categories() {
+    async categories(_, { offset, first }) {
       try {
-        return await Category.find();
+        const skip = offset ?? 0;
+        const limit = first ?? 10;
+        return await Category.find().skip(skip).limit(limit);
       } catch (error) {
         logger.error(error);
       }

@@ -74,7 +74,26 @@
     "/rest/categories": {
       "get": {
         "operationId": "categories_query",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "first",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Get a list of all CO2 value's categories",
@@ -231,7 +250,7 @@
             "description": "Unit description"
           }
         },
-        "description": "A unit is attached to a CO2eq to mesure its value"
+        "description": "An unit is attached to a CO2eq to mesure its value"
       },
       "Source": {
         "type": "object",

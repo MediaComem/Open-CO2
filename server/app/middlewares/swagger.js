@@ -1,11 +1,17 @@
 import * as swaggerUi from "swagger-ui-express";
 import { readFile } from "fs/promises";
-
-const swaggerDocument = JSON.parse(
-  await readFile(new URL("../swagger.json", import.meta.url))
-);
+import logger from "../config/logger.js";
 
 const swaggerServe = swaggerUi.serve;
-const swaggerSetup = swaggerUi.setup(swaggerDocument);
 
-export { swaggerServe, swaggerSetup };
+const loadSwaggerDocumentation = async () => {
+  try {
+    const swaggerJSON = await readFile(new URL("../swagger.json", import.meta.url))
+    const swaggerDocument = JSON.parse(swaggerJSON);
+    return swaggerUi.setup(swaggerDocument);
+  } catch (e) {
+    logger.error("Missing swagger document file")
+  }
+}
+
+export { swaggerServe, loadSwaggerDocumentation };
