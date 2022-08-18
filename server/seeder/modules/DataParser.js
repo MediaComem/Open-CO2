@@ -293,7 +293,7 @@ class DataParser {
             value: null,
             unit: null,
             approximated: null,
-            details: `No mean for '${node.title}' category. Open CO2 cannot determine an approximated value because its children categories have different units.`
+            details: `No mean for '${row.title}' category. Open CO2 cannot determine an approximated value because its children categories have different units.`
           };
           row.co2eq = co2eqObject;
         }

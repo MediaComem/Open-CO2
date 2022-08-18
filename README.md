@@ -20,9 +20,13 @@ Project funded by [Innosuisse](https://www.innosuisse.ch).
   - [GraphQL API (Recommended)](#graphql-api-recommended)
   - [REST API](#rest-api)
 - [Configuration](#configuration)
+- [Deployment](#deployment)
 - [Project structure](#project-structure)
 - [Contribution guidelines](#contribution-guidelines)
 - [Stack](#stack)
+- [Seeder](#seeder)
+  - [API](#api)
+  - [Development](#development)
 - [License](#license)
 - [Co2 Data](#co2-data)
 
@@ -153,5 +157,5 @@ In case you update the input data, do not forget to:
 1. Update the excel file _seeder/data/input/Open CO2.xlsx_
 1. Update the list of first level categories in _seeder/seed.js_ if needed
 1. Run the seeder _cd server/seeder_ and _npm run start_
-1. Drop the current mongo table _docker-compose down -v_
-1. Rebuild and repopulate data _docker-compose up -d_
+1. Drop the current mongo table _docker compose down -v_
+1. Rebuild and repopulate data _docker compose up -d_

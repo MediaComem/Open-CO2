@@ -78,6 +78,7 @@ export const typeDefs = gql`
     KG_CO2_PER_H
     KG_CO2_PER_PKM
     KG_CO2_PER_PERSON_NIGHT
+    KG_CO2_PER_MEAL
   }
 
   """

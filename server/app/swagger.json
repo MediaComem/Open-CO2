@@ -288,7 +288,8 @@
               "KG_CO2_PER_KG",
               "KG_CO2_PER_H",
               "KG_CO2_PER_PKM",
-              "KG_CO2_PER_PERSON_NIGHT"
+              "KG_CO2_PER_PERSON_NIGHT",
+              "KG_CO2_PER_MEAL"
             ],
             "description": "Unit type defined by a strict list of units"
           },
