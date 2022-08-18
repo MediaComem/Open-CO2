@@ -150,7 +150,7 @@ Source code is licensed under the MIT License.
 
 ## Co2 Data
 
-See [Method](method/README.md).
+See [Method](method/README.md). **Please be aware that due to some assumptions and limitations, the data may not be suitable for decision making depending on your use case.**
 
 In case you update the input data, do not forget to:
 
