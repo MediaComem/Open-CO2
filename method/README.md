@@ -1,5 +1,19 @@
 ![Open Database and API for CO₂ equivalencies](../cover.png)
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Method and information](#method-and-information)
+  - [Scope](#scope)
+  - [Limitations](#limitations)
+    - [Location](#location)
+    - [Food data](#food-data)
+    - [Missing environmental impact indicators](#missing-environmental-impact-indicators)
+  - [Data source](#data-source)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Method and information
 
 The data are based on Life Cycle Assessment (LCA).
@@ -20,6 +34,26 @@ Due to the expected use case, the CO2 equivalent data in the database correspond
 The end of life (EoL) analysis is considered insignificant for most of the assessed products. In case it has a significant impact, it has been added to the value returned by the API. See [End of life relative contribution analysis](raw%20data/EndOfLifeAnalysis.pdf) document.
 
 Although most of the data are independent of the location, the database is targeted to be used for use cases in **Switzerland**. In particular energy information are based on Swiss electricity providers and Swiss energy mix, public transports on Swiss public transport providers.
+
+## Limitations
+
+### Location
+
+Although most of the data are independent of the location, the database is targeted to be used for use cases in **Switzerland**. In particular energy information are based on Swiss electricity providers and Swiss energy mix, public transports on Swiss public transport providers.
+
+### Food data
+
+Food LCA data are given as an indicative value only and many input parameters have been discarded to ease the use of the API for the use case in mind. In particular, food LCA impact is very sensitive to the following parameters that are not considered here:
+
+- seasonality (in / off season)
+- transport (local, air, freight transport)
+- organic / non-organic (impacting also other indicators than GWP)
+
+### Missing environmental impact indicators
+
+For simplicity, the current Database / API considers only GWP (Global Warming Potential) and do not consider other environmental impact (resource depletion, ozone depletion, acidification of soil and water, eutrophication, etc.).
+
+**Due to these reasons, the data may not be suitable for decision making.**
 
 ## Data source
 
