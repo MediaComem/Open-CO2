@@ -25,7 +25,8 @@ const categoriesConfig = {
     "Furnitures",
     "Packaging",
     "Accomodation",
-    "Food"
+    "Food",
+    "Drink",
   ]
 };
 
