@@ -16,7 +16,7 @@
 
 # Method and information
 
-The data are based on Life Cycle Assessment (LCA).
+data are based on Life Cycle Assessment (LCA).
 
 ## Scope
 
@@ -29,11 +29,8 @@ Here are the most relevant categories identified:
 - Basic office furniture
 - Meals
 
-Due to the expected use case, the CO2 equivalent data in the database corresponds to a **cradle to gate** evaluation (i.e. Impact of resource extraction + Manufacturing). The use phase corresponds mostly to energy use and is thus included in the company energy consumption.
-
+CO2 equivalent data of services such as energy and transport include the infrastructures’ life cycles (i.e. power plants, roads, cars). Due to the expected use case, the CO2 equivalent data of products (IT equipment and office furniture) in the database corresponds to a **cradle to gate** evaluation (i.e. Impact of resource extraction + Manufacturing). The use phase of purchased products (i.e. IT) corresponds mostly to energy consumption and is thus included in the operational stage of the company.
 The end of life (EoL) analysis is considered insignificant for most of the assessed products. In case it has a significant impact, it has been added to the value returned by the API. See [End of life relative contribution analysis](raw%20data/EndOfLifeAnalysis.pdf) document.
-
-Although most of the data are independent of the location, the database is targeted to be used for use cases in **Switzerland**. In particular energy information are based on Swiss electricity providers and Swiss energy mix, public transports on Swiss public transport providers.
 
 ## Limitations
 
@@ -53,7 +50,9 @@ Food LCA data are given as an indicative value only and many input parameters ha
 
 For simplicity, the current Database / API considers only GWP (Global Warming Potential) and do not consider other environmental impact (resource depletion, ozone depletion, acidification of soil and water, eutrophication, etc.).
 
-**Due to these reasons, the data may not be suitable for decision making.**
+## Suggestions on using the data
+
+**Due to the limitations mentioned above, the data may not be suitable for in-depth environmental decision making. Rather, they are useful to support comparison of a company’s CO2-equivalent emissions over time and to identify the biggest “hot-spots” in its activities.**
 
 ## Data source
 
