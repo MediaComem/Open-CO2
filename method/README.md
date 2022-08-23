@@ -16,7 +16,7 @@
 
 # Method and information
 
-data are based on Life Cycle Assessment (LCA).
+Data are based on [Life-cycle assessment (LCA)](https://en.wikipedia.org/wiki/Life-cycle_assessment).
 
 ## Scope
 
